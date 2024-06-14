@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  username       String          @unique
+  name           String?
+  family         String?
+  phone          String?         @unique
+  password       String
+  telegramID     String?
+  whatsappnumber String?
+  cargoShipments CargoShipment[]
+  flights        Flight[]
+
+  @@map(name: "users")
+}
+
+model Flight {
+  id                         String      @id @default(uuid())
+  departureDateTime          DateTime
+  arrivalDateTime            DateTime
+  departureCityCountryID     Int
+  destinationCityCountryID   Int
+  acceptableCargoDescription String
+  estimatedCost              Float?
+  userID                     String
+  user                       User        @relation(fields: [userID], references: [id])
+  departureCityCountry       CityCountry @relation("flightDepurtures", fields: [departureCityCountryID], references: [id])
+  destinationCityCountry     CityCountry @relation("flightDestinations", fields: [destinationCityCountryID], references: [id])
+
+  @@map(name: "flights")
+}
+
+model CargoShipment {
+  id                       String    @id @default(uuid())
+  approximateDateTime      DateTime?
+  immediateDelivery        Boolean   @default(true)
+  departureCityCountryID   Int
+  destinationCityCountryID Int
+  cargoDescription         String
+  estimatedCost            Float?
+  userID                   String
+
+  departureCityCountry   CityCountry @relation("cargoShipmentDepurtures", fields: [departureCityCountryID], references: [id])
+  destinationCityCountry CityCountry @relation("cargoShipmentDestinations", fields: [destinationCityCountryID], references: [id])
+  User                   User?       @relation(fields: [userID], references: [id])
+
+  @@map(name: "CargoShipments")
+}
+
+model CityCountry {
+  id                        Int             @id @default(autoincrement())
+  city                      String          @db.VarChar(49)
+  cityAscii                 String?         @db.VarChar(49)
+  lat                       Float?
+  lng                       Float?
+  country                   String          @db.VarChar(45)
+  iso2                      String?         @db.VarChar(2)
+  iso3                      String?         @db.VarChar(3)
+  adminName                 String?         @db.VarChar(53)
+  capital                   String?         @db.VarChar(7)
+  population                Float?
+  flightDepurtures          Flight[]        @relation("flightDepurtures")
+  flightDestinations        Flight[]        @relation("flightDestinations")
+  cargoShipmentDepurtures   CargoShipment[] @relation("cargoShipmentDepurtures")
+  cargoShipmentDestinations CargoShipment[] @relation("cargoShipmentDestinations")
+
+  @@map(name: "cityCountries")
+}
+
+model Country {
+  id              Int           @id @unique
+  name            String
+  iso3            String
+  iso2            String
+  numeric_code    String
+  phone_code      String
+  capital         String
+  currency        String
+  currency_name   String
+  currency_symbol String
+  tld             String
+  native          String?
+  region          String?
+  region_id       String?
+  subregion       String?
+  subregion_id    String?
+  nationality     String
+  timezones       Timezone[]
+  translationsId  Int?          @unique
+  translations    Translations? @relation(fields: [translationsId], references: [id])
+  latitude        String?
+  longitude       String?
+  emoji           String
+  emojiU          String
+  states          State[]
+}
+
+model State {
+  id         Int     @id @unique
+  name       String
+  state_code String
+  latitude   String?
+  longitude  String?
+  type       String?
+  cities     City[]
+  countryId  Int
+  country    Country @relation(fields: [countryId], references: [id])
+}
+
+model City {
+  id        Int     @id @unique
+  name      String
+  latitude  String?
+  longitude String?
+  stateId   Int
+  state     State   @relation(fields: [stateId], references: [id])
+}
+
+model Translations {
+  id      Int      @id @default(autoincrement())
+  kr      String?
+  pt_BR   String?
+  pt      String?
+  nl      String?
+  hr      String?
+  fa      String?
+  de      String?
+  es      String?
+  fr      String?
+  ja      String?
+  it      String?
+  cn      String?
+  tr      String?
+  country Country?
+}
+
+model Timezone {
+  id            Int     @id @default(autoincrement())
+  zoneName      String
+  gmtOffset     Int
+  gmtOffsetName String
+  abbreviation  String
+  tzName        String
+  countryId     Int
+  country       Country @relation(fields: [countryId], references: [id])
+}
