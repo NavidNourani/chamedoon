@@ -5,11 +5,11 @@ import { RHFCheckbox } from "@/components/shared/RHF/RHFCheckbox";
 import RHFDatePicker from "@/components/shared/RHF/RHFDatePicker";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import useCountries from "@/hooks/useCountries";
+import { useI18n } from "@/locales/client";
 import { createCargoForCurrentUser } from "@/serverActions/createCargoForCurrentUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Grid, ListItem, Typography } from "@mui/material";
 import { CargoShipment, CityCountry } from "@prisma/client";
-import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -32,7 +32,7 @@ type FormData = CargoShipment & {
 };
 
 const FlightForm = () => {
-  const { t } = useTranslation();
+  const t = useI18n();
   const { countries, getCities } = useCountries();
   const [departureCities, setDepartureCities] = useState<CityCountry[]>([]);
   const [citiesFilter, setCitiesFilter] = useState<string>("");
@@ -55,12 +55,12 @@ const FlightForm = () => {
     try {
       const res = await createCargoForCurrentUser(data);
       if (res.success) {
-        alert(t("a.Cargo_created_successfully"));
+        alert(t("add_cargo.Cargo_created_successfully"));
       } else {
-        alert(t("a.There_was_an_error_on_creating_cargo"));
+        alert(t("add_cargo.There_was_an_error_on_creating_cargo"));
       }
     } catch (e) {
-      alert(t("a.There_was_an_error_on_creating_cargo"));
+      alert(t("add_cargo.There_was_an_error_on_creating_cargo"));
     }
   };
 
@@ -77,7 +77,7 @@ const FlightForm = () => {
       }}
     >
       <Typography variant="h4" sx={{ margin: "20px" }}>
-        {t("a.Add_your_cargo_detail")}
+        {t("add_cargo.Add_your_cargo_detail")}
       </Typography>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -91,7 +91,7 @@ const FlightForm = () => {
               sx={{ width: "100%" }}
               options={countries}
               name="departureCountry"
-              label={t("a.Departure_country")}
+              label={t("add_cargo.Departure_country")}
             />
             {!!departureCities?.length && (
               <RHFAutocomplete
@@ -111,32 +111,32 @@ const FlightForm = () => {
             )}
             <RHFTextField
               name="destinationCountry"
-              label={t("a.Destination_country")}
+              label={t("add_cargo.Destination_country")}
             />
             <RHFTextField
               name="destinationCity"
-              label={t("a.Destination_City")}
+              label={t("add_cargo.Destination_City")}
             />
             <RHFTextField
               name="cargoDescription"
-              label={t("a.Cargo_Description")}
+              label={t("add_cargo.Cargo_Description")}
             />
             <RHFTextField
               name="estimatedCost"
-              label={t("a.Estimated_cost_(optional)")}
+              label={"add_cargo.Estimated_cost_(optional)"}
             />
             <RHFDatePicker
               sx={{ width: "100%" }}
               name="approximateDateTime"
-              label={t("a.Approximate_DateTime")}
+              label={"add_cargo.Approximate_DateTime"}
             />
             <RHFCheckbox
               name="immediateDelivery"
-              label={t("a.Immediate_delivery")}
+              label={t("add_cargo.Immediate_delivery")}
             />
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary">
-                {t("a.Submit")}
+                {t("add_cargo.Submit")}
               </Button>
             </Grid>
           </Grid>

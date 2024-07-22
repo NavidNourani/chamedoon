@@ -1,3 +1,4 @@
+import { getDirection } from "@/helpers/getDirection";
 import ClientSideProviders from "@/providers/ClientSideProviders";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -12,11 +13,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
   return (
-    <html lang="en">
+    <html lang={locale} dir={getDirection(locale)}>
       <body className={inter.className}>
         <ClientSideProviders>{children}</ClientSideProviders>
       </body>

@@ -1,10 +1,10 @@
+import { useI18n } from "@/locales/client";
 import { getAllCitiesOfACountryAction } from "@/serverActions/citiesAndCountries/getAllCitiesOfACountryAction";
 import { getAllCountriesAction } from "@/serverActions/citiesAndCountries/getAllCountriesAction";
-import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 
 const useCountries = () => {
-  const { t } = useTranslation();
+  const t = useI18n();
   const [countries, setCountries] = useState<string[]>([]);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const useCountries = () => {
         const countries = await getAllCountriesAction();
         setCountries(countries);
       } catch (e) {
-        alert(t("a.There_was_an_error_on_getting_countries"));
+        alert(t("add_cargo.There_was_an_error_on_getting_countries"));
         console.log(e);
         setCountries([]);
         return;
@@ -27,7 +27,7 @@ const useCountries = () => {
       const cities = await getAllCitiesOfACountryAction(country);
       return cities;
     } catch (e) {
-      alert(t("a.there_was_an_error_on_getting_cities"));
+      alert(t("add_cargo.there_was_an_error_on_getting_cities"));
       console.log(e);
       return;
     }
