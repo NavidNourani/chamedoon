@@ -3,10 +3,7 @@ import { getDirection } from "@/helpers/getDirection";
 import ClientSideProviders from "@/providers/ClientSideProviders";
 import type { Metadata } from "next";
 import { getSession } from "next-auth/react";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,7 +21,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={getDirection(locale)}>
-      <body className={inter.className}>
+      <body>
         <ClientSideProviders session={session!}>
           <HeaderUnauthenticated />
           {children}

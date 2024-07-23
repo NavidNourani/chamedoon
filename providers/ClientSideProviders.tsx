@@ -9,9 +9,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { Inter, Vazirmatn } from "next/font/google";
 import { FunctionComponent, PropsWithChildren, useMemo } from "react";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
+
+const inter = Inter({ subsets: ["latin"] });
+const vazirmatn = Vazirmatn({ subsets: ["arabic", "latin-ext"] });
 
 const ClientSideProviders: FunctionComponent<
   PropsWithChildren<{ session: Session }>
@@ -22,6 +26,12 @@ const ClientSideProviders: FunctionComponent<
     () =>
       createTheme({
         ...themeOptions,
+        typography: {
+          fontFamily:
+            getDirection(locale) === "ltr"
+              ? inter.style.fontFamily
+              : vazirmatn.style.fontFamily,
+        },
         direction: getDirection(locale),
       }),
     [locale]
@@ -36,14 +46,10 @@ const ClientSideProviders: FunctionComponent<
     []
   );
 
-  const cacheLtr = useMemo(
-    () =>
-      createCache({
-        key: "muiltr",
-        stylisPlugins: [prefixer],
-      }),
-    []
-  );
+  const cacheLtr = createCache({
+    key: "muiltr",
+    stylisPlugins: [prefixer],
+  });
 
   return (
     <I18nProviderClient locale={locale}>
