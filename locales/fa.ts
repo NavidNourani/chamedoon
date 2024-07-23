@@ -16,4 +16,11 @@ export default {
       "خطایی در دریافت کشورها رخ داده است",
     there_was_an_error_on_getting_cities: "خطایی در دریافت شهرها رخ داده است",
   },
+  home: {
+    add_new_cargo: "اضافه کردن بسته جدید",
+  },
+  select_language: {
+    en: "English",
+    fa: "فارسی",
+  },
 } as const;

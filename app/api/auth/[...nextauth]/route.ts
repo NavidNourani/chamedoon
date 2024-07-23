@@ -1,4 +1,5 @@
 import { login } from "@/serverActions/user/login";
+import { User } from "@prisma/client";
 import NextAuth, { AuthOptions } from "next-auth";
 import credentialProvider from "next-auth/providers/credentials";
 
@@ -24,11 +25,15 @@ export const authOptions: AuthOptions = {
   callbacks: {
     jwt({ token, user }) {
       if (user) {
+        token.family = (user as User).family;
+        token.id = (user as User).id;
         token.user = user;
       }
-      return { ...token, ...user };
+      console.log("jwt token", token);
+      return token;
     },
-    session({ session, token, user }) {
+    session({ session, token }) {
+      console.log("session token user: ", token, token.user);
       session.user = token.user as any;
       return session;
     },

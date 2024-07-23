@@ -18,4 +18,11 @@ export default {
     there_was_an_error_on_getting_cities:
       "There was an error on getting cities",
   },
+  home: {
+    add_new_cargo: "Add new cargo",
+  },
+  select_language: {
+    en: "English",
+    fa: "فارسی",
+  },
 } as const;

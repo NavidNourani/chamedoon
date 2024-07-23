@@ -38,14 +38,11 @@ const LoginForm = () => {
 
   // Define the function to handle the form submission
   const onSubmit = async (data: Pick<User, "username" | "password">) => {
-    const res = await signIn("credentials", { ...data, redirect: false });
-    if (res?.error) {
-      alert("There was an error on login, try again");
-    }
-    if (res?.ok) {
-      alert("Logged in successfully");
-      router.replace("/");
-    }
+    const res = await signIn("credentials", {
+      ...data,
+      redirect: true,
+      callbackUrl: "/",
+    });
   };
 
   // Return the JSX code for rendering the form

@@ -1,17 +1,13 @@
 "use client";
 
-import { I18nProviderClient } from "@/locales/client";
-import type { ReactNode } from "react";
+import { I18nProviderClient, useCurrentLocale } from "@/locales/client";
+import type { FC, PropsWithChildren } from "react";
 
-type ProviderProps = {
-  locale: string;
-  children: ReactNode;
-};
-
-export function TranslationProvider({ locale, children }: ProviderProps) {
+export const TranslationProvider: FC<PropsWithChildren> = ({ children }) => {
+  const currentLocale = useCurrentLocale();
   return (
-    <I18nProviderClient locale={locale} fallback={<p>Loading...</p>}>
+    <I18nProviderClient locale={currentLocale} fallback={<p>Loading...</p>}>
       {children}
     </I18nProviderClient>
   );
-}
+};

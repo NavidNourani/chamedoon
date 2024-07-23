@@ -1,7 +1,7 @@
 // import { setStaticParamsLocale } from 'next-international/server';
-import { TranslationProvider } from "@/components/providers/TranslationProvider";
-import { getCurrentLocale, getScopedI18n } from "../../locales/server";
-import Client from "./client";
+import Link from "@/components/atoms/Link";
+import { getScopedI18n } from "@/locales/server";
+import { Button, Container } from "@mui/material";
 
 // Uncomment to test Static Generation on this page only
 // export function generateStaticParams() {
@@ -13,24 +13,12 @@ export default async function Home({
 }: {
   params: { locale: string };
 }) {
-  // Uncomment to test Static Generation
-  // setStaticParamsLocale(locale);
-
-  const t2 = await getScopedI18n("add_cargo");
-  const currentLocale = getCurrentLocale();
-
+  const t = await getScopedI18n("home");
   return (
-    <div>
-      <TranslationProvider locale={locale}>
-        <Client />
-      </TranslationProvider>
-      <h1>SSR / SSG</h1>
-      <button className="btn btn-accent">test</button>
-      <p>
-        Current locale:
-        <span>{currentLocale}</span>
-      </p>
-      <p>{t2("Cargo_Description")}</p>
-    </div>
+    <Container>
+      <Link href="/addCargo">
+        <Button variant="contained">{t("add_new_cargo")}</Button>
+      </Link>
+    </Container>
   );
 }

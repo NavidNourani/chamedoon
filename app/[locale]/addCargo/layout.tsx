@@ -7,5 +7,5 @@ export default function RootLayout({
   params: { locale: string };
   children: React.ReactNode;
 }>) {
-  return <TranslationProvider locale={locale}>{children}</TranslationProvider>;
+  return <TranslationProvider>{children}</TranslationProvider>;
 }
