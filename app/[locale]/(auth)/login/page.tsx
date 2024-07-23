@@ -1,9 +1,9 @@
 "use client";
+import { useScopedI18n } from "@/locales/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { User } from "@prisma/client";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -20,10 +20,7 @@ const defaultValues = {
   password: "",
 };
 
-// Define the component for the login form
 const LoginForm = () => {
-  const router = useRouter();
-  // Use react hook form to handle the form state and validation
   const {
     control,
     handleSubmit,
@@ -32,6 +29,7 @@ const LoginForm = () => {
     defaultValues,
     resolver: yupResolver(schema),
   });
+  const t = useScopedI18n("loginForm");
 
   // Use state to store the login error message
   const [loginError, setLoginError] = useState("");
@@ -58,7 +56,7 @@ const LoginForm = () => {
       }}
     >
       <Typography variant="h4" sx={{ margin: "20px" }}>
-        Login Form
+        {t("formTitle")}
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
@@ -67,7 +65,7 @@ const LoginForm = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              label="Username"
+              label={t("username")}
               variant="outlined"
               fullWidth
               sx={{ margin: "10px" }}
@@ -82,7 +80,7 @@ const LoginForm = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              label="Password"
+              label={t("password")}
               type="password"
               variant="outlined"
               fullWidth
@@ -98,7 +96,7 @@ const LoginForm = () => {
           color="primary"
           sx={{ margin: "10px" }}
         >
-          Login
+          {t("login")}
         </Button>
       </form>
       {loginError && (

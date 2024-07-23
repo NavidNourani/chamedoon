@@ -1,5 +1,6 @@
 "use client";
 import Link from "@/components/atoms/Link";
+import { useScopedI18n } from "@/locales/client";
 import { Login, Logout } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { Session } from "next-auth";
@@ -11,17 +12,18 @@ interface IProps {
 }
 
 const AuthorizationButton: FC<IProps> = ({ session }) => {
+  const t = useScopedI18n("authorization");
   if (session) {
     return (
       <Button color="inherit" onClick={() => signOut()} endIcon={<Logout />}>
-        Logout
+        {t("logout")}
       </Button>
     );
   }
   return (
     <Link href="/login">
       <Button color="inherit" endIcon={<Login />}>
-        Login
+        {t("login")}
       </Button>
     </Link>
   );

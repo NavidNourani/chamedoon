@@ -23,4 +23,14 @@ export default {
     en: "English",
     fa: "فارسی",
   },
+  authorization: {
+    login: "ورود",
+    logout: "خروج",
+  },
+  loginForm: {
+    formTitle: "وارد اکانت خود شوید!",
+    username: "نام کاربری",
+    password: "کلمه عبور",
+    login: "ورود",
+  },
 } as const;

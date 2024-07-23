@@ -25,4 +25,14 @@ export default {
     en: "English",
     fa: "فارسی",
   },
+  authorization: {
+    login: "Login",
+    logout: "Logout",
+  },
+  loginForm: {
+    formTitle: "Login to your account",
+    username: "Username",
+    password: "Password",
+    login: "Login",
+  },
 } as const;

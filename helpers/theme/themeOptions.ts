@@ -8,6 +8,7 @@ export const themeOptions: ThemeOptions = {
     MuiLink: {
       defaultProps: {
         color: "inherit",
+        lineHeight: "unset",
       },
       styleOverrides: {
         root: {
