@@ -15,6 +15,9 @@ export default {
     There_was_an_error_on_getting_countries:
       "خطایی در دریافت کشورها رخ داده است",
     there_was_an_error_on_getting_cities: "خطایی در دریافت شهرها رخ داده است",
+
+    Approximate_DateTime: "زمان تقریبی",
+    "Estimated_cost_(optional)": "حدود هزینه (اختیاری)",
   },
   home: {
     add_new_cargo: "اضافه کردن بسته جدید",

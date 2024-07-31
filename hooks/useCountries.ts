@@ -1,39 +1,28 @@
 import { useI18n } from "@/locales/client";
 import { getAllCitiesOfACountryAction } from "@/serverActions/citiesAndCountries/getAllCitiesOfACountryAction";
-import { getAllCountriesAction } from "@/serverActions/citiesAndCountries/getAllCountriesAction";
-import { useEffect, useState } from "react";
+import { TCountry } from "@/types/countries";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const useCountries = () => {
   const t = useI18n();
-  const [countries, setCountries] = useState<string[]>([]);
-
-  useEffect(() => {
-    async function getCountries() {
-      try {
-        const countries = await getAllCountriesAction();
-        setCountries(countries);
-      } catch (e) {
-        alert(t("add_cargo.There_was_an_error_on_getting_countries"));
-        console.log(e);
-        setCountries([]);
-        return;
-      }
-    }
-    getCountries();
+  const { data: countriesData } = useQuery<TCountry[]>({
+    queryKey: ["countries"],
+    queryFn: () =>
+      axios
+        .get("https://api.countrystatecity.in/v1/countries", {
+          headers: {
+            "X-CSCAPI-KEY": process.env.NEXT_PUBLIC_COUNTRY_STATE_CITY_API_KEY,
+          },
+        })
+        .then((x) => x.data),
   });
+  const getCities = async (countryCode: string) => {
+    const cities = await getAllCitiesOfACountryAction(countryCode);
+    return cities;
+  };
 
-  async function getCities(country: string) {
-    try {
-      const cities = await getAllCitiesOfACountryAction(country);
-      return cities;
-    } catch (e) {
-      alert(t("add_cargo.there_was_an_error_on_getting_cities"));
-      console.log(e);
-      return;
-    }
-  }
-
-  return { countries, getCities };
+  return { countries: countriesData, getCities };
 };
 
 export default useCountries;

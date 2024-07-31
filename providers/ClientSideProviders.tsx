@@ -7,6 +7,7 @@ import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { Inter, Vazirmatn } from "next/font/google";
@@ -16,6 +17,8 @@ import rtlPlugin from "stylis-plugin-rtl";
 
 const inter = Inter({ subsets: ["latin"] });
 const vazirmatn = Vazirmatn({ subsets: ["arabic", "latin-ext"] });
+
+const queryClient = new QueryClient();
 
 const ClientSideProviders: FunctionComponent<
   PropsWithChildren<{ session: Session }>
@@ -57,11 +60,13 @@ const ClientSideProviders: FunctionComponent<
         <CacheProvider
           value={getDirection(locale) === "ltr" ? cacheLtr : cacheRtl}
         >
-          <ThemeProvider theme={theme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <>{children}</>
-            </LocalizationProvider>
-          </ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={theme}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <>{children}</>
+              </LocalizationProvider>
+            </ThemeProvider>
+          </QueryClientProvider>
         </CacheProvider>
       </SessionProvider>
     </I18nProviderClient>

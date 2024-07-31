@@ -5,7 +5,7 @@ import { RHFCheckbox } from "@/components/shared/RHF/RHFCheckbox";
 import RHFDatePicker from "@/components/shared/RHF/RHFDatePicker";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import useCountries from "@/hooks/useCountries";
-import { useI18n } from "@/locales/client";
+import { useScopedI18n } from "@/locales/client";
 import { createCargoForCurrentUser } from "@/serverActions/createCargoForCurrentUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Grid, ListItem, Typography } from "@mui/material";
@@ -32,8 +32,8 @@ type FormData = CargoShipment & {
 };
 
 const FlightForm = () => {
-  const t = useI18n();
-  const { countries, getCities } = useCountries();
+  const t = useScopedI18n("add_cargo");
+  const { countries } = useCountries();
   const [departureCities, setDepartureCities] = useState<CityCountry[]>([]);
   const [citiesFilter, setCitiesFilter] = useState<string>("");
   const methods = useForm<FormData>({
@@ -43,11 +43,11 @@ const FlightForm = () => {
   // Get the cities for the selected departure country
   useEffect(() => {
     if (methods.watch("departureCountry")) {
-      getCities(methods.watch("departureCountry")).then((cities) => {
-        if (cities) {
-          setDepartureCities(cities);
-        }
-      });
+      // getCities(methods.watch("departureCountry")).then((cities) => {
+      //   if (cities) {
+      //     setDepartureCities(cities);
+      //   }
+      // });
     }
   }, [methods.watch("departureCountry")]);
 
@@ -55,15 +55,15 @@ const FlightForm = () => {
     try {
       const res = await createCargoForCurrentUser(data);
       if (res.success) {
-        alert(t("add_cargo.Cargo_created_successfully"));
+        alert(t("Cargo_created_successfully"));
       } else {
-        alert(t("add_cargo.There_was_an_error_on_creating_cargo"));
+        alert(t("There_was_an_error_on_creating_cargo"));
       }
     } catch (e) {
-      alert(t("add_cargo.There_was_an_error_on_creating_cargo"));
+      alert(t("There_was_an_error_on_creating_cargo"));
     }
   };
-
+  console.log("countries", countries);
   return (
     <Box
       sx={{
@@ -77,7 +77,7 @@ const FlightForm = () => {
       }}
     >
       <Typography variant="h4" sx={{ margin: "20px" }}>
-        {t("add_cargo.Add_your_cargo_detail")}
+        {t("Add_your_cargo_detail")}
       </Typography>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -89,9 +89,10 @@ const FlightForm = () => {
           >
             <RHFAutocomplete
               sx={{ width: "100%" }}
-              options={countries}
+              options={countries ?? []}
+              getOptionLabel={(option) => option.name}
               name="departureCountry"
-              label={t("add_cargo.Departure_country")}
+              label={t("Departure_country")}
             />
             {!!departureCities?.length && (
               <RHFAutocomplete
@@ -111,32 +112,32 @@ const FlightForm = () => {
             )}
             <RHFTextField
               name="destinationCountry"
-              label={t("add_cargo.Destination_country")}
+              label={t("Destination_country")}
             />
             <RHFTextField
               name="destinationCity"
-              label={t("add_cargo.Destination_City")}
+              label={t("Destination_City")}
             />
             <RHFTextField
               name="cargoDescription"
-              label={t("add_cargo.Cargo_Description")}
+              label={t("Cargo_Description")}
             />
             <RHFTextField
               name="estimatedCost"
-              label={"add_cargo.Estimated_cost_(optional)"}
+              label={t("Estimated_cost_(optional)")}
             />
             <RHFDatePicker
               sx={{ width: "100%" }}
               name="approximateDateTime"
-              label={"add_cargo.Approximate_DateTime"}
+              label={t("Approximate_DateTime")}
             />
             <RHFCheckbox
               name="immediateDelivery"
-              label={t("add_cargo.Immediate_delivery")}
+              label={t("Immediate_delivery")}
             />
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary">
-                {t("add_cargo.Submit")}
+                {t("Submit")}
               </Button>
             </Grid>
           </Grid>
