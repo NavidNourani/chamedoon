@@ -133,3 +133,5 @@ export function RHFMultiCheckbox({
     />
   );
 }
+
+export default RHFCheckbox;

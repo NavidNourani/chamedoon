@@ -1,59 +1,85 @@
 "use client";
 
-import RHFAutocomplete from "@/components/shared/RHF/RHFAutocomplete";
-import { RHFCheckbox } from "@/components/shared/RHF/RHFCheckbox";
-import RHFDatePicker from "@/components/shared/RHF/RHFDatePicker";
-import RHFTextField from "@/components/shared/RHF/RHFTextField";
-import useCountries from "@/hooks/useCountries";
-import { useScopedI18n } from "@/locales/client";
-import { createCargoForCurrentUser } from "@/serverActions/createCargoForCurrentUser";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Grid, ListItem, Typography } from "@mui/material";
-import { CargoShipment, CityCountry } from "@prisma/client";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { CargoShipment } from "@prisma/client";
+import { useScopedI18n } from "@/locales/client";
+import { createCargoForCurrentUser } from "@/serverActions/createCargoForCurrentUser";
+import DepartureStep from "./steps/DepartureStep";
+import DestinationStep from "./steps/DestinationStep";
+import CargoDetailsStep from "./steps/CargoDetailsStep";
 
 // Define the validation schema for the form fields
 const schema = yup.object().shape({
   approximateDateTime: yup.date().optional(),
   immediateDelivery: yup.boolean().required(),
-  departureCountry: yup.string().required("Departure country is required"),
-  departureCity: yup.string().required("Departure city is required"),
-  destinationCountry: yup.string().required("Destination country is required"),
-  destinationCity: yup.string().required("Destination city is required"),
+  departureCountry: yup
+    .object({
+      id: yup.string().required(),
+      iso2: yup.string().required(),
+      iso3: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required("Departure country is required"),
+  departureAirport: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+      countryIso2: yup.string().required(),
+    })
+    .required("Departure Airport is required"),
+  destinationCountry: yup
+    .object({
+      id: yup.string().required(),
+      iso2: yup.string().required(),
+      iso3: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required("Destination country is required"),
+  destinationAirport: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+      countryIso2: yup.string().required(),
+    })
+    .required("Destination Airport is required"),
   cargoDescription: yup.string().required(),
   estimatedCost: yup.number().optional(),
 });
 
-type FormData = CargoShipment & {
-  departureCountry: string;
-  destinationCountry: string;
-};
-
 const FlightForm = () => {
   const t = useScopedI18n("add_cargo");
-  const { countries } = useCountries();
-  const [departureCities, setDepartureCities] = useState<CityCountry[]>([]);
-  const [citiesFilter, setCitiesFilter] = useState<string>("");
-  const methods = useForm<FormData>({
+  const methods = useForm<yup.InferType<typeof schema>>({
     resolver: yupResolver(schema) as any,
   });
+  const [step, setStep] = useState(0);
 
-  // Get the cities for the selected departure country
+  // Add this useEffect hook to reset the form data
   useEffect(() => {
-    if (methods.watch("departureCountry")) {
-      // getCities(methods.watch("departureCountry")).then((cities) => {
-      //   if (cities) {
-      //     setDepartureCities(cities);
-      //   }
-      // });
-    }
-  }, [methods.watch("departureCountry")]);
+    methods.reset({
+      immediateDelivery: false,
+      cargoDescription: "",
+      estimatedCost: undefined,
+      approximateDateTime: undefined,
+    });
+  }, [methods]);
 
-  const onSubmit = async (data: CargoShipment) => {
+  const onSubmit = async (data: yup.InferType<typeof schema>) => {
     try {
-      const res = await createCargoForCurrentUser(data);
+      const dataToSend: Omit<CargoShipment, "userID" | "id"> = {
+        departureAirportId: data.departureAirport.id,
+        destinationAirportId: data.destinationAirport.id,
+        cargoDescription: data.cargoDescription,
+        estimatedCost: data.estimatedCost ?? null,
+        immediateDelivery: data.immediateDelivery,
+        approximateDateTime: data.approximateDateTime ?? null,
+        cargoWeight: null,
+        cargoType: null,
+      };
+      const res = await createCargoForCurrentUser(dataToSend);
       if (res.success) {
         alert(t("Cargo_created_successfully"));
       } else {
@@ -63,12 +89,28 @@ const FlightForm = () => {
       alert(t("There_was_an_error_on_creating_cargo"));
     }
   };
-  console.log("countries", countries);
+
+  const handleNext = () => setStep((prev) => prev + 1);
+  const handleBack = () => setStep((prev) => prev - 1);
+
+  const renderStep = () => {
+    switch (step) {
+      case 0:
+        return <DepartureStep />;
+      case 1:
+        return <DestinationStep />;
+      case 2:
+        return <CargoDetailsStep />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box
       sx={{
-        width: "80%",
-        maxWidth: "500px",
+        minWidth: "400px",
+        width: "400px",
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
@@ -80,68 +122,39 @@ const FlightForm = () => {
         {t("Add_your_cargo_detail")}
       </Typography>
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Grid
-            container
-            spacing={2}
-            gap="1rem"
-            sx={{ "&>*": { width: "100%" } }}
+        <Box
+          component="form"
+          onSubmit={methods.handleSubmit(onSubmit)}
+          sx={{ width: "100%" }}
+        >
+          {renderStep()}
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "end",
+              marginTop: "1rem",
+            }}
           >
-            <RHFAutocomplete
-              sx={{ width: "100%" }}
-              options={countries ?? []}
-              getOptionLabel={(option) => option.name}
-              name="departureCountry"
-              label={t("Departure_country")}
-            />
-            {!!departureCities?.length && (
-              <RHFAutocomplete
-                onInputChange={(a, b) =>
-                  b === "reset" || b === "clear"
-                    ? setCitiesFilter("")
-                    : setCitiesFilter(b)
-                }
-                inputValue={citiesFilter}
-                options={departureCities}
-                renderOption={(a, value) => (
-                  <ListItem>{value.cityAscii}</ListItem>
-                )}
-                onChange={(a, b) => a}
-                name="departureCity"
-              />
-            )}
-            <RHFTextField
-              name="destinationCountry"
-              label={t("Destination_country")}
-            />
-            <RHFTextField
-              name="destinationCity"
-              label={t("Destination_City")}
-            />
-            <RHFTextField
-              name="cargoDescription"
-              label={t("Cargo_Description")}
-            />
-            <RHFTextField
-              name="estimatedCost"
-              label={t("Estimated_cost_(optional)")}
-            />
-            <RHFDatePicker
-              sx={{ width: "100%" }}
-              name="approximateDateTime"
-              label={t("Approximate_DateTime")}
-            />
-            <RHFCheckbox
-              name="immediateDelivery"
-              label={t("Immediate_delivery")}
-            />
-            <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleBack}
+              disabled={step === 0}
+            >
+              {t("Back")}
+            </Button>
+            {step < 2 ? (
+              <Button variant="contained" color="primary" onClick={handleNext}>
+                {t("Next")}
+              </Button>
+            ) : (
               <Button type="submit" variant="contained" color="primary">
                 {t("Submit")}
               </Button>
-            </Grid>
-          </Grid>
-        </form>
+            )}
+          </Box>
+        </Box>
       </FormProvider>
     </Box>
   );

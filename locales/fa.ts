@@ -6,9 +6,9 @@ export default {
     There_was_an_error_on_creating_cargo: "خطایی در ایجاد بار رخ داده است",
     Add_your_cargo_detail: "جزئیات بار خود را اضافه کنید",
     Departure_country: "کشور مبدا",
-    Departure_City: "شهر مبدا",
+    Departure_Airport: "فرودگاه مبدا",
     Destination_country: "کشور مقصد",
-    Destination_City: "شهر مقصد",
+    Destination_Airport: "فرودگاه مقصد",
     Cargo_Description: "توضیحات بار",
     Immediate_delivery: "تحویل فوری",
     Submit: "ارسال",
@@ -18,6 +18,8 @@ export default {
 
     Approximate_DateTime: "زمان تقریبی",
     "Estimated_cost_(optional)": "حدود هزینه (اختیاری)",
+    Next: "بعدی",
+    Back: "قبلی"
   },
   home: {
     add_new_cargo: "اضافه کردن بسته جدید",

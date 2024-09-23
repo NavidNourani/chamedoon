@@ -5,7 +5,7 @@ import { CargoShipment } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 export const createCargoForCurrentUser = async (
-  data: Omit<CargoShipment, "userID">
+  data: Omit<CargoShipment, "userID" | "id">
 ) => {
   const session = await getServerSession();
   if (!session) {

@@ -7,9 +7,9 @@ export default {
       "There was an error on creating cargo",
     Add_your_cargo_detail: "Add your cargo detail",
     Departure_country: "Departure country",
-    Departure_City: "Departure City",
+    Departure_Airport: "Departure Airport",
     Destination_country: "Destination country",
-    Destination_City: "Destination City",
+    Destination_Airport: "Destination Airport",
     Cargo_Description: "Cargo Description",
     Immediate_delivery: "Immediate delivery",
     Submit: "Submit",
@@ -19,6 +19,8 @@ export default {
       "There was an error on getting cities",
     Approximate_DateTime: "Approximate DateTime",
     "Estimated_cost_(optional)": "Estimated cost (optional)",
+    Next: "Next",
+    Back: "Back"
   },
   home: {
     add_new_cargo: "Add new cargo",

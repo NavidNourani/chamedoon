@@ -26,109 +26,89 @@ model User {
 }
 
 model Flight {
-  id                         String      @id @default(uuid())
+  id                         String   @id @default(uuid())
   departureDateTime          DateTime
   arrivalDateTime            DateTime
-  departureCityCountryID     Int
-  destinationCityCountryID   Int
   acceptableCargoDescription String
   estimatedCost              Float?
   userID                     String
-  user                       User        @relation(fields: [userID], references: [id])
-  departureCityCountry       CityCountry @relation("flightDepurtures", fields: [departureCityCountryID], references: [id])
-  destinationCityCountry     CityCountry @relation("flightDestinations", fields: [destinationCityCountryID], references: [id])
+  user                       User     @relation(fields: [userID], references: [id])
+  departureAirportId         String   @map("departureAirportId")
+  destinationAirportId       String   @map("destinationAirportId")
+  departureCity              Airport  @relation("flightDepurtures", fields: [departureAirportId], references: [id])
+  destinationCity            Airport  @relation("flightDestinations", fields: [destinationAirportId], references: [id])
 
   @@map(name: "flights")
 }
 
 model CargoShipment {
-  id                       String    @id @default(uuid())
-  approximateDateTime      DateTime?
-  immediateDelivery        Boolean   @default(true)
-  departureCityCountryID   Int
-  destinationCityCountryID Int
-  cargoDescription         String
-  estimatedCost            Float?
-  userID                   String
-
-  departureCityCountry   CityCountry @relation("cargoShipmentDepurtures", fields: [departureCityCountryID], references: [id])
-  destinationCityCountry CityCountry @relation("cargoShipmentDestinations", fields: [destinationCityCountryID], references: [id])
-  User                   User?       @relation(fields: [userID], references: [id])
+  id                   String    @id @default(uuid())
+  approximateDateTime  DateTime?
+  immediateDelivery    Boolean   @default(true)
+  cargoDescription     String
+  cargoWeight          Float?
+  cargoType            String?
+  estimatedCost        Float?
+  userID               String
+  departureAirportId   String    @map("departureAirportId")
+  destinationAirportId String    @map("destinationAirportId")
+  departureAirport     Airport   @relation("cargoShipmentDepurtures", fields: [departureAirportId], references: [id])
+  destinationAirport   Airport   @relation("cargoShipmentDestinations", fields: [destinationAirportId], references: [id])
+  User                 User      @relation(fields: [userID], references: [id])
 
   @@map(name: "CargoShipments")
 }
 
-model CityCountry {
-  id                        Int             @id @default(autoincrement())
-  city                      String          @db.VarChar(49)
-  cityAscii                 String?         @db.VarChar(49)
-  lat                       Float?
-  lng                       Float?
-  country                   String          @db.VarChar(45)
-  iso2                      String?         @db.VarChar(2)
-  iso3                      String?         @db.VarChar(3)
-  adminName                 String?         @db.VarChar(53)
-  capital                   String?         @db.VarChar(7)
-  population                Float?
-  flightDepurtures          Flight[]        @relation("flightDepurtures")
-  flightDestinations        Flight[]        @relation("flightDestinations")
-  cargoShipmentDepurtures   CargoShipment[] @relation("cargoShipmentDepurtures")
-  cargoShipmentDestinations CargoShipment[] @relation("cargoShipmentDestinations")
-
-  @@map(name: "cityCountries")
-}
-
 model Country {
-  id              Int           @id @unique
+  id              String        @id @default(uuid())
   name            String
-  iso3            String
-  iso2            String
-  numeric_code    String
-  phone_code      String
-  capital         String
-  currency        String
-  currency_name   String
-  currency_symbol String
-  tld             String
+  iso3            String?       @unique
+  iso2            String?       @unique
+  numeric_code    String?
+  phone_code      String?
+  capital         String?
+  currency        String?
+  currency_name   String?
+  currency_symbol String?
+  tld             String?
   native          String?
   region          String?
   region_id       String?
   subregion       String?
   subregion_id    String?
-  nationality     String
+  nationality     String?
   timezones       Timezone[]
-  translationsId  Int?          @unique
+  translationsId  String?       @unique
   translations    Translations? @relation(fields: [translationsId], references: [id])
   latitude        String?
   longitude       String?
-  emoji           String
-  emojiU          String
-  states          State[]
-}
-
-model State {
-  id         Int     @id @unique
-  name       String
-  state_code String
-  latitude   String?
-  longitude  String?
-  type       String?
-  cities     City[]
-  countryId  Int
-  country    Country @relation(fields: [countryId], references: [id])
+  emoji           String?
+  emojiU          String?
+  cities          City[]
 }
 
 model City {
-  id        Int     @id @unique
+  id        String  @id @default(uuid())
   name      String
-  latitude  String?
-  longitude String?
-  stateId   Int
-  state     State   @relation(fields: [stateId], references: [id])
+  countryId String
+  country   Country @relation(fields: [countryId], references: [id])
+
+  Airport Airport[]
+}
+
+model Airport {
+  id                        String          @id @default(uuid())
+  name                      String
+  cityId                    String
+  city                      City            @relation(fields: [cityId], references: [id])
+  departureFlights          Flight[]        @relation("flightDepurtures")
+  destinationFlights        Flight[]        @relation("flightDestinations")
+  destinationCargoShipments CargoShipment[] @relation("cargoShipmentDestinations")
+  departureCargoShipments   CargoShipment[] @relation("cargoShipmentDepurtures")
 }
 
 model Translations {
-  id      Int      @id @default(autoincrement())
+  id      String   @id @default(uuid())
   kr      String?
   pt_BR   String?
   pt      String?
@@ -146,12 +126,12 @@ model Translations {
 }
 
 model Timezone {
-  id            Int     @id @default(autoincrement())
+  id            String  @id @default(uuid())
   zoneName      String
   gmtOffset     Int
   gmtOffsetName String
   abbreviation  String
   tzName        String
-  countryId     Int
+  countryId     String
   country       Country @relation(fields: [countryId], references: [id])
 }
