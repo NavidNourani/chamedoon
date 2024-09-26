@@ -12,7 +12,7 @@ const HeaderUnauthenticated: FunctionComponent = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
         <IconButton
           size="large"

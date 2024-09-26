@@ -13,12 +13,13 @@ datasource db {
 model User {
   id             String          @id @default(uuid())
   username       String          @unique
+  email          String?         @unique
   name           String?
   family         String?
   phone          String?         @unique
-  password       String
-  telegramID     String?
-  whatsappnumber String?
+  password       String?
+  telegramID     String?         @unique
+  whatsappnumber String?         @unique
   cargoShipments CargoShipment[]
   flights        Flight[]
 

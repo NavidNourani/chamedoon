@@ -4,6 +4,10 @@ import ClientSideProviders from "@/providers/ClientSideProviders";
 import type { Metadata } from "next";
 import { getSession } from "next-auth/react";
 import "./globals.css";
+import { Inter, Vazirmatn } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"], display: "swap" });
+const vazirmatn = Vazirmatn({ subsets: ["arabic", "latin-ext"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,10 +22,12 @@ export default async function RootLayout({
   params: { locale: string };
 }>) {
   const session = await getSession();
+  const direction = getDirection(locale);
+  const fontClass = direction === "ltr" ? inter.className : vazirmatn.className;
 
   return (
-    <html lang={locale} dir={getDirection(locale)}>
-      <body>
+    <html lang={locale} dir={direction}>
+      <body className={fontClass}>
         <ClientSideProviders session={session!}>
           <HeaderUnauthenticated />
           {children}

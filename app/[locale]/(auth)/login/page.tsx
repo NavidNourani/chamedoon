@@ -3,10 +3,12 @@ import { useScopedI18n } from "@/locales/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { User } from "@prisma/client";
-import { signIn } from "next-auth/react";
+import { signIn, SignInResponse } from "next-auth/react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { FcGoogle } from "react-icons/fc"; // You might need to install react-icons
+import { useRouter } from "next/navigation";
 
 // Define the validation schema for the form fields
 const schema = yup.object().shape({
@@ -25,10 +27,11 @@ const LoginForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Pick<User, "username" | "password">>({
+  } = useForm<yup.InferType<typeof schema>>({
     defaultValues,
     resolver: yupResolver(schema),
   });
+  const router = useRouter();
   const t = useScopedI18n("loginForm");
 
   // Use state to store the login error message
@@ -36,11 +39,28 @@ const LoginForm = () => {
 
   // Define the function to handle the form submission
   const onSubmit = async (data: Pick<User, "username" | "password">) => {
-    const res = await signIn("credentials", {
-      ...data,
-      redirect: true,
-      callbackUrl: "/",
-    });
+    loginHandler(() =>
+      signIn("credentials", {
+        ...data,
+        redirect: false,
+      })
+    );
+  };
+
+  const handleGoogleSignIn = async () => {
+    loginHandler(() => signIn("google", { callbackUrl: "/" }));
+  };
+
+  const loginHandler = async (
+    func: () => Promise<SignInResponse | undefined>
+  ) => {
+    const res = await func();
+    if (res?.ok) {
+      router.push("/");
+    }
+    if (res?.error) {
+      setLoginError(res.error);
+    }
   };
 
   // Return the JSX code for rendering the form
@@ -99,6 +119,14 @@ const LoginForm = () => {
           {t("login")}
         </Button>
       </form>
+      <Button
+        onClick={handleGoogleSignIn}
+        variant="outlined"
+        startIcon={<FcGoogle />}
+        sx={{ margin: "10px" }}
+      >
+        {t("signInWithGoogle")}
+      </Button>
       {loginError && (
         <Alert severity="error" sx={{ margin: "10px" }}>
           {loginError}

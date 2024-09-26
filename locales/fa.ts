@@ -19,7 +19,7 @@ export default {
     Approximate_DateTime: "زمان تقریبی",
     "Estimated_cost_(optional)": "حدود هزینه (اختیاری)",
     Next: "بعدی",
-    Back: "قبلی"
+    Back: "قبلی",
   },
   home: {
     add_new_cargo: "اضافه کردن بسته جدید",
@@ -37,5 +37,36 @@ export default {
     username: "نام کاربری",
     password: "کلمه عبور",
     login: "ورود",
+    signInWithGoogle: "ورود با گوگل", // Add this line
+  },
+  signupForm: {
+    formTitle: "فرم ثبت نام",
+    username: "نام کاربری",
+    name: "نام",
+    family: "نام خانوادگی",
+    phone: "شماره تلفن (با کد کشور)",
+    password: "رمز عبور",
+    telegramID: "شناسه تلگرام",
+    whatsappNumber: "شماره واتساپ",
+    signup: "ثبت نام",
+    alreadyHaveAccount: "قبلاً حساب کاربری دارید؟",
+    loginButton: "ورود",
+    usernameRequired: "نام کاربری الزامی است",
+    usernameLength: "نام کاربری باید بین 3 تا 20 کاراکتر باشد",
+    usernameFormat: "نام کاربری فقط باید شامل حروف، اعداد و زیرخط باشد",
+    phoneRequired: "شماره تلفن الزامی است",
+    phoneFormat: "شماره تلفن فقط باید شامل اعداد و علامت مثبت اختیاری باشد",
+    passwordRequired: "رمز عبور الزامی است",
+    passwordLength: "رمز عبور باید حداقل 8 کاراکتر باشد",
+    registrationError: "خطایی در ثبت نام رخ داد، لطفاً دوباره تلاش کنید",
+    registrationSuccess:
+      "ثبت نام با موفقیت انجام شد، اکنون می‌توانید وارد شوید!",
+    repeatPassword: "تکرار رمز عبور",
+    repeatPasswordRequired: "لطفاً رمز عبور خود را تکرار کنید",
+    passwordsMustMatch: "رمزهای عبور باید مطابقت داشته باشند",
+  },
+  errorPage: {
+    errorTitle: "خطای احراز هویت",
+    signInAgain: "ورود مجدد",
   },
 } as const;

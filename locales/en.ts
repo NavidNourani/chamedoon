@@ -20,7 +20,7 @@ export default {
     Approximate_DateTime: "Approximate DateTime",
     "Estimated_cost_(optional)": "Estimated cost (optional)",
     Next: "Next",
-    Back: "Back"
+    Back: "Back",
   },
   home: {
     add_new_cargo: "Add new cargo",
@@ -38,5 +38,36 @@ export default {
     username: "Username",
     password: "Password",
     login: "Login",
+    signInWithGoogle: "Sign in with Google", // Add this line
+  },
+  signupForm: {
+    formTitle: "Signup Form",
+    username: "Username",
+    name: "Name",
+    family: "Family",
+    phone: "Phone (with country code)",
+    password: "Password",
+    telegramID: "Telegram ID",
+    whatsappNumber: "WhatsApp number",
+    signup: "Sign up",
+    alreadyHaveAccount: "Already have an account?",
+    loginButton: "Login",
+    usernameRequired: "Username is required",
+    usernameLength: "Username must be between 3 and 20 characters",
+    usernameFormat:
+      "Username must contain only alphanumeric characters and underscores",
+    phoneRequired: "Phone number is required",
+    phoneFormat: "Phone number must contain only digits and optional plus sign",
+    passwordRequired: "Password is required",
+    passwordLength: "Password must be at least 8 characters",
+    registrationError: "There was an error on sign up, try again",
+    registrationSuccess: "Registered successfully, you can login now!",
+    repeatPassword: "Repeat Password",
+    repeatPasswordRequired: "Please repeat your password",
+    passwordsMustMatch: "Passwords must match",
+  },
+  errorPage: {
+    errorTitle: "Authentication Error",
+    signInAgain: "Sign In Again",
   },
 } as const;

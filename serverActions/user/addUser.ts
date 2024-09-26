@@ -2,7 +2,7 @@
 import { prisma } from "@/helpers/db";
 import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
-export const addUser = async (user: User) => {
+export const addUser = async (user: Omit<User,"id">) => {
   try {
     // Generate a salt for hashing the password
     const salt = await bcrypt.genSalt(10);
