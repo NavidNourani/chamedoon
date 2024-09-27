@@ -1,10 +1,37 @@
+import { PaletteMode } from "@mui/material";
 import { ThemeOptions } from "@mui/material/styles";
 
-export const themeOptions: ThemeOptions = {
-  palette: {
-    mode: "light",
+const lightPalette = {
+  mode: "light" as PaletteMode,
+  background: {
+    default: "#ffffff", // Light background color
+    paper: "#f5f5f5", // Slightly darker light color for paper elements
   },
+  // Add other light mode colors here
+};
+
+const darkPalette = {
+  mode: "dark" as PaletteMode,
+  background: {
+    default: "#121212", // Dark background color
+    paper: "#1e1e1e", // Slightly lighter dark color for paper elements
+  },
+  // Add other dark mode colors here
+};
+
+export const getThemeOptions = (mode: PaletteMode): ThemeOptions => ({
+  palette: mode === "light" ? lightPalette : darkPalette,
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor:
+            mode === "light"
+              ? lightPalette.background.default
+              : darkPalette.background.default,
+        },
+      },
+    },
     MuiLink: {
       defaultProps: {
         color: "inherit",
@@ -17,4 +44,4 @@ export const themeOptions: ThemeOptions = {
       },
     },
   },
-};
+});

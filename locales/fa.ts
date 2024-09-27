@@ -1,5 +1,7 @@
 console.log("Loaded FA");
 
+export const APP_NAME = "Cargo Tracking";
+
 export default {
   add_cargo: {
     Cargo_created_successfully: "بار با موفقیت ایجاد شد",
@@ -37,7 +39,11 @@ export default {
     username: "نام کاربری",
     password: "کلمه عبور",
     login: "ورود",
-    signInWithGoogle: "ورود با گوگل", // Add this line
+    signInWithGoogle: "ورود با گوگل",
+    rememberMe: "مرا به خاطر بسپار", // Add this line
+    dontHaveAccount: "حساب کاربری ندارید؟", // Add this line
+    signUp: "ثبت نام", // Add this line
+    orLoginWith: "یا ورود با", // Add this line
   },
   signupForm: {
     formTitle: "فرم ثبت نام",
@@ -69,4 +75,12 @@ export default {
     errorTitle: "خطای احراز هویت",
     signInAgain: "ورود مجدد",
   },
+  pageTitle: {
+    login: `ورود | ${APP_NAME}`,
+    signup: `ثبت نام | ${APP_NAME}`,
+    error: `خطا | ${APP_NAME}`,
+    home: `${APP_NAME}`,
+    addCargo: `افزودن بار | ${APP_NAME}`,
+  },
+  translate: "ترجمه",
 } as const;

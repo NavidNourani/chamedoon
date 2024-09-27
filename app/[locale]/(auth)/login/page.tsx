@@ -1,14 +1,16 @@
 "use client";
 import { useScopedI18n } from "@/locales/client";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { User } from "@prisma/client";
 import { signIn, SignInResponse } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { FcGoogle } from "react-icons/fc";
 import * as yup from "yup";
-import { FcGoogle } from "react-icons/fc"; // You might need to install react-icons
-import { useRouter } from "next/navigation";
 
 // Define the validation schema for the form fields
 const schema = yup.object().shape({
@@ -23,6 +25,8 @@ const defaultValues = {
 };
 
 const LoginForm = () => {
+  const tPageTitle = useScopedI18n("pageTitle");
+  const tLogin = useScopedI18n("loginForm");
   const {
     control,
     handleSubmit,
@@ -32,7 +36,6 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
   const router = useRouter();
-  const t = useScopedI18n("loginForm");
 
   // Use state to store the login error message
   const [loginError, setLoginError] = useState("");
@@ -42,7 +45,8 @@ const LoginForm = () => {
     loginHandler(() =>
       signIn("credentials", {
         ...data,
-        redirect: false,
+        callbackUrl: "/",
+        redirect: true,
       })
     );
   };
@@ -65,74 +69,147 @@ const LoginForm = () => {
 
   // Return the JSX code for rendering the form
   return (
-    <Box
-      sx={{
-        width: "80%",
-        maxWidth: "500px",
-        margin: "0 auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Typography variant="h4" sx={{ margin: "20px" }}>
-        {t("formTitle")}
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="username"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("username")}
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.username}
-              helperText={errors.username?.message}
-            />
-          )}
-        />
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("password")}
-              type="password"
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            />
-          )}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ margin: "10px" }}
-        >
-          {t("login")}
-        </Button>
-      </form>
-      <Button
-        onClick={handleGoogleSignIn}
-        variant="outlined"
-        startIcon={<FcGoogle />}
-        sx={{ margin: "10px" }}
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+        }}
       >
-        {t("signInWithGoogle")}
-      </Button>
-      {loginError && (
-        <Alert severity="error" sx={{ margin: "10px" }}>
-          {loginError}
-        </Alert>
-      )}
-    </Box>
+        <Box
+          sx={{
+            flex: 1,
+            position: "relative",
+            display: { xs: "none", md: "block" },
+          }}
+        >
+          <Image
+            src="/images/passenger.jpg"
+            alt="Capturing Moments, Creating Memories"
+            layout="fill"
+            objectFit="cover"
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 40,
+              left: 40,
+              color: "white",
+            }}
+          >
+            <Typography variant="h4" fontWeight="bold">
+              Capturing Moments ,
+            </Typography>
+            <Typography variant="h4" fontWeight="bold">
+              Creating Memories
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            p: 4,
+            color: "white",
+          }}
+        >
+          <Box sx={{ width: "100%", maxWidth: 400 }}>
+            <Typography variant="h4" fontWeight="bold" mb={4}>
+              {tLogin("login")}
+            </Typography>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="username"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label={tLogin("username")}
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{ style: { color: "gray" } }}
+                    InputProps={{ style: { color: "white" } }}
+                    sx={{ bgcolor: "#2b2b2b", mb: 2 }}
+                  />
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label={tLogin("password")}
+                    type="password"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{ style: { color: "gray" } }}
+                    InputProps={{ style: { color: "white" } }}
+                    sx={{ bgcolor: "#2b2b2b", mb: 2 }}
+                  />
+                )}
+              />
+              {/* <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{
+                      color: "gray",
+                      "&.Mui-checked": { color: "primary.main" },
+                    }}
+                  />
+                }
+                label={tLogin("rememberMe")}
+                sx={{ mb: 2 }}
+              /> */}
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  mb: 2,
+                  bgcolor: "#8b5cf6",
+                  "&:hover": { bgcolor: "#7c3aed" },
+                }}
+              >
+                {tLogin("login")}
+              </Button>
+            </form>
+            <Typography variant="body2" align="center" mb={2}>
+              {tLogin("orLoginWith")}
+            </Typography>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+            >
+              <Button
+                onClick={handleGoogleSignIn}
+                variant="outlined"
+                startIcon={<FcGoogle />}
+                sx={{ flex: 1, mr: 1, color: "white", borderColor: "gray" }}
+              >
+                {tLogin("signInWithGoogle")}
+              </Button>
+              {/* <Button
+                variant="outlined"
+                sx={{ flex: 1, ml: 1, color: "white", borderColor: "gray" }}
+              >
+                Apple
+              </Button> */}
+            </Box>
+            <Typography variant="body2" align="center">
+              {tLogin("dontHaveAccount")}{" "}
+              <Link href="/signup" style={{ color: "#8b5cf6" }}>
+                {tLogin("signUp")}
+              </Link>
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    </>
   );
 };
 

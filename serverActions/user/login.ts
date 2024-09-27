@@ -12,12 +12,12 @@ export const login = async (data: Pick<User, "username" | "password">) => {
     });
 
     // If the user is not found, set the login error message
-    if (!user) {
+    if (!user?.username || !user?.password) {
       return null;
     }
 
     // Compare the password with the hashed password in the database
-    const passwordMatch = await bcrypt.compare(data.password, user.password);
+    const passwordMatch = await bcrypt.compare(data.password!, user.password);
 
     // If the password does not match, set the login error message
     if (!passwordMatch) {

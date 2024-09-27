@@ -1,5 +1,7 @@
 console.log("Loaded EN");
 
+export const APP_NAME = "Cargo Tracking";
+
 export default {
   add_cargo: {
     Cargo_created_successfully: "Cargo created successfully",
@@ -38,7 +40,11 @@ export default {
     username: "Username",
     password: "Password",
     login: "Login",
-    signInWithGoogle: "Sign in with Google", // Add this line
+    signInWithGoogle: "Sign in with Google",
+    rememberMe: "Remember me",
+    dontHaveAccount: "Don't have an account?",
+    signUp: "Sign up",
+    orLoginWith: "Or login with",
   },
   signupForm: {
     formTitle: "Signup Form",
@@ -70,4 +76,13 @@ export default {
     errorTitle: "Authentication Error",
     signInAgain: "Sign In Again",
   },
+  pageTitle: {
+    login: `Login | ${APP_NAME}`,
+    signup: `Sign Up | ${APP_NAME}`,
+    error: `Error | ${APP_NAME}`,
+    addCargo: `Add Cargo | ${APP_NAME}`,
+    home: `${APP_NAME}`,
+    // Add more page titles as needed
+  },
+  translate: "Translate",
 } as const;

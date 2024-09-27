@@ -1,17 +1,22 @@
 "use client";
 import { getDirection } from "@/helpers/getDirection";
-import { themeOptions } from "@/helpers/theme/themeOptions";
+import { getThemeOptions } from "@/helpers/theme/themeOptions";
 import { I18nProviderClient, useCurrentLocale } from "@/locales/client";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { Inter, Vazirmatn } from "next/font/google";
-import { FunctionComponent, PropsWithChildren, useMemo } from "react";
+import {
+  FunctionComponent,
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+} from "react";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
 
@@ -31,7 +36,7 @@ const ClientSideProviders: FunctionComponent<
   const theme = useMemo(
     () =>
       createTheme({
-        ...themeOptions,
+        ...getThemeOptions("dark"),
         typography: {
           fontFamily:
             getDirection(locale) === "ltr"
@@ -52,10 +57,19 @@ const ClientSideProviders: FunctionComponent<
     []
   );
 
-  const cacheLtr = createCache({
-    key: "muiltr",
-    stylisPlugins: [prefixer],
-  });
+  const cacheLtr = useMemo(
+    () =>
+      createCache({
+        key: "muiltr",
+        stylisPlugins: [prefixer],
+      }),
+    []
+  );
+
+  useEffect(() => {
+    document.documentElement.style.backgroundColor =
+      theme.palette.background.default;
+  }, [theme]);
 
   return (
     <I18nProviderClient locale={locale}>
@@ -65,6 +79,7 @@ const ClientSideProviders: FunctionComponent<
         >
           <QueryClientProvider client={queryClient}>
             <ThemeProvider theme={theme}>
+              <CssBaseline />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <>{children}</>
               </LocalizationProvider>

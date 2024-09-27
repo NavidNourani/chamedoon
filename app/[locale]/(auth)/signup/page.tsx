@@ -8,30 +8,28 @@ import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useState } from "react";
+import Head from "next/head";
 
 // Define the validation schema for the form fields
 const schema = yup.object().shape({
   username: yup
     .string()
-    .required("signupForm.usernameRequired")
-    .min(3, "signupForm.usernameLength")
-    .max(20, "signupForm.usernameLength")
-    .matches(/^[a-zA-Z0-9_]+$/, "signupForm.usernameFormat"),
+    .required("usernameRequired")
+    .min(3, "usernameLength")
+    .max(20, "usernameLength")
+    .matches(/^[a-zA-Z0-9_]+$/, "usernameFormat"),
   name: yup.string().optional(),
-  email: yup.string().email("signupForm.emailFormat").optional(),
+  email: yup.string().email("emailFormat").optional(),
   family: yup.string().optional(),
   phone: yup
     .string()
-    .required("signupForm.phoneRequired")
-    .matches(/^\+?\d+$/, "signupForm.phoneFormat"),
-  password: yup
-    .string()
-    .required("signupForm.passwordRequired")
-    .min(8, "signupForm.passwordLength"),
+    .required("phoneRequired")
+    .matches(/^\+?\d+$/, "phoneFormat"),
+  password: yup.string().required("passwordRequired").min(8, "passwordLength"),
   repeatPassword: yup
     .string()
-    .required("signupForm.repeatPasswordRequired")
-    .oneOf([yup.ref("password")], "signupForm.passwordsMustMatch"),
+    .required("repeatPasswordRequired")
+    .oneOf([yup.ref("password")], "passwordsMustMatch"),
   telegramID: yup.string().optional(),
   whatsappnumber: yup.string().optional(),
 });
@@ -50,8 +48,8 @@ const defaultValues = {
 
 // Define the component for the signup form
 const SignupForm = () => {
-  const t2 = useI18n();
-  const t = useScopedI18n("signupForm");
+  const tSignup = useScopedI18n("signupForm");
+  const tPageTitle = useScopedI18n("pageTitle");
 
   // Use react hook form to handle the form state and validation
   const {
@@ -77,173 +75,192 @@ const SignupForm = () => {
         whatsappnumber: data.whatsappnumber ?? null,
       };
       await addUser(userData);
-      alert(t("registrationSuccess"));
+      alert(tSignup("registrationSuccess"));
     } catch (e) {
-      alert(t("registrationError"));
+      alert(tSignup("registrationError"));
     }
   };
   // Return the JSX code for rendering the form
   return (
-    <Box
-      sx={{
-        width: "80%",
-        maxWidth: "500px",
-        margin: "0 auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Typography variant="h4" sx={{ margin: "20px" }}>
-        {t("formTitle")}
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="username"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("username")}
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.username}
-              helperText={errors.username && t(errors.username.message as any)}
-            />
-          )}
-        />
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("name")}
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.name}
-              helperText={errors.name && t(errors.name.message as any)}
-            />
-          )}
-        />
-        <Controller
-          name="family"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("family")}
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.family}
-              helperText={errors.family && t(errors.family.message as any)}
-            />
-          )}
-        />
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("phone")}
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.phone}
-              helperText={errors.phone && t(errors.phone.message as any)}
-            />
-          )}
-        />
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("password")}
-              type="password"
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.password}
-              helperText={errors.password && t(errors.password.message as any)}
-            />
-          )}
-        />
-        <Controller
-          name="repeatPassword"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("repeatPassword")}
-              type="password"
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.repeatPassword}
-              helperText={
-                errors.repeatPassword && t(errors.repeatPassword.message as any)
-              }
-            />
-          )}
-        />
-        <Controller
-          name="telegramID"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("telegramID")}
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.telegramID}
-              helperText={
-                errors.telegramID && t(errors.telegramID.message as any)
-              }
-            />
-          )}
-        />
-        <Controller
-          name="whatsappnumber"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t("whatsappNumber")}
-              variant="outlined"
-              fullWidth
-              sx={{ margin: "10px" }}
-              error={!!errors.whatsappnumber}
-              helperText={
-                errors.whatsappnumber && t(errors.whatsappnumber.message as any)
-              }
-            />
-          )}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ margin: "10px" }}
-        >
-          {t("signup")}
-        </Button>
-        <Stack direction="row" alignItems="center">
-          <Typography>{t("alreadyHaveAccount")}</Typography>
-          <Link href="/login">
-            <Button variant="outlined" color="primary" sx={{ margin: "10px" }}>
-              {t("loginButton")}
-            </Button>
-          </Link>
-        </Stack>
-      </form>
-    </Box>
+    <>
+      <Head>
+        <title>{tPageTitle("signup")}</title>
+      </Head>
+      <Box
+        sx={{
+          width: "80%",
+          maxWidth: "500px",
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" sx={{ margin: "20px" }}>
+          {tSignup("formTitle")}
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="username"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("username")}
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.username}
+                helperText={
+                  errors.username && tSignup(errors.username.message as any)
+                }
+              />
+            )}
+          />
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("name")}
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.name}
+                helperText={errors.name && tSignup(errors.name.message as any)}
+              />
+            )}
+          />
+          <Controller
+            name="family"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("family")}
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.family}
+                helperText={
+                  errors.family && tSignup(errors.family.message as any)
+                }
+              />
+            )}
+          />
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("phone")}
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.phone}
+                helperText={
+                  errors.phone && tSignup(errors.phone.message as any)
+                }
+              />
+            )}
+          />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("password")}
+                type="password"
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.password}
+                helperText={
+                  errors.password && tSignup(errors.password.message as any)
+                }
+              />
+            )}
+          />
+          <Controller
+            name="repeatPassword"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("repeatPassword")}
+                type="password"
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.repeatPassword}
+                helperText={
+                  errors.repeatPassword &&
+                  tSignup(errors.repeatPassword.message as any)
+                }
+              />
+            )}
+          />
+          <Controller
+            name="telegramID"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("telegramID")}
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.telegramID}
+                helperText={
+                  errors.telegramID && tSignup(errors.telegramID.message as any)
+                }
+              />
+            )}
+          />
+          <Controller
+            name="whatsappnumber"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label={tSignup("whatsappNumber")}
+                variant="outlined"
+                fullWidth
+                sx={{ margin: "10px" }}
+                error={!!errors.whatsappnumber}
+                helperText={
+                  errors.whatsappnumber &&
+                  tSignup(errors.whatsappnumber.message as any)
+                }
+              />
+            )}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ margin: "10px" }}
+          >
+            {tSignup("signup")}
+          </Button>
+          <Stack direction="row" alignItems="center">
+            <Typography>{tSignup("alreadyHaveAccount")}</Typography>
+            <Link href="/login">
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{ margin: "10px" }}
+              >
+                {tSignup("loginButton")}
+              </Button>
+            </Link>
+          </Stack>
+        </form>
+      </Box>
+    </>
   );
 };
 

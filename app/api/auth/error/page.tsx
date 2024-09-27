@@ -17,7 +17,7 @@ const ErrorPage = () => {
     if (signInError) {
       setError(signInError);
     }
-  }, [router.query]);
+  }, [searchParams]);
 
   const handleSignIn = async () => {
     const res = await signIn("credentials", { redirect: false });
