@@ -19,10 +19,14 @@ export default {
       "There was an error on getting countries",
     there_was_an_error_on_getting_cities:
       "There was an error on getting cities",
-    Approximate_DateTime: "Approximate DateTime",
+    Approximate_DateTime: "Approximate Date",
+    Approximate_DateTime_optional: "Approximate Date (optional)",
     "Estimated_cost_(optional)": "Estimated cost (optional)",
     Next: "Next",
     Back: "Back",
+    dateFormat: "Date format",
+    gregorian: "Gregorian",
+    jalali: "Jalali",
   },
   home: {
     add_new_cargo: "Add new cargo",
@@ -44,7 +48,7 @@ export default {
     rememberMe: "Remember me",
     dontHaveAccount: "Don't have an account?",
     signUp: "Sign up",
-    orLoginWith: "Or login with",
+    orLoginWith: "Or login/register with",
   },
   signupForm: {
     formTitle: "Signup Form",
@@ -56,6 +60,7 @@ export default {
     telegramID: "Telegram ID",
     whatsappNumber: "WhatsApp number",
     signup: "Sign up",
+    email: "E-mail",
     alreadyHaveAccount: "Already have an account?",
     loginButton: "Login",
     usernameRequired: "Username is required",

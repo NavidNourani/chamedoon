@@ -11,3 +11,7 @@ body, html {
     text-wrap: balance;
   }
 }
+
+body {
+  overflow: auto;
+}

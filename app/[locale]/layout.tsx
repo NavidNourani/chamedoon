@@ -1,5 +1,6 @@
 import { getDirection } from "@/helpers/getDirection";
 import { APP_NAME } from "@/locales/en";
+import AppSettingsProvider from "@/providers/AppSettingsProvider";
 import ClientSideProviders from "@/providers/ClientSideProviders";
 import { Stack } from "@mui/material";
 import type { Metadata } from "next";
@@ -27,15 +28,16 @@ export default async function RootLayout({
   const session = await getSession();
   const direction = getDirection(locale);
   const fontClass = direction === "ltr" ? inter.className : vazirmatn.className;
-
   return (
     <html lang={locale} dir={direction}>
       <body className={fontClass}>
-        <ClientSideProviders session={session!}>
-          <Stack width="100%" height="100%">
-            {children}
-          </Stack>
-        </ClientSideProviders>
+        <AppSettingsProvider>
+          <ClientSideProviders session={session!}>
+            <Stack width="100%" height="100%">
+              {children}
+            </Stack>
+          </ClientSideProviders>
+        </AppSettingsProvider>
       </body>
     </html>
   );

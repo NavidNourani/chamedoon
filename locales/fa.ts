@@ -18,10 +18,14 @@ export default {
       "خطایی در دریافت کشورها رخ داده است",
     there_was_an_error_on_getting_cities: "خطایی در دریافت شهرها رخ داده است",
 
-    Approximate_DateTime: "زمان تقریبی",
+    Approximate_DateTime: "تاریخ تقریبی",
+    Approximate_DateTime_optional: "تاریخ تقریبی (اختیاری)",
     "Estimated_cost_(optional)": "حدود هزینه (اختیاری)",
     Next: "بعدی",
     Back: "قبلی",
+    dateFormat: "فرمت تاریخ",
+    gregorian: "میلادی",
+    jalali: "شمسی",
   },
   home: {
     add_new_cargo: "اضافه کردن بسته جدید",
@@ -43,7 +47,7 @@ export default {
     rememberMe: "مرا به خاطر بسپار", // Add this line
     dontHaveAccount: "حساب کاربری ندارید؟", // Add this line
     signUp: "ثبت نام", // Add this line
-    orLoginWith: "یا ورود با", // Add this line
+    orLoginWith: "یا ورود/ثبت نام با", // Add this line
   },
   signupForm: {
     formTitle: "فرم ثبت نام",
@@ -55,6 +59,7 @@ export default {
     telegramID: "شناسه تلگرام",
     whatsappNumber: "شماره واتساپ",
     signup: "ثبت نام",
+    email: "ایمیل",
     alreadyHaveAccount: "قبلاً حساب کاربری دارید؟",
     loginButton: "ورود",
     usernameRequired: "نام کاربری الزامی است",

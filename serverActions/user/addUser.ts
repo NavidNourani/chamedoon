@@ -8,7 +8,17 @@ export const addUser = async (user: Omit<User,"id">) => {
     const salt = await bcrypt.genSalt(10);
 
     // Hash the password with the salt
-    const hashedPassword = await bcrypt.hash(user.password, salt);
+    const hashedPassword = await bcrypt.hash(user.password!, salt);
+
+    const checkUser = await prisma.user.findUnique({
+      where: {
+        username: user.username,
+      },
+    });
+
+    if (checkUser) {
+      throw new Error(JSON.stringify({fields: {username: "usernameAlreadyExists"}}));
+    }
 
     // Create the user record in the database
     const newUser = await prisma.user.create({

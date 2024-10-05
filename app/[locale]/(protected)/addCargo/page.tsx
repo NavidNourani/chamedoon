@@ -1,16 +1,16 @@
 "use client";
 
-import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { CargoShipment } from "@prisma/client";
 import { useScopedI18n } from "@/locales/client";
 import { createCargoForCurrentUser } from "@/serverActions/createCargoForCurrentUser";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, Button, Typography } from "@mui/material";
+import { CargoShipment } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import * as yup from "yup";
+import CargoDetailsStep from "./steps/CargoDetailsStep";
 import DepartureStep from "./steps/DepartureStep";
 import DestinationStep from "./steps/DestinationStep";
-import CargoDetailsStep from "./steps/CargoDetailsStep";
 
 // Define the validation schema for the form fields
 const schema = yup.object().shape({
@@ -47,13 +47,23 @@ const schema = yup.object().shape({
     })
     .required("Destination Airport is required"),
   cargoDescription: yup.string().required(),
-  estimatedCost: yup.number().optional(),
+  estimatedCost: yup
+    .number()
+    .nullable()
+    .transform((value) => (isNaN(value) ? null : value))
+    .optional(),
 });
 
 const FlightForm = () => {
   const t = useScopedI18n("add_cargo");
   const methods = useForm<yup.InferType<typeof schema>>({
     resolver: yupResolver(schema) as any,
+    defaultValues: {
+      immediateDelivery: false,
+      cargoDescription: "",
+      estimatedCost: undefined,
+      approximateDateTime: new Date(),
+    },
   });
   const [step, setStep] = useState(0);
 

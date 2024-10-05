@@ -1,14 +1,12 @@
 "use client";
-import { useI18n, useScopedI18n } from "@/locales/client";
+import { useScopedI18n } from "@/locales/client";
 import { addUser } from "@/serverActions/user/addUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { User } from "@prisma/client";
+import Head from "next/head";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import { useState } from "react";
-import Head from "next/head";
 
 // Define the validation schema for the form fields
 const schema = yup.object().shape({
@@ -117,7 +115,7 @@ const SignupForm = () => {
               />
             )}
           />
-          <Controller
+          {/* <Controller
             name="name"
             control={control}
             render={({ field }) => (
@@ -131,8 +129,8 @@ const SignupForm = () => {
                 helperText={errors.name && tSignup(errors.name.message as any)}
               />
             )}
-          />
-          <Controller
+          /> */}
+          {/* <Controller
             name="family"
             control={control}
             render={({ field }) => (
@@ -148,8 +146,8 @@ const SignupForm = () => {
                 }
               />
             )}
-          />
-          <Controller
+          /> */}
+          {/* <Controller
             name="phone"
             control={control}
             render={({ field }) => (
@@ -165,7 +163,7 @@ const SignupForm = () => {
                 }
               />
             )}
-          />
+          /> */}
           <Controller
             name="password"
             control={control}
@@ -203,7 +201,7 @@ const SignupForm = () => {
               />
             )}
           />
-          <Controller
+          {/* <Controller
             name="telegramID"
             control={control}
             render={({ field }) => (
@@ -219,8 +217,8 @@ const SignupForm = () => {
                 }
               />
             )}
-          />
-          <Controller
+          /> */}
+          {/* <Controller
             name="whatsappnumber"
             control={control}
             render={({ field }) => (
@@ -237,7 +235,7 @@ const SignupForm = () => {
                 }
               />
             )}
-          />
+          /> */}
           <Button
             type="submit"
             variant="contained"

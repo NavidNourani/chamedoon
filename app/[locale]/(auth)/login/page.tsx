@@ -1,57 +1,106 @@
 "use client";
+import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import { useScopedI18n } from "@/locales/client";
+import { addUser } from "@/serverActions/user/addUser";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { User } from "@prisma/client";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { signIn, SignInResponse } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import * as yup from "yup";
 
-// Define the validation schema for the form fields
-const schema = yup.object().shape({
+// Define the validation schema for the login form fields
+const loginSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),
 });
 
-// Define the initial values for the form fields
-const defaultValues = {
-  username: "",
-  password: "",
-};
+// Define the validation schema for the signup form fields
+const signupSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required("usernameRequired")
+    .min(3, "usernameLength")
+    .max(20, "usernameLength")
+    .matches(/^[a-zA-Z0-9_]+$/, "usernameFormat"),
+  password: yup
+    .string()
+    .required("passwordRequired")
+    .min(8, "At least 8 characters"),
+  repeatPassword: yup
+    .string()
+    .required("repeatPasswordRequired")
+    .oneOf([yup.ref("password")], "passwordsMustMatch"),
+});
 
-const LoginForm = () => {
-  const tPageTitle = useScopedI18n("pageTitle");
+const AuthForm = () => {
   const tLogin = useScopedI18n("loginForm");
+  const tSignup = useScopedI18n("signupForm");
+  const [isLogin, setIsLogin] = useState(true);
+  const [loginError, setLoginError] = useState("");
+  const router = useRouter();
+
+  const methods = useForm({
+    defaultValues: isLogin
+      ? { username: "", password: "" }
+      : { username: "", password: "", repeatPassword: "" },
+    resolver: yupResolver(isLogin ? loginSchema : signupSchema),
+  });
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<yup.InferType<typeof schema>>({
-    defaultValues,
-    resolver: yupResolver(schema),
-  });
-  const router = useRouter();
+    reset,
+    setError,
+  } = methods;
 
-  // Use state to store the login error message
-  const [loginError, setLoginError] = useState("");
-
-  // Define the function to handle the form submission
-  const onSubmit = async (data: Pick<User, "username" | "password">) => {
-    loginHandler(() =>
-      signIn("credentials", {
-        ...data,
-        callbackUrl: "/",
-        redirect: true,
-      })
-    );
+  const onSubmit = async (
+    data: yup.InferType<typeof loginSchema> | yup.InferType<typeof signupSchema>
+  ) => {
+    if (isLogin) {
+      loginHandler(() =>
+        signIn("credentials", {
+          ...data,
+          callbackUrl: "/",
+          redirect: false,
+        })
+      );
+    } else {
+      try {
+        const userData = {
+          username: data.username,
+          password: data.password,
+          email: null,
+          name: null,
+          family: null,
+          phone: null,
+          telegramID: null,
+          whatsappnumber: null,
+        };
+        await addUser(userData);
+        alert(tSignup("registrationSuccess"));
+        setIsLogin(true);
+        reset({ username: "", password: "" });
+      } catch (e) {
+        try {
+          console.log("1111111111111", e);
+          const error = JSON.parse(e as any);
+          console.log("1111111111111", error);
+          if (error.fields) {
+            Object.keys(error.fields).forEach((key) => {
+              setError(key as any, { message: error.fields[key] });
+            });
+          }
+        } catch (e) {}
+        alert(tSignup("registrationError"));
+      }
+    }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = () => {
     loginHandler(() => signIn("google", { callbackUrl: "/" }));
   };
 
@@ -67,105 +116,106 @@ const LoginForm = () => {
     }
   };
 
-  // Return the JSX code for rendering the form
+  const handleTabChange = (event: React.SyntheticEvent, newValue: boolean) => {
+    setIsLogin(newValue);
+    reset();
+    setLoginError("");
+  };
+
   return (
-    <>
+    <Box sx={{ display: "flex", height: "100%" }}>
       <Box
         sx={{
-          display: "flex",
-          height: "100%",
+          flex: 1,
+          position: "relative",
+          display: { xs: "none", md: "block" },
         }}
       >
+        <Image
+          src="/images/passenger.jpg"
+          alt="Capturing Moments, Creating Memories"
+          layout="fill"
+          objectFit="cover"
+        />
         <Box
-          sx={{
-            flex: 1,
-            position: "relative",
-            display: { xs: "none", md: "block" },
-          }}
+          sx={{ position: "absolute", bottom: 40, left: 40, color: "white" }}
         >
-          <Image
-            src="/images/passenger.jpg"
-            alt="Capturing Moments, Creating Memories"
-            layout="fill"
-            objectFit="cover"
-          />
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 40,
-              left: 40,
-              color: "white",
-            }}
-          >
-            <Typography variant="h4" fontWeight="bold">
-              Capturing Moments ,
-            </Typography>
-            <Typography variant="h4" fontWeight="bold">
-              Creating Memories
-            </Typography>
-          </Box>
+          {/* TODO: change this text */}
+          <Typography variant="h4" fontWeight="bold">
+            Capturing Moments ,
+          </Typography>
+          <Typography variant="h4" fontWeight="bold">
+            Creating Memories
+          </Typography>
         </Box>
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            p: 4,
-            color: "white",
-          }}
-        >
-          <Box sx={{ width: "100%", maxWidth: 400 }}>
-            <Typography variant="h4" fontWeight="bold" mb={4}>
-              {tLogin("login")}
-            </Typography>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
+      </Box>
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          p: 4,
+          color: "white",
+        }}
+      >
+        <Box sx={{ width: "100%", maxWidth: 400 }}>
+          <Tabs value={isLogin} onChange={handleTabChange} sx={{ mb: 2 }}>
+            <Tab label={tLogin("login")} value={true} />
+            <Tab label={tSignup("signup")} value={false} />
+          </Tabs>
+          <FormProvider {...methods}>
+            <Box
+              component="form"
+              onSubmit={methods.handleSubmit(onSubmit)}
+              sx={{ width: "100%" }}
+            >
+              <RHFTextField
                 name="username"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label={tLogin("username")}
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{ style: { color: "gray" } }}
-                    InputProps={{ style: { color: "white" } }}
-                    sx={{ bgcolor: "#2b2b2b", mb: 2 }}
-                  />
-                )}
-              />
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label={tLogin("password")}
-                    type="password"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{ style: { color: "gray" } }}
-                    InputProps={{ style: { color: "white" } }}
-                    sx={{ bgcolor: "#2b2b2b", mb: 2 }}
-                  />
-                )}
-              />
-              {/* <FormControlLabel
-                control={
-                  <Checkbox
-                    sx={{
-                      color: "gray",
-                      "&.Mui-checked": { color: "primary.main" },
-                    }}
-                  />
-                }
-                label={tLogin("rememberMe")}
+                label={tLogin("username")}
                 sx={{ mb: 2 }}
-              /> */}
+              />
+              <RHFTextField
+                label={tLogin("password")}
+                type="password"
+                name="password"
+                sx={{ mb: 2 }}
+              />
+              {!isLogin && (
+                <>
+                  <RHFTextField
+                    name="repeatPassword"
+                    label={tSignup("repeatPassword")}
+                    type="password"
+                    sx={{ mb: 2 }}
+                  />
+                  {/* <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label={tSignup("email")}
+                      type="email"
+                      variant="outlined"
+                      fullWidth
+                       margin="normal"
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                      InputLabelProps={{ style: { color: "gray" } }}
+                      InputProps={{ style: { color: "white" } }}
+                      sx={{ bgcolor: "#2b2b2b", mb: 2 }}
+                    />
+                  )}
+                /> */}
+                </>
+              )}
+              {loginError && (
+                <Typography color="error" sx={{ mb: 2 }}>
+                  {loginError}
+                </Typography>
+              )}
               <Button
                 type="submit"
                 variant="contained"
@@ -176,41 +226,26 @@ const LoginForm = () => {
                   "&:hover": { bgcolor: "#7c3aed" },
                 }}
               >
-                {tLogin("login")}
+                {isLogin ? tLogin("login") : tSignup("signup")}
               </Button>
-            </form>
-            <Typography variant="body2" align="center" mb={2}>
-              {tLogin("orLoginWith")}
-            </Typography>
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
-            >
-              <Button
-                onClick={handleGoogleSignIn}
-                variant="outlined"
-                startIcon={<FcGoogle />}
-                sx={{ flex: 1, mr: 1, color: "white", borderColor: "gray" }}
-              >
-                {tLogin("signInWithGoogle")}
-              </Button>
-              {/* <Button
-                variant="outlined"
-                sx={{ flex: 1, ml: 1, color: "white", borderColor: "gray" }}
-              >
-                Apple
-              </Button> */}
             </Box>
-            <Typography variant="body2" align="center">
-              {tLogin("dontHaveAccount")}{" "}
-              <Link href="/signup" style={{ color: "#8b5cf6" }}>
-                {tLogin("signUp")}
-              </Link>
-            </Typography>
-          </Box>
+          </FormProvider>
+          <Typography variant="body2" align="center" mb={2}>
+            {tLogin("orLoginWith")}
+          </Typography>
+          <Button
+            onClick={handleGoogleSignIn}
+            variant="outlined"
+            startIcon={<FcGoogle />}
+            fullWidth
+            sx={{ mb: 2, color: "white", borderColor: "gray" }}
+          >
+            {tLogin("signInWithGoogle")}
+          </Button>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
-export default LoginForm;
+export default AuthForm;
