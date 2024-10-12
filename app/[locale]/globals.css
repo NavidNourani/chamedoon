@@ -1,17 +1,13 @@
-
-body, html {
+body,
+html {
   height: 100dvh;
   overflow: hidden;
   margin: 0;
-  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-}
-
-body {
-  overflow: auto;
 }

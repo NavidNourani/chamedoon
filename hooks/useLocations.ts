@@ -11,7 +11,6 @@ const useLocations = () => {
   const [debouncedCountrySearchTerm] = useDebounce(countrySearchTerm, 500);
 
   const [citySearchTerm, setCitySearchTerm] = useState("");
-  const [debouncedCitySearchTerm] = useDebounce(citySearchTerm, 500);
 
   const { data: countriesData, isLoading: countriesLoading } = useQuery<
     Country[]
@@ -20,17 +19,9 @@ const useLocations = () => {
     queryFn: () =>
       axios
         .get(`/api/v1/locations/countries`, {
-          params: { search: debouncedCountrySearchTerm },
-        })
-        .then((x) => x.data),
-  });
-
-  const { data: citiesData, isLoading: citiesLoading } = useQuery<City[]>({
-    queryKey: ["cities", debouncedCitySearchTerm],
-    queryFn: () =>
-      axios
-        .get(`/api/v1/locations/cities`, {
-          params: { search: debouncedCitySearchTerm },
+          params: debouncedCountrySearchTerm
+            ? { search: debouncedCountrySearchTerm }
+            : undefined,
         })
         .then((x) => x.data),
   });
@@ -49,9 +40,7 @@ const useLocations = () => {
   return {
     countries: countriesData,
     countriesLoading,
-    cities: citiesData,
-    citiesLoading,
-    getCities: getAirports,
+    getAirports,
     setCountrySearchTerm,
     setCitySearchTerm,
   };

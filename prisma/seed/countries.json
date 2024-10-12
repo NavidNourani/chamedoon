@@ -1,0 +1,244 @@
+[
+  {
+    "id": "a1b2c3d4-e5f6-4a8b-9c0d-e1f2a3b4c5d6",
+    "name": "Iran",
+    "iso3": "IRN",
+    "iso2": "IR",
+    "numeric_code": "364",
+    "phone_code": "98",
+    "capital": "Tehran",
+    "currency": "IRR",
+    "currency_name": "Iranian rial",
+    "currency_symbol": "﷼",
+    "tld": ".ir",
+    "native": "ایران",
+    "region": "Asia",
+    "subregion": "Southern Asia",
+    "nationality": "Iranian",
+    "timezones": [
+      {
+        "id": "b1c2d3e4-f3a6-7b8c-9d0e-f1a2b3c4d5e6",
+        "zoneName": "Asia/Tehran",
+        "gmtOffset": 12600,
+        "gmtOffsetName": "UTC+03:30",
+        "abbreviation": "IRST",
+        "tzName": "Iran Standard Time"
+      }
+    ],
+    "translations": {
+      "id": "c1d2e3f4-a5b6-3c8d-9e0f-a1b2c3d4e5f6",
+      "fa": "ایران",
+      "ar": "إيران"
+    },
+    "latitude": "32.4279",
+    "longitude": "53.6880",
+    "emoji": "🇮🇷",
+    "emojiU": "U+1F1EE U+1F1F7",
+    "cities": [
+      {
+        "id": "d1e2f3a4-b5c6-738e-9f0a-b1c2d3e4f5a6",
+        "name": "Tehran",
+        "airports": [
+          {
+            "id": "thr001-a1b2-c334-e5f6-g7h8i9j0k1l2",
+            "name": "Imam Khomeini International Airport"
+          }
+        ]
+      },
+      {
+        "id": "f6g7h8i9-j0k1-l2m3-n3o5-p6q7r8s9t0u1",
+        "name": "Mashhad",
+        "airports": [
+          {
+            "id": "mhd001-b2c3-d4e5-f3g7-h8i9j0k1l2m3",
+            "name": "Mashhad International Airport"
+          }
+        ]
+      },
+      { "id": "v2w3x4y5-z6a7-b2c9-d0e1-f2g3h4i5j6k7", "name": "Isfahan" },
+      { "id": "l8m9n0o1-p2q3-r2s3-t6u7-v8w9x0y1z2a3", "name": "Karaj" },
+      { "id": "b4c5d6e7-f8g9-h0i3-j2k3-l4m5n6o7p8q9", "name": "Shiraz" },
+      { "id": "r0s1t2u3-v4w5-x6y3-z8a9-b0c1d2e3f4g5", "name": "Tabriz" },
+      { "id": "r8s9t0u1-v2w3-x4y3-z6a7-b8c9d0e1f2g3", "name": "Semnan" },
+      { "id": "x2y3z4a5-b6c7-d8e3-f0g1-h2i3j4k5l6m7", "name": "Ahvaz" },
+      { "id": "n8o9p0q1-r2s3-t4u3-v6w7-x8y9z0a1b2c3", "name": "Kermanshah" },
+      { "id": "d4e5f6g7-h8i9-j0k3-l2m3-n4o5p6q7r8s9", "name": "Urmia" },
+      { "id": "t0u1v2w3-x4y5-z6a3-b8c9-d0e1f2g3h4i5", "name": "Rasht" },
+      { "id": "j6k7l8m9-n0o1-p2q3-r4s5-t6u7v8w9x0y1", "name": "Zahedan" },
+      {
+        "id": "k1l2m3n4-o5p6q228-s9t0u1v2w3-x4y5-z6a7",
+        "name": "Kerman",
+        "airports": [
+          {
+            "id": "krm001-c2d3-1225-g6h7-i8j9k0l1m2n3",
+            "name": "Kerman Airport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "e1f2a3b4-c5d6-7e8f-9a0b-c1d2e3f4a5b6",
+    "name": "United Arab Emirates",
+    "iso3": "ARE",
+    "iso2": "AE",
+    "numeric_code": "784",
+    "phone_code": "971",
+    "capital": "Abu Dhabi",
+    "currency": "AED",
+    "currency_name": "United Arab Emirates dirham",
+    "currency_symbol": "د.إ",
+    "tld": ".ae",
+    "native": "دولة الإمارات العربية المتحدة",
+    "region": "Asia",
+    "subregion": "Western Asia",
+    "nationality": "Emirati",
+    "timezones": [
+      {
+        "id": "f1e2d3c4-b5a6-7c8d-9e0f-a1b2c3d4e5f6",
+        "zoneName": "Asia/Dubai",
+        "gmtOffset": 14400,
+        "gmtOffsetName": "UTC+04:00",
+        "abbreviation": "GST",
+        "tzName": "Gulf Standard Time"
+      }
+    ],
+    "translations": {
+      "id": "g1h2i3j4-k5l6-7m8n-9o0p-q1r2s3t4u5v6",
+      "fa": "امارات متحده عربی",
+      "ar": "الإمارات العربية المتحدة"
+    },
+    "latitude": "23.4241",
+    "longitude": "53.8478",
+    "emoji": "🇦🇪",
+    "emojiU": "U+1F1E6 U+1F1EA",
+    "cities": [
+      {
+        "id": "h1i2j3k4-l5m6-7n8o-9p0q-r1s2t3u4v5w6",
+        "name": "Abu Dhabi",
+        "airports": [
+          {
+            "id": "auh001-c3d4-e5f6-g7h8-i9j0k1l2m3n4",
+            "name": "Abu Dhabi International Airport"
+          }
+        ]
+      },
+      {
+        "id": "z2a3b4c5-d6e7-f8g9-h0i1-j2k3l4m5n6o7",
+        "name": "Dubai",
+        "airports": [
+          {
+            "id": "dxb001-d4e5-f6g7-h8i9-j0k1l2m3n4o5",
+            "name": "Dubai International Airport"
+          }
+        ]
+      },
+      {
+        "id": "p8q9r0s1-t2u3-v4w5-x6y7-z8a9b0c1d2e3",
+        "name": "Sharjah",
+        "airports": [
+          {
+            "id": "shj001-e2f3-g4h5-i6j7-k8l9-m0n1o2p3",
+            "name": "Sharjah International Airport"
+          }
+        ]
+      },
+      { "id": "f4g5h6i7-j8k9-l0m1-n2o3-p4q5r6s7t8u9", "name": "Al Ain" },
+      { "id": "v0w1x2y3-z4a5-b6c7-d8e9-f0g1h2i3j4k5", "name": "Ajman" },
+      {
+        "id": "l6m7n8o9-p0q1-r2s3-t4u5-v6w7x8y9z0a1",
+        "name": "Ras Al Khaimah"
+      },
+      { "id": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7", "name": "Fujairah" },
+      { "id": "r8s9t0u1-v2w3-x4y5-z6a7-b8c9d0e1f2g3", "name": "Umm Al Quwain" },
+      { "id": "h4i5j6k7-l8m9-n0o1-p2q3-r4s5t6u7v8w9", "name": "Khor Fakkan" },
+      {
+        "id": "x0y1z2a3-b4c5-d6e7-f8g9-h0i1j2k3l4m5",
+        "name": "Dibba Al-Fujairah"
+      },
+      { "id": "n6o7p8q9-r0s1-t2u3-v4w5-x6y7z8a9b0c1", "name": "Madinat Zayed" },
+      { "id": "d2e3f4g5-h6i7-j8k9-l0m1-n2o3p4q5r6s7", "name": "Ruwais" }
+    ]
+  },
+  {
+    "id": "i1j2k3l4-m5n6-7o8p-9q0r-s1t2u3v4w5x6",
+    "name": "United Kingdom",
+    "iso3": "GBR",
+    "iso2": "GB",
+    "numeric_code": "826",
+    "phone_code": "44",
+    "capital": "London",
+    "currency": "GBP",
+    "currency_name": "British pound",
+    "currency_symbol": "£",
+    "tld": ".uk",
+    "native": "United Kingdom",
+    "region": "Europe",
+    "subregion": "Northern Europe",
+    "nationality": "British",
+    "timezones": [
+      {
+        "id": "j1k2l3m4-n5o6-7p8q-9r0s-t1u2v3w4x5y6",
+        "zoneName": "Europe/London",
+        "gmtOffset": 0,
+        "gmtOffsetName": "UTC±00:00",
+        "abbreviation": "GMT",
+        "tzName": "Greenwich Mean Time"
+      }
+    ],
+    "translations": {
+      "id": "k1l2m3n4-o5p6-7q8r-9s0t-u1v2w3x4y5z6",
+      "fa": "بریتانیا",
+      "ar": "المملكة المتحدة"
+    },
+    "latitude": "55.3781",
+    "longitude": "-3.4360",
+    "emoji": "🇬🇧",
+    "emojiU": "U+1F1EC U+1F1E7",
+    "cities": [
+      {
+        "id": "t8u9v0w1-x2y3-z4a5-b6c7-d8e9f0g1h2i3",
+        "name": "London",
+        "airports": [
+          {
+            "id": "lhr001-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+            "name": "Heathrow Airport"
+          },
+          {
+            "id": "lgw001-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
+            "name": "Gatwick Airport"
+          }
+        ]
+      },
+      {
+        "id": "j4k5l6m7-n8o9-p0q1-r2s3-t4u5v6w7x8y9",
+        "name": "Birmingham",
+        "airports": [
+          {
+            "id": "bhx001-g7h8-i9j0-k1l2-m3n4o5p6q7r8",
+            "name": "Birmingham Airport"
+          }
+        ]
+      },
+      {
+        "id": "z0a1b2c3-d4e5-f6g7-h8i9-j0k1l2m3n4o5",
+        "name": "Manchester",
+        "airports": [
+          {
+            "id": "man001-a1b2-c3d4-e5f6-g7h8i9j0k1l2",
+            "name": "Manchester Airport"
+          }
+        ]
+      },
+      { "id": "p6q7r8s9-t0u1-v2w3-x4y5-z6a7b8c9d0e1", "name": "Glasgow" },
+      { "id": "f2g3h4i5-j6k7-l8m9-n0o1-p2q3r4s5t6u7", "name": "Liverpool" },
+      { "id": "v8w9x0y1-z2a3-b4c5-d6e7-f8g9h0i1j2k3", "name": "Leeds" },
+      { "id": "l4m5n6o7-p8q9-r0s1-t2u3-v4w5x6y7z8a9", "name": "Sheffield" },
+      { "id": "b0c1d2e3-f4g5-h6i7-j8k9-l0m1n2o3p4q5", "name": "Edinburgh" },
+      { "id": "r6s7t8u9-v0w1-x2y3-z4a5-b6c7d8e9f0g1", "name": "Bristol" },
+      { "id": "h2i3j4k5-l6m7-n8o9-p0q1-r2s3t4u5v6w7", "name": "Leicester" },
+      { "id": "x8y9z0a1-b2c3-d4e5-f6g7-h8i9j0k1l2m3", "name": "Belfast" },
+      { "id": "n4o5p6q7-r8s9-t0u1-v2w3-x4y5z6a7b8c9", "name": "Nottingham" }
+    ]
+  }
+]

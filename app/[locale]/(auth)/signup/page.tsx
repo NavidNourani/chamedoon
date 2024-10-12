@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
+import { useSnackbar } from "notistack";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -48,6 +49,7 @@ const defaultValues = {
 const SignupForm = () => {
   const tSignup = useScopedI18n("signupForm");
   const tPageTitle = useScopedI18n("pageTitle");
+  const { enqueueSnackbar } = useSnackbar();
 
   // Use react hook form to handle the form state and validation
   const {
@@ -73,9 +75,13 @@ const SignupForm = () => {
         whatsappnumber: data.whatsappnumber ?? null,
       };
       await addUser(userData);
-      alert(tSignup("registrationSuccess"));
+      enqueueSnackbar(tSignup("registrationSuccess"), {
+        variant: "success",
+      });
     } catch (e) {
-      alert(tSignup("registrationError"));
+      enqueueSnackbar(tSignup("registrationError"), {
+        variant: "error",
+      });
     }
   };
   // Return the JSX code for rendering the form

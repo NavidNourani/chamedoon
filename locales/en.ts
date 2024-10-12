@@ -3,17 +3,17 @@ console.log("Loaded EN");
 export const APP_NAME = "Cargo Tracking";
 
 export default {
-  add_cargo: {
+  add_parcel: {
     Cargo_created_successfully: "Cargo created successfully",
-    There_was_an_error_on_creating_cargo:
-      "There was an error on creating cargo",
-    Add_your_cargo_detail: "Add your cargo detail",
+    There_was_an_error_on_creating_parcel:
+      "There was an error on creating parcel",
+    Add_your_parcel_detail: "Add your parcel detail",
     Departure_country: "Departure country",
     Departure_Airport: "Departure Airport",
     Destination_country: "Destination country",
     Destination_Airport: "Destination Airport",
-    Cargo_Description: "Cargo Description",
-    Immediate_delivery: "Immediate delivery",
+    parcel_description: "Cargo Description",
+    Immediate_delivery: "I need it urgently",
     Submit: "Submit",
     There_was_an_error_on_getting_countries:
       "There was an error on getting countries",
@@ -27,9 +27,24 @@ export default {
     dateFormat: "Date format",
     gregorian: "Gregorian",
     jalali: "Jalali",
+    Parcel_Type: "Parcel Type",
+    Parcel_Weight: "Parcel Weight (Approximate)",
+    Document: "Document",
+    Other: "Other",
+  },
+  parcelItem: {
+    parcel_description: "Description",
+    departure: "Departure",
+    destination: "Destination",
+    parcel_details: "Parcel details",
+    approximate_date_time: "Approximate Date",
+    parcel_type: "Parcel Type",
+    parcel_weight: "Parcel Weight",
+    immediate_delivery: "I need it urgently",
+    estimated_cost: "Estimated cost",
   },
   home: {
-    add_new_cargo: "Add new cargo",
+    add_new_parcel: "Add new parcel",
   },
   select_language: {
     en: "English",

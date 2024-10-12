@@ -1,24 +1,25 @@
 "use server";
 
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/helpers/db";
-import { CargoShipment } from "@prisma/client";
+import { Parcel } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 export const createCargoForCurrentUser = async (
-  data: Omit<CargoShipment, "userID" | "id">
+  data: Omit<Parcel, "userID" | "id">
 ) => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (!session) {
     return { success: false, error: "You are not logged in " };
   }
   try {
-    const newCargo = await prisma.cargoShipment.create({
+    const newCargo = await prisma.parcel.create({
       data: { ...data, userID: session.user.id },
     });
 
-    return { success: true, cargo: newCargo };
+    return { success: true, parcel: newCargo };
   } catch (error) {
     console.error(error);
-    return { success: false, error: "Failed to create cargo" };
+    return { success: false, error: "Failed to create parcel" };
   }
 };

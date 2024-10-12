@@ -1,12 +1,7 @@
 // import { setStaticParamsLocale } from 'next-international/server';
-import Link from "@/components/atoms/Link";
+import PaginatedParcelsList from "@/app/components/atomic/organisms/PaginatedParcelsList";
 import { getScopedI18n } from "@/locales/server";
-import { Button, Container } from "@mui/material";
-
-// Uncomment to test Static Generation on this page only
-// export function generateStaticParams() {
-//   return getStaticParams();
-// }
+import { Container } from "@mui/material";
 
 export default async function Home({
   params: { locale },
@@ -16,9 +11,7 @@ export default async function Home({
   const t = await getScopedI18n("home");
   return (
     <Container>
-      <Link href="/addCargo">
-        <Button variant="contained">{t("add_new_cargo")}</Button>
-      </Link>
+      <PaginatedParcelsList />
     </Container>
   );
 }

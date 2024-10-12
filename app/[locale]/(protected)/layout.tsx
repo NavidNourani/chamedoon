@@ -1,9 +1,9 @@
-import HeaderUnauthenticated from "@/components/organisms/HeaderUnauthenticated";
+import HeaderAuthenticated from "@/components/organisms/HeaderAuthenticated";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <HeaderUnauthenticated />
+      <HeaderAuthenticated />
       {children}
     </>
   );

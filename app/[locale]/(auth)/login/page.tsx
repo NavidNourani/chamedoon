@@ -7,6 +7,7 @@ import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { signIn, SignInResponse } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
@@ -37,11 +38,12 @@ const signupSchema = yup.object().shape({
 });
 
 const AuthForm = () => {
+  const router = useRouter();
   const tLogin = useScopedI18n("loginForm");
   const tSignup = useScopedI18n("signupForm");
   const [isLogin, setIsLogin] = useState(true);
   const [loginError, setLoginError] = useState("");
-  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const methods = useForm({
     defaultValues: isLogin
@@ -49,13 +51,7 @@ const AuthForm = () => {
       : { username: "", password: "", repeatPassword: "" },
     resolver: yupResolver(isLogin ? loginSchema : signupSchema),
   });
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setError,
-  } = methods;
+  const { reset, setError } = methods;
 
   const onSubmit = async (
     data: yup.InferType<typeof loginSchema> | yup.InferType<typeof signupSchema>
@@ -81,21 +77,23 @@ const AuthForm = () => {
           whatsappnumber: null,
         };
         await addUser(userData);
-        alert(tSignup("registrationSuccess"));
+        enqueueSnackbar(tSignup("registrationSuccess"), {
+          variant: "success",
+        });
         setIsLogin(true);
         reset({ username: "", password: "" });
       } catch (e) {
         try {
-          console.log("1111111111111", e);
           const error = JSON.parse(e as any);
-          console.log("1111111111111", error);
           if (error.fields) {
             Object.keys(error.fields).forEach((key) => {
               setError(key as any, { message: error.fields[key] });
             });
           }
         } catch (e) {}
-        alert(tSignup("registrationError"));
+        enqueueSnackbar(tSignup("registrationError"), {
+          variant: "error",
+        });
       }
     }
   };

@@ -10,18 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum CurrencyType {
+  IRT
+  GBP
+  AED
+}
+
 model User {
-  id             String          @id @default(uuid())
-  username       String          @unique
-  email          String?         @unique
-  name           String?
-  family         String?
-  phone          String?         @unique
-  password       String?
-  telegramID     String?         @unique
-  whatsappnumber String?         @unique
-  cargoShipments CargoShipment[]
-  flights        Flight[]
+  id              String       @id @default(uuid())
+  username        String       @unique
+  email           String?      @unique
+  name            String?
+  family          String?
+  phone           String?      @unique
+  password        String?
+  telegramID      String?      @unique
+  whatsappnumber  String?      @unique
+  parcelShipments Parcel[]
+  flights         Flight[]
+  currencyType    CurrencyType @default(IRT)
 
   @@map(name: "users")
 }
@@ -42,19 +49,19 @@ model Flight {
   @@map(name: "flights")
 }
 
-model CargoShipment {
+model Parcel {
   id                   String    @id @default(uuid())
   approximateDateTime  DateTime?
   immediateDelivery    Boolean   @default(true)
-  cargoDescription     String
-  cargoWeight          Float?
-  cargoType            String?
+  parcelDescription    String
+  parcelWeight         Float?
+  parcelType           String?
   estimatedCost        Float?
   userID               String
   departureAirportId   String    @map("departureAirportId")
   destinationAirportId String    @map("destinationAirportId")
-  departureAirport     Airport   @relation("cargoShipmentDepurtures", fields: [departureAirportId], references: [id])
-  destinationAirport   Airport   @relation("cargoShipmentDestinations", fields: [destinationAirportId], references: [id])
+  departureAirport     Airport   @relation("parcelShipmentDepurtures", fields: [departureAirportId], references: [id])
+  destinationAirport   Airport   @relation("parcelShipmentDestinations", fields: [destinationAirportId], references: [id])
   User                 User      @relation(fields: [userID], references: [id])
 
   @@map(name: "CargoShipments")
@@ -89,23 +96,22 @@ model Country {
 }
 
 model City {
-  id        String  @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   countryId String
-  country   Country @relation(fields: [countryId], references: [id])
-
-  Airport Airport[]
+  country   Country   @relation(fields: [countryId], references: [id])
+  airports  Airport[]
 }
 
 model Airport {
-  id                        String          @id @default(uuid())
+  id                        String   @id @default(uuid())
   name                      String
   cityId                    String
-  city                      City            @relation(fields: [cityId], references: [id])
-  departureFlights          Flight[]        @relation("flightDepurtures")
-  destinationFlights        Flight[]        @relation("flightDestinations")
-  destinationCargoShipments CargoShipment[] @relation("cargoShipmentDestinations")
-  departureCargoShipments   CargoShipment[] @relation("cargoShipmentDepurtures")
+  city                      City     @relation(fields: [cityId], references: [id])
+  departureFlights          Flight[] @relation("flightDepurtures")
+  destinationFlights        Flight[] @relation("flightDestinations")
+  destinationCargoShipments Parcel[] @relation("parcelShipmentDestinations")
+  departureCargoShipments   Parcel[] @relation("parcelShipmentDepurtures")
 }
 
 model Translations {
@@ -116,6 +122,7 @@ model Translations {
   nl      String?
   hr      String?
   fa      String?
+  ar      String?
   de      String?
   es      String?
   fr      String?

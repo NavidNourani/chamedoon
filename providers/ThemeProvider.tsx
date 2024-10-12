@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
+import { faIR } from "@mui/x-date-pickers/locales";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Inter, Vazirmatn } from "next/font/google";
+import { SnackbarProvider } from "notistack";
 import { useEffect, useMemo } from "react";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
 import { useAppSettings } from "./AppSettingsProvider";
-
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 const vazirmatn = Vazirmatn({
   subsets: ["arabic", "latin-ext"],
@@ -28,16 +29,19 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const locale = useCurrentLocale();
   const theme = useMemo(
     () =>
-      createTheme({
-        ...getThemeOptions("dark"),
-        typography: {
-          fontFamily:
-            getDirection(locale) === "ltr"
-              ? inter.style.fontFamily
-              : vazirmatn.style.fontFamily,
+      createTheme(
+        {
+          ...getThemeOptions("dark"),
+          typography: {
+            fontFamily:
+              getDirection(locale) === "ltr"
+                ? inter.style.fontFamily
+                : vazirmatn.style.fontFamily,
+          },
+          direction: getDirection(locale),
         },
-        direction: getDirection(locale),
-      }),
+        faIR
+      ),
     [locale]
   );
 
@@ -76,7 +80,9 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       <MUIThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider dateAdapter={DateAdapter}>
-          {children}
+          <SnackbarProvider autoHideDuration={4000}>
+            {children}
+          </SnackbarProvider>
         </LocalizationProvider>
       </MUIThemeProvider>
     </CacheProvider>

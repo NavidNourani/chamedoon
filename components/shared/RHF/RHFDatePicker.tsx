@@ -2,15 +2,16 @@ import { useScopedI18n } from "@/locales/client";
 import { DateFormat, useAppSettings } from "@/providers/AppSettingsProvider";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"; // Import Button component
 import { DatePicker, DatePickerProps } from "@mui/x-date-pickers";
+import { Moment } from "moment";
 import { Controller, useFormContext } from "react-hook-form";
 
-type Props = DatePickerProps<string> & {
+type Props = DatePickerProps<Moment> & {
   name: string;
 };
 
 export default function RHFDatePicker({ name, ...other }: Props) {
   const { control, setValue } = useFormContext();
-  const t = useScopedI18n("add_cargo");
+  const t = useScopedI18n("add_parcel");
   const { dateFormat, setDateFormat } = useAppSettings(); // Get dateFormat and setDateFormat
 
   const toggleDateFormat = () => {

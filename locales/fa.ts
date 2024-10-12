@@ -3,17 +3,17 @@ console.log("Loaded FA");
 export const APP_NAME = "Cargo Tracking";
 
 export default {
-  add_cargo: {
+  add_parcel: {
     Cargo_created_successfully: "بار با موفقیت ایجاد شد",
-    There_was_an_error_on_creating_cargo: "خطایی در ایجاد بار رخ داده است",
-    Add_your_cargo_detail: "جزئیات بار خود را اضافه کنید",
+    There_was_an_error_on_creating_parcel: "خطایی در ایجاد بار رخ داده است",
+    Add_your_parcel_detail: "جزئیات بار خود را اضافه کنید",
     Departure_country: "کشور مبدا",
     Departure_Airport: "فرودگاه مبدا",
     Destination_country: "کشور مقصد",
     Destination_Airport: "فرودگاه مقصد",
-    Cargo_Description: "توضیحات بار",
-    Immediate_delivery: "تحویل فوری",
-    Submit: "ارسال",
+    parcel_description: "توضیحات بار",
+    Immediate_delivery: "عجله دارم",
+    Submit: "ثبت",
     There_was_an_error_on_getting_countries:
       "خطایی در دریافت کشورها رخ داده است",
     there_was_an_error_on_getting_cities: "خطایی در دریافت شهرها رخ داده است",
@@ -26,9 +26,24 @@ export default {
     dateFormat: "فرمت تاریخ",
     gregorian: "میلادی",
     jalali: "شمسی",
+    Parcel_Type: "نوع بار",
+    Parcel_Weight: "وزن بار تقریبی",
+    Document: "مدارک",
+    Other: "سایر",
+  },
+  parcelItem: {
+    parcel_description: "توضیحات",
+    departure: "مبدا",
+    destination: "مقصد",
+    parcel_details: "جزئیات",
+    approximate_date_time: "تاریخ",
+    parcel_type: "نوع",
+    parcel_weight: "وزن",
+    immediate_delivery: "عجله دارم",
+    estimated_cost: "هزینه تقریبی",
   },
   home: {
-    add_new_cargo: "اضافه کردن بسته جدید",
+    add_new_parcel: "اضافه کردن بسته جدید",
   },
   select_language: {
     en: "English",
