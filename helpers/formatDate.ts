@@ -12,3 +12,15 @@ export const formatDate = (
   }
   return momentJalaali(date).format("YYYY-MM-DD");
 };
+
+export const formatTime = (
+  dateFormat: DateFormat,
+  dateString: Date | null | undefined
+) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  if (dateFormat === "jalali") {
+    return momentJalaali(date).format("hh A");
+  }
+  return momentJalaali(date).format("hh A");
+};

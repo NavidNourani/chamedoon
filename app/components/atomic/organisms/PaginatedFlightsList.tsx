@@ -7,13 +7,15 @@ import axios from "axios";
 import { FunctionComponent, useMemo } from "react";
 import ReactSign from "react-sign";
 import ParcelItem from "../molecules/ParcelItem";
+import ParcelItemSkeleton from "../molecules/ParcelItemSkeleton";
 
 interface Props {}
 
-const PaginatedParcelsList: FunctionComponent<Props> = ({}) => {
+const PaginatedFlightsList: FunctionComponent<Props> = ({}) => {
   const {
     data: paginatedParcels,
     hasNextPage,
+    isLoading,
     fetchNextPage,
   } = useInfiniteQuery<PaginatedResponse<GetParcelsResponseData>>({
     queryKey: ["all-parcels"],
@@ -39,7 +41,9 @@ const PaginatedParcelsList: FunctionComponent<Props> = ({}) => {
     <Box
       gap={2}
       sx={{
+        overflow: "auto",
         display: "grid",
+        gap: 2,
         gridTemplateColumns: {
           xs: "1fr",
           sm: "1fr 1fr",
@@ -47,6 +51,10 @@ const PaginatedParcelsList: FunctionComponent<Props> = ({}) => {
         },
       }}
     >
+      {isLoading &&
+        new Array(12)
+          .fill(0)
+          .map((_, index) => <ParcelItemSkeleton key={index} />)}
       {parcels?.map((item) => (
         <ParcelItem key={item.id} parcel={item} />
       ))}
@@ -55,4 +63,4 @@ const PaginatedParcelsList: FunctionComponent<Props> = ({}) => {
   );
 };
 
-export default PaginatedParcelsList;
+export default PaginatedFlightsList;

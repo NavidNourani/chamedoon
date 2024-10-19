@@ -1,4 +1,5 @@
 import RHFAutocomplete from "@/components/shared/RHF/RHFAutocomplete";
+import RHFDateTimePicker from "@/components/shared/RHF/RHFDateTimePicker";
 import useLocations from "@/hooks/useLocations";
 import { useScopedI18n } from "@/locales/client";
 import { Typography } from "@mui/material";
@@ -6,30 +7,30 @@ import { City, Country } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-const DepartureStep = () => {
+const DestinationStep = () => {
   const { countries, getAirports } = useLocations();
-  const [departureCities, setDepartureCities] = useState<City[]>([]);
+  const [destinationCities, setDestinationCities] = useState<City[]>([]);
   const { watch, setValue } = useFormContext();
-  const t = useScopedI18n("add_parcel");
+  const t = useScopedI18n("add_flight");
 
   useEffect(() => {
     if (countries && countries.length > 0) {
-      setValue("departureCountry", countries[0]);
+      setValue("destinationCountry", countries[0]);
     }
   }, [countries, setValue]);
 
   useEffect(() => {
-    if (watch("departureCountry")) {
-      getAirports({ countryId: watch("departureCountry").id }).then(
+    if (watch("destinationCountry")) {
+      getAirports({ countryId: watch("destinationCountry").id }).then(
         (cities) => {
           if (cities && cities.length > 0) {
-            setDepartureCities(cities as City[]);
-            setValue("departureAirport", cities[0]);
+            setDestinationCities(cities as City[]);
+            setValue("destinationAirport", cities[0]);
           }
         }
       );
     }
-  }, [watch("departureCountry"), getAirports, setValue]);
+  }, [watch("destinationCountry"), getAirports, setValue]);
 
   return (
     <>
@@ -40,28 +41,30 @@ const DepartureStep = () => {
         fontWeight="bold"
         mb="12px"
       >
-        {t("departure_details")}
+        {t("destination_details")}
       </Typography>
       <RHFAutocomplete<Country, false, true, false>
-        sx={{ width: "100%" }}
         options={countries ?? []}
         getOptionLabel={(option) => option?.name ?? ""}
-        name="departureCountry"
-        label={t("Departure_country")}
-        disableClearable
+        name="destinationCountry"
+        label={t("Destination_country")}
       />
-      {!!departureCities.length && (
+      {!!destinationCities.length && (
         <RHFAutocomplete<City, false, true, false>
-          sx={{ width: "100%" }}
-          options={departureCities ?? []}
+          options={destinationCities ?? []}
           getOptionLabel={(option) => option?.name ?? ""}
-          name="departureAirport"
-          label={t("Departure_Airport")}
+          name="destinationAirport"
+          label={t("Destination_Airport")}
           disableClearable
         />
       )}
+
+      <RHFDateTimePicker
+        name="arrivalDateTime"
+        label={t("Arrival_Date_and_Time")}
+      />
     </>
   );
 };
 
-export default DepartureStep;
+export default DestinationStep;

@@ -1,10 +1,8 @@
+import { prisma } from "@/helpers/db";
 import { PaginatedResponse } from "@/types/apis/general";
 import { GetParcelsResponseData } from "@/types/apis/parcels";
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-
-const prisma = new PrismaClient();
 
 // Define the schema for validation
 const paginationSchema = z.object({
@@ -18,28 +16,69 @@ const paginationSchema = z.object({
     .transform((val) => (val ? Number(val) : 10)),
 });
 
+// Extend the schema to include new filters
+const filterSchema = z.object({
+  destinationCountryId: z.string().optional(),
+  departureCountryId: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  parcelType: z.string().optional(),
+});
+
+// Combine pagination and filter schemas
+const querySchema = paginationSchema.merge(filterSchema);
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const query = Object.fromEntries(searchParams.entries());
-  const result = paginationSchema.safeParse(query);
+  const result = querySchema.safeParse(query);
 
   if (!result.success) {
     return NextResponse.json(
       {
-        error: "Invalid pagination parameters",
+        error: "Invalid query parameters",
         issues: result.error.errors,
       },
       { status: 400 }
     );
   }
 
-  const { page, limit } = result.data;
+  const {
+    page,
+    limit,
+    departureCountryId,
+    destinationCountryId,
+    startDate,
+    endDate,
+    parcelType,
+  } = result.data;
   const skip = (page - 1) * limit;
 
   try {
     const parcels = await prisma.parcel.findMany({
       skip: skip,
       take: limit,
+      where: {
+        ...(departureCountryId && {
+          departureAirport: { city: { country: { id: departureCountryId } } },
+        }),
+        ...(destinationCountryId && {
+          destinationAirport: {
+            city: { country: { id: destinationCountryId } },
+          },
+        }),
+        ...(startDate && {
+          createdAt: {
+            gte: new Date(startDate),
+          },
+        }),
+        ...(endDate && {
+          createdAt: {
+            lte: new Date(endDate),
+          },
+        }),
+        ...(parcelType && { parcelType: parcelType }), // Updated field name
+      },
       include: {
         departureAirport: {
           include: {
@@ -62,7 +101,29 @@ export async function GET(req: Request) {
       },
     });
 
-    const totalShipments = await prisma.parcel.count();
+    const totalShipments = await prisma.parcel.count({
+      where: {
+        ...(departureCountryId && {
+          departureAirport: { city: { country: { id: departureCountryId } } },
+        }),
+        ...(destinationCountryId && {
+          destinationAirport: {
+            city: { country: { id: destinationCountryId } },
+          },
+        }),
+        ...(startDate && {
+          createdAt: {
+            gte: new Date(startDate),
+          },
+        }),
+        ...(endDate && {
+          createdAt: {
+            lte: new Date(endDate),
+          },
+        }),
+        ...(parcelType && { parcelType: parcelType }), // Updated field name
+      },
+    });
 
     return NextResponse.json<PaginatedResponse<GetParcelsResponseData>>(
       {
@@ -74,6 +135,7 @@ export async function GET(req: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error fetching parcel shipments", error);
     return NextResponse.json(
       { error: "Error fetching parcel shipments" },
       { status: 500 }

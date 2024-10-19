@@ -3,7 +3,7 @@ import RHFDatePicker from "@/components/shared/RHF/RHFDatePicker";
 import { RHFSelect } from "@/components/shared/RHF/RHFSelect";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import { useScopedI18n } from "@/locales/client";
-import { MenuItem } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -16,8 +16,16 @@ const ParcelDetailsStep = () => {
 
   return (
     <>
+      <Typography
+        variant="h1"
+        fontSize="2rem"
+        textAlign="center"
+        fontWeight="bold"
+        mb="12px"
+      >
+        {t("Parcel_details")}
+      </Typography>
       <RHFTextField name="parcelDescription" label={t("parcel_description")} />
-
       <RHFSelect name="parcelType" label={t("Parcel_Type")}>
         <MenuItem value="Document">{t("Document")}</MenuItem>
         <MenuItem value="Other">{t("Other")}</MenuItem>
@@ -25,7 +33,7 @@ const ParcelDetailsStep = () => {
       <RHFTextField
         type="number"
         name="parcelWeight"
-        label={t("Parcel_Weight")}
+        label={t("Parcel_Weight_grams")}
       />
       <RHFTextField
         type="number"

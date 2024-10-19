@@ -1,4 +1,5 @@
 import RHFAutocomplete from "@/components/shared/RHF/RHFAutocomplete";
+import RHFDateTimePicker from "@/components/shared/RHF/RHFDateTimePicker";
 import useLocations from "@/hooks/useLocations";
 import { useScopedI18n } from "@/locales/client";
 import { Typography } from "@mui/material";
@@ -10,7 +11,7 @@ const DepartureStep = () => {
   const { countries, getAirports } = useLocations();
   const [departureCities, setDepartureCities] = useState<City[]>([]);
   const { watch, setValue } = useFormContext();
-  const t = useScopedI18n("add_parcel");
+  const t = useScopedI18n("add_flight");
 
   useEffect(() => {
     if (countries && countries.length > 0) {
@@ -60,6 +61,10 @@ const DepartureStep = () => {
           disableClearable
         />
       )}
+      <RHFDateTimePicker
+        name="departureDateTime"
+        label={t("Departure_Date_and_Time")}
+      />
     </>
   );
 };

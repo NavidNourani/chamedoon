@@ -1,10 +1,10 @@
 "use client";
 
 import { useScopedI18n } from "@/locales/client";
-import { createParcelForCurrentUser } from "@/serverActions/createParcelForCurrentUser";
+import { createFlightForCurrentUser } from "@/serverActions/createFlightForCurrentUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, useTheme } from "@mui/material";
-import { Parcel } from "@prisma/client";
+import { Flight } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
@@ -13,110 +13,87 @@ import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import DepartureStep from "./steps/DepartureStep";
 import DestinationStep from "./steps/DestinationStep";
-import ParcelDetailsStep from "./steps/ParcelDetailsStep";
+import FlightDetailsStep from "./steps/FlightDetailsStep";
 
 // Define the validation schema for the form fields
 const schema = yup.object().shape({
-  approximateDateTime: yup.date().optional(),
-  immediateDelivery: yup.boolean().required(),
-  departureCountry: yup
-    .object({
-      id: yup.string().required(),
-      iso2: yup.string().required(),
-      iso3: yup.string().required(),
-      name: yup.string().required(),
-    })
-    .required("Departure country is required"),
-  departureAirport: yup
-    .object({
-      id: yup.string().required(),
-      name: yup.string().required(),
-      countryIso2: yup.string().optional(),
-    })
-    .required("Departure Airport is required"),
-  destinationCountry: yup
-    .object({
-      id: yup.string().required(),
-      iso2: yup.string().required(),
-      iso3: yup.string().required(),
-      name: yup.string().required(),
-    })
-    .required("Destination country is required"),
-  destinationAirport: yup
-    .object({
-      id: yup.string().required(),
-      name: yup.string().required(),
-      countryIso2: yup.string().optional(),
-    })
-    .required("Destination Airport is required"),
-  parcelDescription: yup.string().required(),
+  departureDateTime: yup.date().required("Departure date and time is required"),
+  arrivalDateTime: yup.date().required("Arrival date and time is required"),
+  acceptableParcelDescription: yup
+    .string()
+    .required("Cargo description is required"),
   estimatedCost: yup
     .number()
     .nullable()
     .transform((value) => (isNaN(value) ? null : value))
     .optional(),
-  parcelWeight: yup
-    .number()
-    .nullable()
-    .transform((value) => (isNaN(value) ? null : value))
-    .required(),
-  parcelType: yup.string().nullable().required(),
+  departureAirport: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required("Departure Airport is required"),
+  destinationAirport: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required("Destination Airport is required"),
 });
 
 const FlightForm = () => {
   const theme = useTheme();
-  const t = useScopedI18n("add_parcel");
+  const t = useScopedI18n("add_flight");
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const methods = useForm<yup.InferType<typeof schema>>({
     resolver: yupResolver(schema) as any,
     defaultValues: {
-      immediateDelivery: false,
-      parcelDescription: "",
+      departureDateTime: new Date(),
+      arrivalDateTime: new Date(),
+      acceptableParcelDescription: "",
       estimatedCost: undefined,
-      approximateDateTime: new Date(),
     },
   });
   const [step, setStep] = useState(0);
 
   useEffect(() => {
     methods.reset({
-      immediateDelivery: false,
-      parcelDescription: "",
+      departureDateTime: new Date(),
+      arrivalDateTime: new Date(),
+      acceptableParcelDescription: "",
       estimatedCost: undefined,
-      approximateDateTime: undefined,
     });
   }, [methods]);
 
   const onSubmit = async (data: yup.InferType<typeof schema>) => {
     try {
-      const dataToSend: Omit<Parcel, "userID" | "id"> = {
+      const dataToSend: Omit<Flight, "userID" | "id"> = {
+        departureDateTime: data.departureDateTime,
+        arrivalDateTime: data.arrivalDateTime,
+        acceptableParcelDescription: data.acceptableParcelDescription,
+        estimatedCost: data.estimatedCost ?? null,
         departureAirportId: data.departureAirport.id,
         destinationAirportId: data.destinationAirport.id,
-        parcelDescription: data.parcelDescription,
-        estimatedCost: data.estimatedCost ?? null,
-        immediateDelivery: data.immediateDelivery,
-        approximateDateTime: data.approximateDateTime ?? null,
-        parcelWeight: data.parcelWeight ?? null,
-        parcelType: data.parcelType ?? null,
       };
-      const res = await createParcelForCurrentUser(dataToSend);
+      const res = await createFlightForCurrentUser(dataToSend);
       if (res.success) {
-        enqueueSnackbar(t("Parcel_created_successfully"), {
+        enqueueSnackbar(t("Flight_created_successfully"), {
           variant: "success",
         });
         router.push("/");
       } else {
-        enqueueSnackbar(t("There_was_an_error_on_creating_parcel"), {
+        enqueueSnackbar(t("There_was_an_error_on_creating_flight"), {
           variant: "error",
         });
       }
     } catch (e) {
-      enqueueSnackbar(t("There_was_an_error_on_creating_parcel"), {
+      enqueueSnackbar(t("There_was_an_error_on_creating_flight"), {
         variant: "error",
       });
     }
   };
+
   const handleNext = () => setStep((prev) => prev + 1);
   const handleBack = () => setStep((prev) => prev - 1);
 
@@ -131,7 +108,7 @@ const FlightForm = () => {
       case 1:
         return <DestinationStep />;
       case 2:
-        return <ParcelDetailsStep />;
+        return <FlightDetailsStep />;
       default:
         return null;
     }
@@ -148,7 +125,7 @@ const FlightForm = () => {
         boxShadow:
           theme.palette.mode === "dark"
             ? "0px 4px 10px rgba(255, 255, 255, 0.5)"
-            : "0px 4px 10px rgba(0, 0, 0, 0.5)", // Conditional box shadow
+            : "0px 4px 10px rgba(0, 0, 0, 0.5)",
       }}
       width="min(80%, 900px)"
       height="min(70%, 600px)"
@@ -169,21 +146,11 @@ const FlightForm = () => {
           }}
         >
           <Image
-            src="/images/woman.jpg"
-            alt="Woman with parcel"
+            src="/images/sending.jpg"
+            alt="Airplane"
             layout="fill"
             objectFit="cover"
           />
-          <Box
-            sx={{ position: "absolute", bottom: 40, left: 40, color: "white" }}
-          >
-            {/* <Typography variant="h4" fontWeight="bold">
-            {t("Ship_your_parcel")}
-          </Typography>
-          <Typography variant="h4" fontWeight="bold">
-            {t("Across_the_world")}
-          </Typography> */}
-          </Box>
         </Box>
         <Box
           sx={{

@@ -1,4 +1,3 @@
-import { useI18n } from "@/locales/client";
 import { City, Country } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -6,7 +5,6 @@ import { useState } from "react";
 import { useDebounce } from "use-debounce";
 
 const useLocations = () => {
-  const t = useI18n();
   const [countrySearchTerm, setCountrySearchTerm] = useState("");
   const [debouncedCountrySearchTerm] = useDebounce(countrySearchTerm, 500);
 

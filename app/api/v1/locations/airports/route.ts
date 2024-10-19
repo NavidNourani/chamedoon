@@ -7,7 +7,6 @@ export const GET = async (req: NextRequest) => {
   try {
     const query = nextURL.searchParams.get("search") || undefined;
     const countryId = nextURL.searchParams.get("countryId") || undefined;
-    console.log("Search query:", query);
 
     if (!countryId) {
       return new Response("Country id is required!", { status: 400 });
@@ -24,7 +23,6 @@ export const GET = async (req: NextRequest) => {
         city: true,
       },
     });
-
 
     if (airports.length === 0) {
       return new Response("No airport found!", { status: 404 });

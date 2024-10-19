@@ -43,5 +43,13 @@ export const getThemeOptions = (mode: PaletteMode): ThemeOptions => ({
         },
       },
     },
+    MuiTypography: {
+      styleOverrides: {
+        h1: {
+          fontSize: "46px",
+          fontWeight: 900,
+        },
+      },
+    },
   },
 });

@@ -6,7 +6,6 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const query = nextURL.searchParams.get("search") || undefined;
-    console.log("Search query:", query);
 
     const countries = await prisma.country.findMany({
       where: {

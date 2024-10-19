@@ -1,6 +1,7 @@
 import RHFAutocomplete from "@/components/shared/RHF/RHFAutocomplete";
 import useLocations from "@/hooks/useLocations";
 import { useScopedI18n } from "@/locales/client";
+import { Typography } from "@mui/material";
 import { City, Country } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -32,6 +33,15 @@ const DestinationStep = () => {
 
   return (
     <>
+      <Typography
+        variant="h1"
+        fontSize="2rem"
+        textAlign="center"
+        fontWeight="bold"
+        mb="12px"
+      >
+        {t("destination_details")}
+      </Typography>
       <RHFAutocomplete<Country, false, true, false>
         options={countries ?? []}
         getOptionLabel={(option) => option?.name ?? ""}

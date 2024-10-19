@@ -1,9 +1,9 @@
+import { prisma } from "@/helpers/db";
 import { login } from "@/serverActions/user/login";
 import { User } from "@prisma/client";
 import NextAuth, { AuthOptions } from "next-auth";
 import credentialProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "@/helpers/db";
 
 export const authOptions: AuthOptions = {
   pages: {
@@ -42,15 +42,23 @@ export const authOptions: AuthOptions = {
 
         if (!existingUser) {
           // Create a new user if they don't exist
-          await prisma.user.create({
+          const newUser = await prisma.user.create({
             data: {
               email: profile?.email!,
               name: (profile?.name as any)?.givenName,
               family: (profile?.name as any)?.familyName,
-              // You might want to generate a random username or use the email
               username: (profile?.email as any)!.split("@")[0],
             },
           });
+          // Update the user object with the newly created user
+          user.id = newUser.id;
+          user.email = newUser.email;
+          user.name = newUser.name;
+        } else {
+          // Update the user object with the existing user's information
+          user.id = existingUser.id;
+          user.email = existingUser.email;
+          user.name = existingUser.name;
         }
       }
       return true;

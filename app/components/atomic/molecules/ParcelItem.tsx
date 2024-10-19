@@ -1,7 +1,9 @@
 import { formatDate } from "@/helpers/formatDate";
 import { useScopedI18n } from "@/locales/client";
 import { GetParcelsResponseData } from "@/types/apis/parcels";
+import { ArrowDropDownTwoTone } from "@mui/icons-material";
 import {
+  Button,
   Card,
   CardContent,
   Divider,
@@ -15,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 interface ParcelItemProps {
   parcel: GetParcelsResponseData;
@@ -23,11 +25,15 @@ interface ParcelItemProps {
 
 const ParcelItem: FunctionComponent<ParcelItemProps> = ({ parcel }) => {
   const t = useScopedI18n("parcelItem");
+  const [showCompleteDetails, setShowCompleteDetails] = useState(false);
+
+  const toggleShowCompleteDetails = () =>
+    setShowCompleteDetails((prev) => !prev);
 
   return (
-    <Card sx={{}}>
+    <Card sx={{ height: "fit-content" }}>
       <CardContent sx={{ gap: 1, display: "flex", flexDirection: "column" }}>
-        <Stack direction="row" width="100%" gap={1}>
+        <Stack direction="row" width="100%" gap={1} textAlign="center">
           <Stack width="50%" gap={1} alignItems={"center"}>
             <Typography sx={{ fontSize: "1rem", fontWeight: "bold" }}>
               {t("departure")}
@@ -60,53 +66,74 @@ const ParcelItem: FunctionComponent<ParcelItemProps> = ({ parcel }) => {
           </Stack>
         </Stack>
         <Divider sx={{ my: 1 }} />
-        <Typography sx={{ alignSelf: "center" }}>
-          {t("parcel_details")}
-        </Typography>
-        <TableContainer>
-          <Table>
-            <TableBody>
-              {parcel.parcelDescription && (
-                <TableRow>
-                  <TableCell>{t("parcel_description")}</TableCell>
-                  <TableCell>{parcel.parcelDescription}</TableCell>
-                </TableRow>
-              )}
-              {parcel.approximateDateTime && (
-                <TableRow>
-                  <TableCell>{t("approximate_date_time")}</TableCell>
-                  <TableCell>
-                    {formatDate("jalali", parcel.approximateDateTime)}
-                  </TableCell>
-                </TableRow>
-              )}
-              {parcel.parcelType && (
-                <TableRow>
-                  <TableCell>{t("parcel_type")}</TableCell>
-                  <TableCell>{parcel.parcelType}</TableCell>
-                </TableRow>
-              )}
-              {parcel.parcelWeight && (
-                <TableRow>
-                  <TableCell>{t("parcel_weight")}</TableCell>
-                  <TableCell>{parcel.parcelWeight}</TableCell>
-                </TableRow>
-              )}
-              {parcel.estimatedCost && (
-                <TableRow>
-                  <TableCell>{t("estimated_cost")}</TableCell>
-                  <TableCell>{parcel.estimatedCost}</TableCell>
-                </TableRow>
-              )}
-              {parcel.immediateDelivery && (
-                <TableRow>
-                  <TableCell>{t("immediate_delivery")}</TableCell>
-                  <TableCell>{parcel.immediateDelivery}</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {showCompleteDetails && (
+          <>
+            <Typography sx={{ alignSelf: "center" }}>
+              {t("parcel_details")}
+            </Typography>
+            <TableContainer>
+              <Table>
+                <TableBody>
+                  {parcel.parcelDescription && (
+                    <TableRow>
+                      <TableCell>{t("parcel_description")}</TableCell>
+                      <TableCell>{parcel.parcelDescription}</TableCell>
+                    </TableRow>
+                  )}
+                  {parcel.approximateDateTime && (
+                    <TableRow>
+                      <TableCell>{t("approximate_date_time")}</TableCell>
+                      <TableCell>
+                        {formatDate("jalali", parcel.approximateDateTime)}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {parcel.parcelType && (
+                    <TableRow>
+                      <TableCell>{t("parcel_type")}</TableCell>
+                      <TableCell>{parcel.parcelType}</TableCell>
+                    </TableRow>
+                  )}
+                  {parcel.parcelWeight && (
+                    <TableRow>
+                      <TableCell>{t("parcel_weight")}</TableCell>
+                      <TableCell>{parcel.parcelWeight}</TableCell>
+                    </TableRow>
+                  )}
+                  {parcel.estimatedCost && (
+                    <TableRow>
+                      <TableCell>{t("estimated_cost")}</TableCell>
+                      <TableCell>{parcel.estimatedCost}</TableCell>
+                    </TableRow>
+                  )}
+                  {parcel.immediateDelivery && (
+                    <TableRow>
+                      <TableCell>{t("immediate_delivery")}</TableCell>
+                      <TableCell>{parcel.immediateDelivery}</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        )}
+
+        <Button
+          endIcon={
+            <ArrowDropDownTwoTone
+              sx={{
+                transform: showCompleteDetails ? "rotate(180deg)" : undefined,
+              }}
+            />
+          }
+          variant="outlined"
+          color="primary"
+          onClick={toggleShowCompleteDetails}
+        >
+          {showCompleteDetails
+            ? t("show_less_details")
+            : t("show_complete_details")}
+        </Button>
       </CardContent>
     </Card>
   );

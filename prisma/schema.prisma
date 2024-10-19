@@ -34,17 +34,17 @@ model User {
 }
 
 model Flight {
-  id                         String   @id @default(uuid())
-  departureDateTime          DateTime
-  arrivalDateTime            DateTime
-  acceptableCargoDescription String
-  estimatedCost              Float?
-  userID                     String
-  user                       User     @relation(fields: [userID], references: [id])
-  departureAirportId         String   @map("departureAirportId")
-  destinationAirportId       String   @map("destinationAirportId")
-  departureCity              Airport  @relation("flightDepurtures", fields: [departureAirportId], references: [id])
-  destinationCity            Airport  @relation("flightDestinations", fields: [destinationAirportId], references: [id])
+  id                          String   @id @default(uuid())
+  departureDateTime           DateTime
+  arrivalDateTime             DateTime
+  acceptableParcelDescription String   @default("")
+  estimatedCost        Float?
+  userID               String
+  user                 User    @relation(fields: [userID], references: [id])
+  departureAirportId   String  @map("departureAirportId")
+  destinationAirportId String  @map("destinationAirportId")
+  departureAirport     Airport @relation("flightDepurtures", fields: [departureAirportId], references: [id])
+  destinationAirport   Airport @relation("flightDestinations", fields: [destinationAirportId], references: [id])
 
   @@map(name: "flights")
 }
