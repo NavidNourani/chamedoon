@@ -16,8 +16,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { FunctionComponent, useState } from "react";
+import Link from "next/link";
+import { FunctionComponent, useMemo, useState } from "react";
 
 interface ParcelItemProps {
   parcel: GetParcelsResponseData;
@@ -26,6 +28,11 @@ interface ParcelItemProps {
 const ParcelItem: FunctionComponent<ParcelItemProps> = ({ parcel }) => {
   const t = useScopedI18n("parcelItem");
   const [showCompleteDetails, setShowCompleteDetails] = useState(false);
+  const { data: session } = useSession();
+
+  const isCurrentUserParcel = useMemo(() => {
+    return parcel.userID === session?.user.id;
+  }, [parcel.userID, session?.user.id]);
 
   const toggleShowCompleteDetails = () =>
     setShowCompleteDetails((prev) => !prev);
@@ -134,6 +141,24 @@ const ParcelItem: FunctionComponent<ParcelItemProps> = ({ parcel }) => {
             ? t("show_less_details")
             : t("show_complete_details")}
         </Button>
+
+        {isCurrentUserParcel && (
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            mt={2}
+          >
+            <Link href={`/addParcel?parcelID=${parcel.id}`}>
+              <Button variant="contained" color="secondary">
+                {t("edit")}
+              </Button>
+            </Link>
+            <Typography variant="subtitle1" color="primary" fontWeight="bold">
+              {t("your_parcel")}
+            </Typography>
+          </Stack>
+        )}
       </CardContent>
     </Card>
   );

@@ -18,7 +18,7 @@ const PaginatedFlightsList: FunctionComponent<Props> = ({}) => {
     isLoading,
     fetchNextPage,
   } = useInfiniteQuery<PaginatedResponse<GetParcelsResponseData>>({
-    queryKey: ["all-parcels"],
+    queryKey: ["parcels"],
     queryFn: ({ pageParam }) =>
       axios
         .get("/api/v1/parcels", { params: { page: pageParam } })

@@ -1,23 +1,17 @@
 import { getDirection } from "@/helpers/getDirection";
-import { APP_NAME } from "@/locales/en";
+import { getScopedI18n } from "@/locales/server";
 import AppSettingsProvider from "@/providers/AppSettingsProvider";
 import ClientSideProviders from "@/providers/ClientSideProviders";
 import { Stack } from "@mui/material";
-import type { Metadata } from "next";
 import { getSession } from "next-auth/react";
-import { Inter, Vazirmatn } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], display: "swap" });
-const vazirmatn = Vazirmatn({
-  subsets: ["arabic", "latin-ext"],
-  display: "swap",
-});
-
-export const metadata: Metadata = {
-  title: APP_NAME,
-};
-
+export async function generateMetadata() {
+  const tPageTitle = await getScopedI18n("pageTitle");
+  return {
+    title: tPageTitle("orbit_pax"),
+  };
+}
 export default async function RootLayout({
   children,
   params: { locale },
@@ -27,13 +21,12 @@ export default async function RootLayout({
 }>) {
   const session = await getSession();
   const direction = getDirection(locale);
-  const fontClass = direction === "ltr" ? inter.className : vazirmatn.className;
   return (
     <html lang={locale} dir={direction}>
-      <body className={fontClass}>
+      <body>
         <AppSettingsProvider>
           <ClientSideProviders session={session!}>
-            <Stack width="100%" height="100%">
+            <Stack width="100%" height="100%" overflow="hidden">
               {children}
             </Stack>
           </ClientSideProviders>

@@ -1,3 +1,4 @@
+"use client";
 import ParcelItem from "@/app/components/atomic/molecules/ParcelItem";
 import ParcelItemSkeleton from "@/app/components/atomic/molecules/ParcelItemSkeleton";
 import { GetParcelsResponseData } from "@/types/apis/parcels";
@@ -8,8 +9,8 @@ import ReactSign from "react-sign";
 interface ParcelListProps {
   isLoading: boolean;
   parcels: GetParcelsResponseData[] | undefined;
-  hasNextPage: boolean | undefined;
-  fetchNextPage: () => void;
+  hasNextPage?: boolean | undefined;
+  fetchNextPage?: () => void;
 }
 
 const ParcelList = memo(

@@ -12,13 +12,13 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import { faIR } from "@mui/x-date-pickers/locales";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Inter, Vazirmatn } from "next/font/google";
+import { Open_Sans, Vazirmatn } from "next/font/google";
 import { SnackbarProvider } from "notistack";
 import { useEffect, useMemo } from "react";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
 import { useAppSettings } from "./AppSettingsProvider";
-const inter = Inter({ subsets: ["latin"], display: "swap" });
+const openSans = Open_Sans({ subsets: ["latin"], display: "swap" });
 const vazirmatn = Vazirmatn({
   subsets: ["arabic", "latin-ext"],
   display: "swap",
@@ -35,7 +35,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
           typography: {
             fontFamily:
               getDirection(locale) === "ltr"
-                ? inter.style.fontFamily
+                ? openSans.style.fontFamily
                 : vazirmatn.style.fontFamily,
           },
           direction: getDirection(locale),

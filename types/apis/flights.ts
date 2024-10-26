@@ -1,8 +1,9 @@
-import { City, Country } from "@prisma/client";
+import { City, Country, Flight } from "@prisma/client";
 
 export interface GetFlightsResponseData {
   id: string;
   departureDateTime: Date;
+  userID: string;
   arrivalDateTime: Date;
   departureAirport: {
     id: string;
@@ -13,7 +14,7 @@ export interface GetFlightsResponseData {
       country: {
         id: string;
         name: string;
-        iso2: string;
+        iso2: string | null;
       };
     };
   };
@@ -37,4 +38,36 @@ export interface GetFlightsResponseData {
 
 type CityType = City & {
   country: Pick<Country, "id" | "name" | "iso2">;
+};
+
+export type GetFlightResponseData = Omit<
+  Flight,
+  "departureAirportId" | "destinationAirportId"
+> & {
+  departureAirport: {
+    id: string;
+    name: string;
+    city: {
+      id: string;
+      name: string;
+      country: {
+        id: string;
+        name: string;
+        iso2: string | null;
+      };
+    };
+  };
+  destinationAirport: {
+    id: string;
+    name: string;
+    city: {
+      id: string;
+      name: string;
+      country: {
+        id: string;
+        name: string;
+        iso2: string | null;
+      };
+    };
+  };
 };

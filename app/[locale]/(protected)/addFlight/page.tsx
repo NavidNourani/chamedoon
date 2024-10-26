@@ -1,21 +1,23 @@
 "use client";
 
 import { useScopedI18n } from "@/locales/client";
-import { createFlightForCurrentUser } from "@/serverActions/createFlightForCurrentUser";
+import { createOrUpdateFlightForCurrentUser } from "@/serverActions/createOrUpdateFlightForCurrentUser";
+import { GetFlightResponseData } from "@/types/apis/flights";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { Flight } from "@prisma/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import DepartureStep from "./steps/DepartureStep";
 import DestinationStep from "./steps/DestinationStep";
 import FlightDetailsStep from "./steps/FlightDetailsStep";
 
-// Define the validation schema for the form fields
 const schema = yup.object().shape({
   departureDateTime: yup.date().required("Departure date and time is required"),
   arrivalDateTime: yup.date().required("Arrival date and time is required"),
@@ -33,19 +35,42 @@ const schema = yup.object().shape({
       name: yup.string().required(),
     })
     .required("Departure Airport is required"),
+  departureCountry: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required("Departure Country is required"),
   destinationAirport: yup
     .object({
       id: yup.string().required(),
       name: yup.string().required(),
     })
     .required("Destination Airport is required"),
+  destinationCountry: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required("Destination Country is required"),
 });
 
 const FlightForm = () => {
   const theme = useTheme();
   const t = useScopedI18n("add_flight");
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const [step, setStep] = useState(0);
+  const searchParams = useSearchParams();
   const { enqueueSnackbar } = useSnackbar();
+  const flightID = useMemo(() => searchParams.get("flightID"), [searchParams]);
+
+  const { data: flight } = useQuery<GetFlightResponseData>({
+    queryKey: ["flights", flightID],
+    queryFn: () =>
+      axios.get(`/api/v1/flights/${flightID}`).then((res) => res.data),
+    enabled: !!flightID,
+  });
   const methods = useForm<yup.InferType<typeof schema>>({
     resolver: yupResolver(schema) as any,
     defaultValues: {
@@ -53,22 +78,38 @@ const FlightForm = () => {
       arrivalDateTime: new Date(),
       acceptableParcelDescription: "",
       estimatedCost: undefined,
+      departureCountry: undefined,
+      destinationCountry: undefined,
     },
   });
-  const [step, setStep] = useState(0);
 
   useEffect(() => {
-    methods.reset({
-      departureDateTime: new Date(),
-      arrivalDateTime: new Date(),
-      acceptableParcelDescription: "",
-      estimatedCost: undefined,
-    });
-  }, [methods]);
+    if (flight) {
+      methods.reset({
+        departureDateTime: flight.departureDateTime,
+        arrivalDateTime: flight.arrivalDateTime,
+        acceptableParcelDescription: flight.acceptableParcelDescription,
+        estimatedCost: flight.estimatedCost,
+        departureAirport: flight.departureAirport,
+        destinationAirport: flight.destinationAirport,
+        departureCountry: flight.departureAirport.city.country,
+        destinationCountry: flight.destinationAirport.city.country,
+      });
+    } else {
+      methods.reset({
+        departureDateTime: new Date(),
+        arrivalDateTime: new Date(),
+        acceptableParcelDescription: "",
+        estimatedCost: undefined,
+      });
+    }
+  }, [flight, flightID, methods]);
 
   const onSubmit = async (data: yup.InferType<typeof schema>) => {
     try {
-      const dataToSend: Omit<Flight, "userID" | "id"> = {
+      const dataToSend: Omit<Flight, "userID" | "id"> &
+        Partial<Pick<Flight, "id">> = {
+        id: flightID ?? undefined,
         departureDateTime: data.departureDateTime,
         arrivalDateTime: data.arrivalDateTime,
         acceptableParcelDescription: data.acceptableParcelDescription,
@@ -76,11 +117,17 @@ const FlightForm = () => {
         departureAirportId: data.departureAirport.id,
         destinationAirportId: data.destinationAirport.id,
       };
-      const res = await createFlightForCurrentUser(dataToSend);
+      const res = await createOrUpdateFlightForCurrentUser(dataToSend);
       if (res.success) {
-        enqueueSnackbar(t("Flight_created_successfully"), {
-          variant: "success",
-        });
+        queryClient.invalidateQueries({ queryKey: ["flights"], exact: false });
+        enqueueSnackbar(
+          flightID
+            ? t("Flight_updated_successfully")
+            : t("Flight_created_successfully"),
+          {
+            variant: "success",
+          }
+        );
         router.push("/");
       } else {
         enqueueSnackbar(t("There_was_an_error_on_creating_flight"), {
@@ -94,7 +141,10 @@ const FlightForm = () => {
     }
   };
 
-  const handleNext = () => setStep((prev) => prev + 1);
+  const handleNext = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault(); // Prevent default form submission
+    setStep((prev) => prev + 1);
+  };
   const handleBack = () => setStep((prev) => prev - 1);
 
   useEffect(() => {
@@ -188,11 +238,19 @@ const FlightForm = () => {
                     {t("Back")}
                   </Button>
                   {step < 2 ? (
-                    <Button variant="contained" onClick={handleNext}>
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      type="button"
+                    >
                       {t("Next")}
                     </Button>
                   ) : (
-                    <Button type="submit" variant="contained">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      // Remove any onClick that might interfere with submission
+                    >
                       {t("Submit")}
                     </Button>
                   )}

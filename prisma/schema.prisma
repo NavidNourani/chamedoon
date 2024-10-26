@@ -16,19 +16,27 @@ enum CurrencyType {
   AED
 }
 
+enum DateSystem {
+  JALALI
+  GREGORIAN
+}
+
 model User {
-  id              String       @id @default(uuid())
-  username        String       @unique
-  email           String?      @unique
-  name            String?
-  family          String?
-  phone           String?      @unique
-  password        String?
-  telegramID      String?      @unique
-  whatsappnumber  String?      @unique
-  parcelShipments Parcel[]
-  flights         Flight[]
-  currencyType    CurrencyType @default(IRT)
+  id                  String       @id @default(uuid())
+  username            String       @unique
+  photo               String?
+  email               String?      @unique
+  name                String?
+  family              String?
+  phone               String?      @unique
+  password            String?
+  telegramID          String?      @unique
+  whatsappnumber      String?      @unique
+  parcelShipments     Parcel[]
+  flights             Flight[]
+  currencyType        CurrencyType @default(IRT)
+  preferredDateSystem DateSystem   @default(GREGORIAN)
+  createdAt           DateTime     @default(now())
 
   @@map(name: "users")
 }
@@ -38,13 +46,13 @@ model Flight {
   departureDateTime           DateTime
   arrivalDateTime             DateTime
   acceptableParcelDescription String   @default("")
-  estimatedCost        Float?
-  userID               String
-  user                 User    @relation(fields: [userID], references: [id])
-  departureAirportId   String  @map("departureAirportId")
-  destinationAirportId String  @map("destinationAirportId")
-  departureAirport     Airport @relation("flightDepurtures", fields: [departureAirportId], references: [id])
-  destinationAirport   Airport @relation("flightDestinations", fields: [destinationAirportId], references: [id])
+  estimatedCost               Float?
+  userID                      String
+  user                        User     @relation(fields: [userID], references: [id])
+  departureAirportId          String   @map("departureAirportId")
+  destinationAirportId        String   @map("destinationAirportId")
+  departureAirport            Airport  @relation("flightDepurtures", fields: [departureAirportId], references: [id])
+  destinationAirport          Airport  @relation("flightDestinations", fields: [destinationAirportId], references: [id])
 
   @@map(name: "flights")
 }

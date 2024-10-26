@@ -1,14 +1,17 @@
 "use client";
 
 import { useScopedI18n } from "@/locales/client";
-import { createParcelForCurrentUser } from "@/serverActions/createParcelForCurrentUser";
+import { createOrUpdateParcelForCurrentUser } from "@/serverActions/createOrUpdateParcelForCurrentUser";
+import { GetParcelsResponseData } from "@/types/apis/parcels";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { Parcel } from "@prisma/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import DepartureStep from "./steps/DepartureStep";
@@ -23,7 +26,6 @@ const schema = yup.object().shape({
     .object({
       id: yup.string().required(),
       iso2: yup.string().required(),
-      iso3: yup.string().required(),
       name: yup.string().required(),
     })
     .required("Departure country is required"),
@@ -38,7 +40,6 @@ const schema = yup.object().shape({
     .object({
       id: yup.string().required(),
       iso2: yup.string().required(),
-      iso3: yup.string().required(),
       name: yup.string().required(),
     })
     .required("Destination country is required"),
@@ -63,11 +64,23 @@ const schema = yup.object().shape({
   parcelType: yup.string().nullable().required(),
 });
 
-const FlightForm = () => {
+const ParcelForm = () => {
   const theme = useTheme();
-  const t = useScopedI18n("add_parcel");
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const t = useScopedI18n("add_parcel");
   const { enqueueSnackbar } = useSnackbar();
+  const [step, setStep] = useState(0);
+  const searchParams = useSearchParams();
+  const parcelID = useMemo(() => searchParams.get("parcelID"), [searchParams]);
+
+  const { data: parcel } = useQuery<GetParcelsResponseData>({
+    queryKey: ["parcels", parcelID],
+    queryFn: () =>
+      axios.get(`/api/v1/parcels/${parcelID}`).then((res) => res.data),
+    enabled: !!parcelID,
+  });
+
   const methods = useForm<yup.InferType<typeof schema>>({
     resolver: yupResolver(schema) as any,
     defaultValues: {
@@ -77,20 +90,36 @@ const FlightForm = () => {
       approximateDateTime: new Date(),
     },
   });
-  const [step, setStep] = useState(0);
 
   useEffect(() => {
-    methods.reset({
-      immediateDelivery: false,
-      parcelDescription: "",
-      estimatedCost: undefined,
-      approximateDateTime: undefined,
-    });
-  }, [methods]);
+    if (parcel) {
+      methods.reset({
+        immediateDelivery: parcel.immediateDelivery,
+        parcelDescription: parcel.parcelDescription,
+        estimatedCost: parcel.estimatedCost,
+        approximateDateTime: parcel.approximateDateTime ?? undefined,
+        parcelWeight: parcel.parcelWeight ?? undefined,
+        parcelType: parcel.parcelType ?? undefined,
+        departureCountry: parcel.departureAirport.city.country as any,
+        departureAirport: parcel.departureAirport,
+        destinationCountry: parcel.destinationAirport.city.country as any,
+        destinationAirport: parcel.destinationAirport,
+      });
+    } else {
+      methods.reset({
+        immediateDelivery: false,
+        parcelDescription: "",
+        estimatedCost: undefined,
+        approximateDateTime: undefined,
+      });
+    }
+  }, [methods, parcel]);
 
   const onSubmit = async (data: yup.InferType<typeof schema>) => {
     try {
-      const dataToSend: Omit<Parcel, "userID" | "id"> = {
+      const dataToSend: Omit<Parcel, "userID" | "id"> &
+        Partial<Pick<Parcel, "id">> = {
+        id: parcelID ?? undefined,
         departureAirportId: data.departureAirport.id,
         destinationAirportId: data.destinationAirport.id,
         parcelDescription: data.parcelDescription,
@@ -100,11 +129,26 @@ const FlightForm = () => {
         parcelWeight: data.parcelWeight ?? null,
         parcelType: data.parcelType ?? null,
       };
-      const res = await createParcelForCurrentUser(dataToSend);
+      const res = await createOrUpdateParcelForCurrentUser(dataToSend);
       if (res.success) {
-        enqueueSnackbar(t("Parcel_created_successfully"), {
-          variant: "success",
-        });
+        queryClient.invalidateQueries({ queryKey: ["parcels"], exact: false });
+        enqueueSnackbar(
+          parcelID
+            ? t("Parcel_updated_successfully")
+            : t("Parcel_created_successfully"),
+          {
+            variant: "success",
+          }
+        );
+        // Call the revalidation API
+        // await fetch("/api/v1/revalidate", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ path: "/" }),
+        // });
+
         router.push("/");
       } else {
         enqueueSnackbar(t("There_was_an_error_on_creating_parcel"), {
@@ -112,12 +156,17 @@ const FlightForm = () => {
         });
       }
     } catch (e) {
+      console.log("error", e);
       enqueueSnackbar(t("There_was_an_error_on_creating_parcel"), {
         variant: "error",
       });
     }
   };
-  const handleNext = () => setStep((prev) => prev + 1);
+
+  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setStep((prev) => prev + 1);
+  };
   const handleBack = () => setStep((prev) => prev - 1);
 
   useEffect(() => {
@@ -239,4 +288,4 @@ const FlightForm = () => {
   );
 };
 
-export default FlightForm;
+export default ParcelForm;

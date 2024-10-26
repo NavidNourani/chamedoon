@@ -1,15 +1,17 @@
+"use client";
 import { useScopedI18n } from "@/locales/client";
 import { GetFlightsResponseData } from "@/types/apis/flights";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { memo } from "react";
 import ReactSign from "react-sign";
 import FlightItem from "../atomic/molecules/FlightItem";
+import FlightItemSkeleton from "../atomic/molecules/FlightItemSkeleton";
 
 interface FlightListProps {
   isLoading: boolean;
   flights: GetFlightsResponseData[] | undefined;
-  hasNextPage: boolean | undefined;
-  fetchNextPage: () => void;
+  hasNextPage?: boolean | undefined;
+  fetchNextPage?: () => void;
 }
 
 const FlightList = ({
@@ -25,7 +27,9 @@ const FlightList = ({
   }
 
   if (!flights || flights.length === 0) {
-    return <Typography>{flightsPageT("no_flights_found")}</Typography>;
+    return new Array(12).fill(null).map((_, index) => (
+      <FlightItemSkeleton key={index} />
+    ));
   }
 
   return (
@@ -47,7 +51,7 @@ const FlightList = ({
       {flights.map((flight) => (
         <FlightItem key={flight.id} flight={flight} />
       ))}
-      {hasNextPage && <ReactSign onEnter={() => fetchNextPage()} />}
+      {hasNextPage && <ReactSign onEnter={fetchNextPage} />}
     </Box>
   );
 };

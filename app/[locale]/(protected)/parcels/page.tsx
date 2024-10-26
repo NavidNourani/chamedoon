@@ -18,7 +18,6 @@ const normalizeFilters = (filters: any) => {
     ...(parcelType !== "all" && { parcelType }),
   };
 };
-
 export default function Home() {
   const parcelsPageT = useScopedI18n("parcelsPage");
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

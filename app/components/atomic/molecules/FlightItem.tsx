@@ -16,8 +16,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { FunctionComponent, useState } from "react";
+import Link from "next/link";
+import { FunctionComponent, useMemo, useState } from "react";
 
 interface FlightItemProps {
   flight: GetFlightsResponseData;
@@ -26,6 +28,11 @@ interface FlightItemProps {
 const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
   const t = useScopedI18n("flightItem");
   const [showCompleteDetails, setShowCompleteDetails] = useState(false);
+  const { data: session } = useSession();
+
+  const isCurrentUserFlight = useMemo(() => {
+    return flight.userID === session?.user.id;
+  }, [flight.userID, session?.user.id]);
 
   const toggleShowCompleteDetails = () =>
     setShowCompleteDetails((prev) => !prev);
@@ -98,6 +105,10 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
                       {formatTime("jalali", flight.arrivalDateTime)}
                     </TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell>{t("acceptable_parcel_description")}</TableCell>
+                    <TableCell>{flight.acceptableParcelDescription}</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
@@ -120,6 +131,24 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
             ? t("show_less_details")
             : t("show_complete_details")}
         </Button>
+
+        {isCurrentUserFlight && (
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            mt={2}
+          >
+            <Link href={`/addFlight?flightID=${flight.id}`}>
+              <Button variant="contained" color="secondary">
+                {t("edit")}
+              </Button>
+            </Link>
+            <Typography variant="subtitle1" color="primary" fontWeight="bold">
+              {t("your_flight")}
+            </Typography>
+          </Stack>
+        )}
       </CardContent>
     </Card>
   );

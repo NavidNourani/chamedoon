@@ -1,6 +1,7 @@
 "use server";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "@/components/atoms/Link";
+import { getScopedI18n } from "@/locales/server";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, IconButton, Toolbar } from "@mui/material";
 import { getServerSession } from "next-auth";
@@ -9,6 +10,7 @@ import ChangeLanguageButton from "../atoms/ChangeLanguageButton";
 import AuthorizationButton from "../molecules/AuthorizationButton";
 
 const HeaderAuthenticated: FunctionComponent = async () => {
+  const tPageTitle = await getScopedI18n("pageTitle");
   const session = await getServerSession(authOptions);
 
   return (
@@ -24,7 +26,7 @@ const HeaderAuthenticated: FunctionComponent = async () => {
           <MenuIcon />
         </IconButton>
         <Link href="/" sx={{ flexGrow: 1 }} variant="h6" color="inherit">
-          Chamedoon
+          {tPageTitle("orbit_pax")}
         </Link>
         <ChangeLanguageButton />
         <AuthorizationButton session={session} />

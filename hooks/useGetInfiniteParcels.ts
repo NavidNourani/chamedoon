@@ -13,7 +13,7 @@ interface IFilters {
 
 const useGetInfiniteParcels = (props: { filters?: IFilters } | undefined) => {
   return useInfiniteQuery<PaginatedResponse<GetParcelsResponseData>>({
-    queryKey: ["all-parcels", props?.filters], // Include filters in the query key
+    queryKey: ["parcels", props?.filters], // Include filters in the query key
     queryFn: ({ pageParam }) =>
       axios
         .get("/api/v1/parcels", {

@@ -9,27 +9,39 @@ import { useFormContext } from "react-hook-form";
 const DepartureStep = () => {
   const { countries, getAirports } = useLocations();
   const [departureCities, setDepartureCities] = useState<City[]>([]);
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext();
   const t = useScopedI18n("add_parcel");
 
+  // Select first country from countries list if departureCountry is not selected
   useEffect(() => {
     if (countries && countries.length > 0) {
+      !getValues("departureCountry") &&
       setValue("departureCountry", countries[0]);
     }
   }, [countries, setValue]);
 
+  // Select first airport from airports list if
+  // departureAirport is not selected or if the selected airport is not in the list
   useEffect(() => {
-    if (watch("departureCountry")) {
-      getAirports({ countryId: watch("departureCountry").id }).then(
+    if (getValues("departureCountry")) {
+      getAirports({ countryId: getValues("departureCountry").id }).then(
         (cities) => {
           if (cities && cities.length > 0) {
             setDepartureCities(cities as City[]);
-            setValue("departureAirport", cities[0]);
+            if (
+              !getValues("departureAirport") ||
+              !cities.find(
+                (city) => city.id === getValues("departureAirport").id
+              )
+            ) {
+              setValue("departureAirport", cities[0]);
+            }
           }
         }
       );
     }
-  }, [watch("departureCountry"), getAirports, setValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch("departureCountry")]);
 
   return (
     <>

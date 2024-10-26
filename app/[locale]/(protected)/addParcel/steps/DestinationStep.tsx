@@ -9,27 +9,37 @@ import { useFormContext } from "react-hook-form";
 const DestinationStep = () => {
   const { countries, getAirports } = useLocations();
   const [destinationCities, setDestinationCities] = useState<City[]>([]);
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext();
   const t = useScopedI18n("add_parcel");
 
   useEffect(() => {
     if (countries && countries.length > 0) {
-      setValue("destinationCountry", countries[0]);
+      !getValues("destinationCountry") &&
+        setValue("destinationCountry", countries[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countries, setValue]);
-
+  console.log("aaaaaaaaaa", getValues("destinationCountry"));
   useEffect(() => {
-    if (watch("destinationCountry")) {
-      getAirports({ countryId: watch("destinationCountry").id }).then(
+    if (getValues("destinationCountry")) {
+      getAirports({ countryId: getValues("destinationCountry").id }).then(
         (cities) => {
           if (cities && cities.length > 0) {
             setDestinationCities(cities as City[]);
-            setValue("destinationAirport", cities[0]);
+            if (
+              !getValues("destinationAirport") ||
+              !cities.find(
+                (city) => city.id === getValues("destinationAirport").id
+              )
+            ) {
+              setValue("destinationAirport", cities[0]);
+            }
           }
         }
       );
     }
-  }, [watch("destinationCountry"), getAirports, setValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch("destinationCountry")]);
 
   return (
     <>

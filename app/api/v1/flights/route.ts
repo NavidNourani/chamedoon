@@ -1,12 +1,9 @@
+import { prisma } from "@/helpers/db";
 import { GetFlightsResponseData } from "@/types/apis/flights";
 import { PaginatedResponse } from "@/types/apis/general";
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-const prisma = new PrismaClient();
-
-// Update the schema to include country filters
 const paginationSchema = z.object({
   page: z
     .string()
@@ -60,6 +57,7 @@ export async function GET(req: Request) {
       },
       select: {
         id: true,
+        userID:true,
         estimatedCost: true,
         acceptableParcelDescription: true,
         arrivalDateTime: true,
@@ -85,14 +83,14 @@ export async function GET(req: Request) {
       },
     });
 
-    const totalShipments = await prisma.parcel.count();
+    const totalFlights = await prisma.flight.count();
 
     return NextResponse.json<PaginatedResponse<GetFlightsResponseData>>(
       {
         data: flights,
-        total: totalShipments,
+        total: totalFlights,
         page: Number(page),
-        totalPages: Math.ceil(totalShipments / Number(limit)),
+        totalPages: Math.ceil(totalFlights / Number(limit)),
       },
       { status: 200 }
     );
