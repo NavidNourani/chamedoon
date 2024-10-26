@@ -10,33 +10,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum CurrencyType {
+enum CurrencyTypeType {
   IRT
   GBP
   AED
 }
 
-enum DateSystem {
+enum DateSystemType {
   JALALI
   GREGORIAN
 }
 
 model User {
-  id                  String       @id @default(uuid())
-  username            String       @unique
+  id                  String           @id @default(uuid())
+  username            String           @unique
   photo               String?
-  email               String?      @unique
+  email               String?          @unique
   name                String?
   family              String?
-  phone               String?      @unique
+  phone               String?          @unique
   password            String?
-  telegramID          String?      @unique
-  whatsappnumber      String?      @unique
+  telegramID          String?          @unique
+  whatsappnumber      String?          @unique
   parcelShipments     Parcel[]
   flights             Flight[]
-  currencyType        CurrencyType @default(IRT)
-  preferredDateSystem DateSystem   @default(GREGORIAN)
-  createdAt           DateTime     @default(now())
+  currencyType        CurrencyTypeType @default(IRT)
+  preferredDateSystem DateSystemType   @default(GREGORIAN)
+  createdAt           DateTime         @default(now())
 
   @@map(name: "users")
 }

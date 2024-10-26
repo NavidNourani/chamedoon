@@ -9,7 +9,7 @@ import { getCurrentUser } from "@/serverActions/getCurrentUser";
 import { updateUser } from "@/serverActions/updateUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Box, Button, MenuItem, Typography } from "@mui/material";
-import { CurrencyType, DateSystem } from "@prisma/client";
+import { CurrencyTypeType, DateSystemType } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
@@ -31,8 +31,11 @@ const editProfileSchema = yup.object().shape({
   phone: yup.string().nullable(),
   telegramID: yup.string().nullable(),
   whatsappnumber: yup.string().nullable(),
-  currencyType: yup.string().oneOf(Object.values(CurrencyType)).required(),
-  preferredDateSystem: yup.string().oneOf(Object.values(DateSystem)).required(),
+  currencyType: yup.string().oneOf(Object.values(CurrencyTypeType)).required(),
+  preferredDateSystem: yup
+    .string()
+    .oneOf(Object.values(DateSystemType))
+    .required(),
 });
 
 const EditProfileForm = () => {
@@ -267,7 +270,7 @@ const EditProfileForm = () => {
                   label={commonT("currencyType")}
                   sx={{ mb: 2 }}
                 >
-                  {Object.values(CurrencyType).map((currency) => (
+                  {Object.values(CurrencyTypeType).map((currency) => (
                     <MenuItem key={currency} value={currency}>
                       {currencyT(`${currency}` as any)}
                     </MenuItem>
@@ -278,7 +281,7 @@ const EditProfileForm = () => {
                   label={commonT("preferredDateSystem")}
                   sx={{ mb: 2 }}
                 >
-                  {Object.values(DateSystem).map((dateSystem) => (
+                  {Object.values(DateSystemType).map((dateSystem) => (
                     <MenuItem key={dateSystem} value={dateSystem}>
                       {dateSystemT(`${dateSystem}` as any)}
                     </MenuItem>
