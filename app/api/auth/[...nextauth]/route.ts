@@ -5,7 +5,7 @@ import NextAuth, { AuthOptions } from "next-auth";
 import credentialProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   pages: {
     signIn: "/login",
     newUser: "/signup",
@@ -78,4 +78,6 @@ const authOptions: AuthOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
