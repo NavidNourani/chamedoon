@@ -1,6 +1,9 @@
 import { prisma } from "@/helpers/db";
 import { NextRequest } from "next/server";
 
+export const revalidate = 60;
+export const dynamic = "force-dynamic";
+
 export const GET = async (req: NextRequest) => {
   const nextURL = req.nextUrl;
 

@@ -11,7 +11,6 @@ import {
   OutlinedInput,
   Select,
   SelectProps,
-  SxProps,
   TextField,
   TextFieldProps,
 } from "@mui/material";
@@ -105,9 +104,9 @@ export function RHFMultiSelect({
 }: RHFMultiSelectProps) {
   const { control } = useFormContext();
 
-  const renderValues = (selectedIds: string[]) => {
+  const renderValues = (selectedIds: unknown) => {
     const selectedItems = options.filter((item) =>
-      selectedIds.includes(item.value)
+      (selectedIds as string[]).includes(item.value)
     );
 
     if (!selectedItems.length && placeholder) {
@@ -117,12 +116,10 @@ export function RHFMultiSelect({
         </Box>
       );
     }
-    const sxProps: SxProps = { display: "flex", flexWrap: "wrap", gap: 0.5 };
 
     if (chip) {
       return (
-        //@ts-ignore
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
           {selectedItems.map((item) => (
             <Chip key={item.value} size="small" label={item.label} />
           ))}

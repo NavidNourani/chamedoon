@@ -1,27 +1,25 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // Ensure this is a POST request
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
-  }
-
+export async function POST(req: NextRequest) {
   try {
-    // Extract the path to revalidate from the request body
-    const { path } = req.body;
+    const { path } = await req.json();
 
     if (!path) {
-      return res.status(400).json({ message: "Path is required" });
+      return NextResponse.json(
+        { message: "Path is required" },
+        { status: 400 }
+      );
     }
 
     // Revalidate the specified path
-    await res.revalidate(path);
+    revalidatePath(path);
 
-    return res.json({ revalidated: true });
+    return NextResponse.json({ revalidated: true });
   } catch (err) {
-    return res.status(500).json({ message: "Error revalidating" });
+    return NextResponse.json(
+      { message: "Error revalidating" },
+      { status: 500 }
+    );
   }
 }

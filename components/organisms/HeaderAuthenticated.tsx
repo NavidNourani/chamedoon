@@ -1,6 +1,6 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "@/components/atoms/Link";
+import { authOptions } from "@/helpers/authOptions";
 import { getScopedI18n } from "@/locales/server";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, IconButton, Toolbar } from "@mui/material";

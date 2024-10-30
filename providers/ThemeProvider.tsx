@@ -88,5 +88,4 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     </CacheProvider>
   );
 };
-
 export default ThemeProvider;

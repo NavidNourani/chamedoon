@@ -3,6 +3,7 @@ import { useScopedI18n } from "@/locales/client";
 import { addUser } from "@/serverActions/user/addUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { CurrencyTypeType, DateSystemType } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { useSnackbar } from "notistack";
@@ -73,6 +74,10 @@ const SignupForm = () => {
         telegramID: data.telegramID ?? null,
         email: data.email ?? null,
         whatsappnumber: data.whatsappnumber ?? null,
+        currencyType: "USD" as CurrencyTypeType,
+        preferredDateSystem: "GREGORIAN" as DateSystemType,
+        photo: null,
+        createdAt: new Date(),
       };
       await addUser(userData);
       enqueueSnackbar(tSignup("registrationSuccess"), {

@@ -4,6 +4,7 @@ import { useScopedI18n } from "@/locales/client";
 import { addUser } from "@/serverActions/user/addUser";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import { CurrencyTypeType, DateSystemType } from "@prisma/client";
 import { signIn, SignInResponse } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -75,6 +76,10 @@ const AuthForm = () => {
           phone: null,
           telegramID: null,
           whatsappnumber: null,
+          photo: null,
+          currencyType: "USD" as CurrencyTypeType,
+          preferredDateSystem: "GREGORIAN" as DateSystemType,
+          createdAt: new Date(),
         };
         await addUser(userData);
         enqueueSnackbar(tSignup("registrationSuccess"), {

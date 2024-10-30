@@ -1,6 +1,6 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/helpers/authOptions";
 import { prisma } from "@/helpers/db";
 import { Parcel } from "@prisma/client";
 import { getServerSession } from "next-auth";
@@ -27,7 +27,7 @@ export const createOrUpdateParcelForCurrentUser = async (
         data: { ...data, userID: session.user.id },
       });
     }
-    revalidatePath("/")
+    revalidatePath("/");
 
     return { success: true, parcel };
   } catch (error) {

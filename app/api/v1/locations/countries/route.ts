@@ -1,6 +1,9 @@
 import { prisma } from "@/helpers/db";
 import { NextRequest } from "next/server";
 
+export const revalidate = 60;
+export const dynamic = "force-dynamic";
+
 export const GET = async (req: NextRequest) => {
   const nextURL = req.nextUrl;
 
@@ -12,7 +15,6 @@ export const GET = async (req: NextRequest) => {
         name: { startsWith: query, mode: "insensitive" },
       },
     });
-
 
     if (countries.length === 0) {
       return new Response("No countries found!", { status: 404 });

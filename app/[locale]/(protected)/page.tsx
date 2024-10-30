@@ -1,8 +1,8 @@
 "use server";
 // import { setStaticParamsLocale } from 'next-international/server';
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import FlightList from "@/app/components/flights/FlightList";
 import ParcelList from "@/app/components/ParcelList";
+import { authOptions } from "@/helpers/authOptions";
 import { calculateProfileCompletion } from "@/helpers/calculateProfileCompletion";
 import { prisma } from "@/helpers/db";
 import { getScopedI18n } from "@/locales/server";
