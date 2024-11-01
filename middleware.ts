@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const I18nMiddleware = createI18nMiddleware({
   locales: ["en", "fa"],
-  defaultLocale: "en",
+  defaultLocale: "fa",
 });
 
 export async function middleware(request: NextRequest) {

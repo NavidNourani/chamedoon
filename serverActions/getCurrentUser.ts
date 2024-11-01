@@ -24,6 +24,9 @@ export async function getCurrentUser() {
       photo: true,
       currencyType: true,
       preferredDateSystem: true,
+      countryCode: true,
+      createdAt: true,
+      
     },
   });
 

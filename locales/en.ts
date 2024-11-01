@@ -248,6 +248,9 @@ export default {
     phoneTaken: "This phone number is already in use",
     telegramIDTaken: "This Telegram ID is already in use",
     whatsappNumberTaken: "This WhatsApp number is already in use",
+    completeProfileTitle: "Profile Incomplete",
+    completeProfile: "Please complete your profile by filling in",
+    profileCompletion: "Profile completion",
   },
   formErrors: {
     uniqueConstraintFailed: "Value for {field} already used.",

@@ -110,7 +110,7 @@ export default {
     },
     emailOrPhone: "ایمیل یا شماره تلفن",
     identifier: "ایمیل یا شماره تلفن",
-    identifierRequired: "ایمیل یا شماره تلفن الزامی است",
+    identifierRequired: "ایمیل یا شماره تل��ن الزامی است",
     phone: "شماره تلفن",
     phoneRequired: "شماره تلفن الزامی است",
     invalidPhone: "فرمت شماره تلفن نامعتبر است",
@@ -166,7 +166,7 @@ export default {
   translate: "ترجمه",
   add_flight: {
     Flight_created_successfully: "پرواز با موفقیت ایجاد شد",
-    There_was_an_error_on_creating_flight: "خطایی در ایجاد پرواز رخ داده است",
+    There_was_an_error_on_creating_flight: "خطایی در ایجاد پرواز رخ داده اس",
     Add_your_flight_detail: "جزئیات پرواز خود را اضافه کنید",
     Flight_details: "جزئیات پرواز",
     Departure_country: "کشور مبدا",
@@ -218,6 +218,9 @@ export default {
     phoneTaken: "این شماره تلفن قبلاً استفاده شده است",
     telegramIDTaken: "این شناسه تلگرام قبلاً استفاده شده است",
     whatsappNumberTaken: "این شماره واتساپ قبلاً استفاده شده است",
+    completeProfileTitle: "برای استفاده از سیستم پروفایل خود را کامل کنید",
+    completeProfile: "وارد کردن این موارد الزامی است",
+    profileCompletion: "تکمیل پروفایل",
   },
   formErrors: {
     uniqueConstraintFailed:

@@ -21,10 +21,12 @@ const darkPalette = {
 
 export const getThemeOptions = (mode: PaletteMode): ThemeOptions => ({
   palette: mode === "light" ? lightPalette : darkPalette,
+
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
+          fontFeatureSettings: '"ss02"',
           backgroundColor:
             mode === "light"
               ? lightPalette.background.default

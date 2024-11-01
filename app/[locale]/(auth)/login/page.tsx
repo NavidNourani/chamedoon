@@ -43,11 +43,11 @@ const loginSchema = yup.object().shape({
   countryCode: yup
     .string()
     .required("countryCodeRequired")
-    .matches(/^\+\d{1,4}$/, "Invalid country code"),
+    .matches(/^\d{1,4}$/, "Invalid country code"),
   phone: yup
     .string()
     .required("phoneRequired")
-    .matches(/^\d+$/, "Invalid phone format"),
+    .matches(/^[1-9]\d*$/, "Phone number cannot start with 0"),
   password: yup.string().required("passwordRequired"),
 });
 
@@ -56,11 +56,11 @@ const signupSchema = yup.object().shape({
   countryCode: yup
     .string()
     .required("countryCodeRequired")
-    .matches(/^\+\d{1,4}$/, "Invalid country code"),
+    .matches(/^\d{1,4}$/, "Invalid country code"),
   phone: yup
     .string()
     .required("phoneRequired")
-    .matches(/^\d+$/, "Invalid phone format"),
+    .matches(/^[1-9]\d*$/, "Phone number cannot start with 0"),
   password: yup
     .string()
     .required("passwordRequired")
@@ -83,8 +83,8 @@ const AuthForm = () => {
 
   const methods = useForm<LoginFormValues | SignupFormValues>({
     defaultValues: isLogin
-      ? { countryCode: "+44", phone: "", password: "" }
-      : { countryCode: "+44", phone: "", password: "", repeatPassword: "" },
+      ? { countryCode: "44", phone: "", password: "" }
+      : { countryCode: "44", phone: "", password: "", repeatPassword: "" },
     resolver: yupResolver(isLogin ? loginSchema : signupSchema),
   });
 
@@ -95,7 +95,8 @@ const AuthForm = () => {
       const loginData = data as LoginFormValues;
       await loginHandler(() =>
         signIn("credentials", {
-          identifier: loginData.countryCode + loginData.phone,
+          countryCode: loginData.countryCode,
+          phone: loginData.phone,
           password: loginData.password,
           callbackUrl: "/",
           redirect: false,
@@ -103,6 +104,7 @@ const AuthForm = () => {
       );
     } else {
       try {
+        methods.clearErrors();
         const userData = {
           username: null,
           password: data.password,
@@ -123,7 +125,8 @@ const AuthForm = () => {
         // Automatically sign in after successful registration
         await loginHandler(() =>
           signIn("credentials", {
-            identifier: data.countryCode + data.phone,
+            countryCode: data.countryCode,
+            phone: data.phone,
             password: data.password,
             callbackUrl: "/",
             redirect: false,
@@ -226,13 +229,19 @@ const AuthForm = () => {
                   <RHFTextField
                     name="countryCode"
                     label={tLogin("countryCode")}
-                    placeholder="+44"
+                    placeholder="44"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">+</InputAdornment>
+                      ),
+                    }}
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     sx={{ width: "30%" }}
                   />
                   <RHFTextField
                     name="phone"
                     label={tLogin("phone")}
-                    placeholder="9123456789"
+                    placeholder="1234567890"
                     sx={{ flex: 1 }}
                   />
                 </Box>
@@ -241,7 +250,13 @@ const AuthForm = () => {
                   <RHFTextField
                     name="countryCode"
                     label={tSignup("countryCode")}
-                    placeholder="+44"
+                    placeholder="44"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">+</InputAdornment>
+                      ),
+                    }}
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     sx={{ width: "30%" }}
                   />
                   <RHFTextField

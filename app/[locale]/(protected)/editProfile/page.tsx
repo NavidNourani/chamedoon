@@ -3,12 +3,22 @@
 import { uploadUserPhoto } from "@/app/@user/actions/uploadUserPhoto";
 import { RHFSelect } from "@/components/shared/RHF/RHFSelect";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
+import { calculateProfileCompletion } from "@/helpers/calculateProfileCompletion";
 import { handlePrismaError } from "@/helpers/prismaErrorHandler";
 import { useScopedI18n } from "@/locales/client";
 import { getCurrentUser } from "@/serverActions/getCurrentUser";
 import { updateUser } from "@/serverActions/updateUser";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Avatar, Box, Button, MenuItem, Typography } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  LinearProgress,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { CurrencyTypeType, DateSystemType } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,10 +37,10 @@ const editProfileSchema = yup.object().shape({
     .min(3, "usernameLength")
     .max(20, "usernameLength"),
   email: yup.string().email("Invalid email").nullable(),
-  name: yup.string().nullable(),
-  family: yup.string().nullable(),
-  countryCode: yup.string().nullable(),
-  phone: yup.string().nullable(),
+  name: yup.string().required("nameRequired"),
+  family: yup.string().required("familyRequired"),
+  countryCode: yup.string().required("countryCodeRequired"),
+  phone: yup.string().required("phoneRequired"),
   telegramID: yup.string().nullable(),
   whatsappnumber: yup.string().nullable(),
   currencyType: yup.string().oneOf(Object.values(CurrencyTypeType)).required(),
@@ -50,6 +60,10 @@ const EditProfileForm = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(true);
   const [photoUrl, setPhotoUrl] = useState("");
+  const [profileCompletion, setProfileCompletion] = useState(0);
+  const [missingRequiredFields, setMissingRequiredFields] = useState<string[]>(
+    []
+  );
 
   const methods = useForm({
     defaultValues: {
@@ -67,12 +81,27 @@ const EditProfileForm = () => {
     resolver: yupResolver(editProfileSchema),
   });
 
+  const checkRequiredFields = (data: any) => {
+    const requiredFields = ["name", "family", "countryCode", "phone"];
+    const missingFields = requiredFields.filter((field) => !data[field]);
+    setMissingRequiredFields(missingFields);
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userData = await getCurrentUser();
-        methods.reset(userData);
+        const transformedData = {
+          ...userData,
+          name: userData.name || "",
+          family: userData.family || "",
+          countryCode: userData.countryCode || "",
+          phone: userData.phone || "",
+        };
+        methods.reset(transformedData);
         setPhotoUrl(userData.photo || "");
+        setProfileCompletion(calculateProfileCompletion(userData));
+        checkRequiredFields(transformedData);
       } catch (error) {
         enqueueSnackbar(editProfileT("fetchError"), { variant: "error" });
       } finally {
@@ -209,19 +238,75 @@ const EditProfileForm = () => {
             p: 4,
             color: "white",
             overflow: "auto",
+            gap: "2rem",
           }}
         >
-          <Box sx={{ width: "100%", maxWidth: 400 }}>
+          {missingRequiredFields.length > 0 && (
+            <Alert
+              severity="warning"
+              sx={{
+                position: "sticky",
+                top: 0,
+                zIndex: 1000,
+                width: "100%",
+              }}
+            >
+              <AlertTitle fontSize="1.2rem" fontWeight="bold">
+                {editProfileT("completeProfileTitle")}
+              </AlertTitle>
+              <Typography>
+                {editProfileT("completeProfile")}:{" "}
+                {missingRequiredFields
+                  .map((field) => editProfileT(`${field}` as any))
+                  .join(", ")}
+              </Typography>
+            </Alert>
+          )}
+          <Stack sx={{ width: "100%", maxWidth: 400 }}>
             <Typography
               variant="h4"
               fontWeight="bold"
-              mb={4}
               textAlign="center"
+              marginBottom={4}
             >
               {editProfileT("editYourProfile")}
             </Typography>
-            <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
-              <Avatar src={photoUrl} alt="User Photo" />
+            <Stack sx={{ alignItems: "center", mb: 4, gap: 2 }}>
+              <LinearProgress
+                dir="ltr"
+                sx={{ width: "100%", direction: "ltr" }}
+                value={profileCompletion}
+                variant="determinate"
+              />
+              <Typography>
+                {editProfileT("profileCompletion")}: {profileCompletion}%
+              </Typography>
+            </Stack>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                mb: 4,
+                outline: "2px solid white",
+                width: "fit-content",
+                outlineOffset: "4px",
+                borderRadius: "50%",
+                alignSelf: "center",
+                "&>img": {
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  width: "60px",
+                  height: "60px",
+                },
+              }}
+            >
+              <Image
+                src={photoUrl}
+                alt="User Photo"
+                width={200}
+                height={200}
+                quality={100}
+              />
             </Box>
             <Button
               variant="contained"
@@ -237,6 +322,7 @@ const EditProfileForm = () => {
                 onChange={handlePhotoUpload}
               />
             </Button>
+
             <FormProvider {...methods}>
               <Box
                 component="form"
@@ -319,7 +405,7 @@ const EditProfileForm = () => {
                 </Button>
               </Box>
             </FormProvider>
-          </Box>
+          </Stack>
         </Box>
       </Box>
     </>

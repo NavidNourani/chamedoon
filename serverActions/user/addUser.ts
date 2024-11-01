@@ -26,13 +26,9 @@ export const addUser = async (user: Omit<User, "id">) => {
     // Create the user record in the database
     const newUser = await prisma.user.create({
       data: {
-        username: user.username,
-        name: user.name,
-        family: user.family,
         phone: user.phone,
         password: hashedPassword,
-        telegramID: user.telegramID,
-        whatsappnumber: user.whatsappnumber,
+        countryCode: user.countryCode,
       },
     });
 

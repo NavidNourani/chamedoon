@@ -2,8 +2,7 @@
 import Link from "@/components/atoms/Link";
 import { authOptions } from "@/helpers/authOptions";
 import { getScopedI18n } from "@/locales/server";
-import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, IconButton, Toolbar } from "@mui/material";
+import { AppBar, Toolbar } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { FunctionComponent } from "react";
 import ChangeLanguageButton from "../atoms/ChangeLanguageButton";
@@ -16,7 +15,7 @@ const HeaderAuthenticated: FunctionComponent = async () => {
   return (
     <AppBar position="sticky" sx={{ mb: 2 }}>
       <Toolbar>
-        <IconButton
+        {/* <IconButton
           size="large"
           edge="start"
           color="inherit"
@@ -24,7 +23,7 @@ const HeaderAuthenticated: FunctionComponent = async () => {
           sx={{ mr: 2 }}
         >
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
         <Link href="/" sx={{ flexGrow: 1 }} variant="h6" color="inherit">
           {tPageTitle("orbit_pax")}
         </Link>

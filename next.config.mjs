@@ -6,6 +6,10 @@ const nextConfig = {
         hostname: "flagpedia.net",
         protocol: "https",
       },
+      {
+        hostname: "dear-parcels.s3.eu-west-2.amazonaws.com",
+        protocol: "https",
+      },
     ],
   },
 };

@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 
-export function calculateProfileCompletion(user: User): number {
+export function calculateProfileCompletion(user: Partial<User>): number {
   const fields = [
     { name: 'username', weight: 1 },
     { name: 'photo', weight: 1 },
