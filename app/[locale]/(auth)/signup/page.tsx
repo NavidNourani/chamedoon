@@ -11,28 +11,37 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 // Define the validation schema for the form fields
-const schema = yup.object().shape({
-  username: yup
-    .string()
-    .required("usernameRequired")
-    .min(3, "usernameLength")
-    .max(20, "usernameLength")
-    .matches(/^[a-zA-Z0-9_]+$/, "usernameFormat"),
-  name: yup.string().optional(),
-  email: yup.string().email("emailFormat").optional(),
-  family: yup.string().optional(),
-  phone: yup
-    .string()
-    .required("phoneRequired")
-    .matches(/^\+?\d+$/, "phoneFormat"),
-  password: yup.string().required("passwordRequired").min(8, "passwordLength"),
-  repeatPassword: yup
-    .string()
-    .required("repeatPasswordRequired")
-    .oneOf([yup.ref("password")], "passwordsMustMatch"),
-  telegramID: yup.string().optional(),
-  whatsappnumber: yup.string().optional(),
-});
+const signupSchema = yup
+  .object()
+  .shape({
+    username: yup
+      .string()
+      .optional()
+      .min(3, "usernameLength")
+      .max(20, "usernameLength")
+      .matches(/^[a-zA-Z0-9_]+$/, "usernameFormat"),
+    email: yup.string().email("Invalid email format"),
+    phone: yup.string().matches(/^\+?\d+$/, "Invalid phone format"),
+    password: yup
+      .string()
+      .required("passwordRequired")
+      .min(8, "At least 8 characters"),
+    repeatPassword: yup
+      .string()
+      .required("repeatPasswordRequired")
+      .oneOf([yup.ref("password")], "passwordsMustMatch"),
+    name: yup.string().optional(),
+    family: yup.string().optional(),
+    telegramID: yup.string().optional(),
+    whatsappnumber: yup.string().optional(),
+  })
+  .test(
+    "at-least-one-contact",
+    "Either email or phone is required",
+    function (value) {
+      return Boolean(value.email || value.phone);
+    }
+  );
 
 // Define the initial values for the form fields
 const defaultValues = {
@@ -57,16 +66,16 @@ const SignupForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<yup.InferType<typeof schema>>({
+  } = useForm<yup.InferType<typeof signupSchema>>({
     defaultValues,
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(signupSchema) as any,
   });
 
   // Define the function to handle the form submission
-  const onSubmit = async (data: yup.InferType<typeof schema>) => {
+  const onSubmit = async (data: yup.InferType<typeof signupSchema>) => {
     try {
       const userData = {
-        username: data.username,
+        username: data.username ?? null,
         name: data.name ?? null,
         family: data.family ?? null,
         phone: data.phone ?? null,
@@ -76,6 +85,7 @@ const SignupForm = () => {
         whatsappnumber: data.whatsappnumber ?? null,
         currencyType: "USD" as CurrencyTypeType,
         preferredDateSystem: "GREGORIAN" as DateSystemType,
+        countryCode: null,
         photo: null,
         createdAt: new Date(),
       };

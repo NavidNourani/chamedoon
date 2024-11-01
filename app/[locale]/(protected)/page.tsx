@@ -23,7 +23,7 @@ export default async function Home() {
   const t = await getScopedI18n("home");
   const session = await getServerSession(authOptions);
 
-  if (!session || !session.user) {
+  if (!session?.user?.id) {
     return <Typography>{t("not_logged_in")}</Typography>;
   }
 

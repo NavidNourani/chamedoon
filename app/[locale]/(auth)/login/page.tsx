@@ -1,11 +1,21 @@
 "use client";
+import LoadingButton from "@/components/shared/LoadingButton";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import { useScopedI18n } from "@/locales/client";
 import { addUser } from "@/serverActions/user/addUser";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import { CurrencyTypeType, DateSystemType } from "@prisma/client";
-import { signIn, SignInResponse } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
@@ -14,20 +24,43 @@ import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import * as yup from "yup";
 
-// Define the validation schema for the login form fields
+// Define the form types
+type LoginFormValues = {
+  countryCode: string;
+  phone: string;
+  password: string;
+};
+
+type SignupFormValues = {
+  countryCode: string;
+  phone: string;
+  password: string;
+  repeatPassword: string;
+};
+
+// Login schema without email
 const loginSchema = yup.object().shape({
-  username: yup.string().required("Username is required"),
-  password: yup.string().required("Password is required"),
+  countryCode: yup
+    .string()
+    .required("countryCodeRequired")
+    .matches(/^\+\d{1,4}$/, "Invalid country code"),
+  phone: yup
+    .string()
+    .required("phoneRequired")
+    .matches(/^\d+$/, "Invalid phone format"),
+  password: yup.string().required("passwordRequired"),
 });
 
-// Define the validation schema for the signup form fields
+// Signup schema without email
 const signupSchema = yup.object().shape({
-  username: yup
+  countryCode: yup
     .string()
-    .required("usernameRequired")
-    .min(3, "usernameLength")
-    .max(20, "usernameLength")
-    .matches(/^[a-zA-Z0-9_]+$/, "usernameFormat"),
+    .required("countryCodeRequired")
+    .matches(/^\+\d{1,4}$/, "Invalid country code"),
+  phone: yup
+    .string()
+    .required("phoneRequired")
+    .matches(/^\d+$/, "Invalid phone format"),
   password: yup
     .string()
     .required("passwordRequired")
@@ -45,22 +78,25 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loginError, setLoginError] = useState("");
   const { enqueueSnackbar } = useSnackbar();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
-  const methods = useForm({
+  const methods = useForm<LoginFormValues | SignupFormValues>({
     defaultValues: isLogin
-      ? { username: "", password: "" }
-      : { username: "", password: "", repeatPassword: "" },
+      ? { countryCode: "+44", phone: "", password: "" }
+      : { countryCode: "+44", phone: "", password: "", repeatPassword: "" },
     resolver: yupResolver(isLogin ? loginSchema : signupSchema),
   });
-  const { reset, setError } = methods;
 
-  const onSubmit = async (
-    data: yup.InferType<typeof loginSchema> | yup.InferType<typeof signupSchema>
-  ) => {
+  const { reset } = methods;
+
+  const onSubmit = async (data: LoginFormValues | SignupFormValues) => {
     if (isLogin) {
-      loginHandler(() =>
+      const loginData = data as LoginFormValues;
+      await loginHandler(() =>
         signIn("credentials", {
-          ...data,
+          identifier: loginData.countryCode + loginData.phone,
+          password: loginData.password,
           callbackUrl: "/",
           redirect: false,
         })
@@ -68,12 +104,13 @@ const AuthForm = () => {
     } else {
       try {
         const userData = {
-          username: data.username,
+          username: null,
           password: data.password,
           email: null,
           name: null,
           family: null,
-          phone: null,
+          countryCode: data.countryCode,
+          phone: data.phone,
           telegramID: null,
           whatsappnumber: null,
           photo: null,
@@ -82,17 +119,22 @@ const AuthForm = () => {
           createdAt: new Date(),
         };
         await addUser(userData);
-        enqueueSnackbar(tSignup("registrationSuccess"), {
-          variant: "success",
-        });
-        setIsLogin(true);
-        reset({ username: "", password: "" });
+
+        // Automatically sign in after successful registration
+        await loginHandler(() =>
+          signIn("credentials", {
+            identifier: data.countryCode + data.phone,
+            password: data.password,
+            callbackUrl: "/",
+            redirect: false,
+          })
+        );
       } catch (e) {
         try {
           const error = JSON.parse(e as any);
           if (error.fields) {
             Object.keys(error.fields).forEach((key) => {
-              setError(key as any, { message: error.fields[key] });
+              methods.setError(key as any, { message: error.fields[key] });
             });
           }
         } catch (e) {}
@@ -107,9 +149,7 @@ const AuthForm = () => {
     loginHandler(() => signIn("google", { callbackUrl: "/" }));
   };
 
-  const loginHandler = async (
-    func: () => Promise<SignInResponse | undefined>
-  ) => {
+  const loginHandler = async (func: () => Promise<any>) => {
     const res = await func();
     if (res?.ok) {
       router.push("/");
@@ -119,11 +159,15 @@ const AuthForm = () => {
     }
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: boolean) => {
-    setIsLogin(newValue);
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setIsLogin(newValue === "login");
     reset();
     setLoginError("");
   };
+
+  const handleTogglePassword = () => setShowPassword((prev) => !prev);
+  const handleToggleRepeatPassword = () =>
+    setShowRepeatPassword((prev) => !prev);
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
@@ -136,19 +180,18 @@ const AuthForm = () => {
       >
         <Image
           src="/images/passenger.jpg"
-          alt="Capturing Moments, Creating Memories"
+          alt="Connect, Travel, Deliver: Your Parcels, Their Journey"
           layout="fill"
           objectFit="cover"
         />
         <Box
           sx={{ position: "absolute", bottom: 40, left: 40, color: "white" }}
         >
-          {/* TODO: change this text */}
           <Typography variant="h4" fontWeight="bold">
-            Capturing Moments ,
+            Connect, Travel, Deliver:
           </Typography>
           <Typography variant="h4" fontWeight="bold">
-            Creating Memories
+            Your Parcels, Their Journey
           </Typography>
         </Box>
       </Box>
@@ -164,9 +207,13 @@ const AuthForm = () => {
         }}
       >
         <Box sx={{ width: "100%", maxWidth: 400 }}>
-          <Tabs value={isLogin} onChange={handleTabChange} sx={{ mb: 2 }}>
-            <Tab label={tLogin("login")} value={true} />
-            <Tab label={tSignup("signup")} value={false} />
+          <Tabs
+            value={isLogin ? "login" : "signup"}
+            onChange={handleTabChange}
+            sx={{ mb: 2 }}
+          >
+            <Tab label={tLogin("login")} value="login" />
+            <Tab label={tSignup("signup")} value="signup" />
           </Tabs>
           <FormProvider {...methods}>
             <Box
@@ -174,55 +221,87 @@ const AuthForm = () => {
               onSubmit={methods.handleSubmit(onSubmit)}
               sx={{ width: "100%" }}
             >
-              <RHFTextField
-                name="username"
-                label={tLogin("username")}
-                sx={{ mb: 2 }}
-              />
+              {isLogin ? (
+                <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+                  <RHFTextField
+                    name="countryCode"
+                    label={tLogin("countryCode")}
+                    placeholder="+44"
+                    sx={{ width: "30%" }}
+                  />
+                  <RHFTextField
+                    name="phone"
+                    label={tLogin("phone")}
+                    placeholder="9123456789"
+                    sx={{ flex: 1 }}
+                  />
+                </Box>
+              ) : (
+                <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+                  <RHFTextField
+                    name="countryCode"
+                    label={tSignup("countryCode")}
+                    placeholder="+44"
+                    sx={{ width: "30%" }}
+                  />
+                  <RHFTextField
+                    name="phone"
+                    label={tSignup("phone")}
+                    placeholder="9123456789"
+                    sx={{ flex: 1 }}
+                  />
+                </Box>
+              )}
               <RHFTextField
                 label={tLogin("password")}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 sx={{ mb: 2 }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleTogglePassword} edge="end">
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               {!isLogin && (
-                <>
-                  <RHFTextField
-                    name="repeatPassword"
-                    label={tSignup("repeatPassword")}
-                    type="password"
-                    sx={{ mb: 2 }}
-                  />
-                  {/* <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label={tSignup("email")}
-                      type="email"
-                      variant="outlined"
-                      fullWidth
-                       margin="normal"
-                      error={!!errors.email}
-                      helperText={errors.email?.message}
-                      InputLabelProps={{ style: { color: "gray" } }}
-                      InputProps={{ style: { color: "white" } }}
-                      sx={{ bgcolor: "#2b2b2b", mb: 2 }}
-                    />
-                  )}
-                /> */}
-                </>
+                <RHFTextField
+                  name="repeatPassword"
+                  label={tSignup("repeatPassword")}
+                  type={showRepeatPassword ? "text" : "password"}
+                  sx={{ mb: 2 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleToggleRepeatPassword}
+                          edge="end"
+                        >
+                          {showRepeatPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               )}
               {loginError && (
                 <Typography color="error" sx={{ mb: 2 }}>
-                  {loginError}
+                  {tLogin(`errors.${loginError}` as any) ||
+                    tLogin("errors.default")}
                 </Typography>
               )}
-              <Button
+              <LoadingButton
                 type="submit"
                 variant="contained"
                 fullWidth
+                loading={methods.formState.isSubmitting}
                 sx={{
                   mb: 2,
                   bgcolor: "#8b5cf6",
@@ -230,7 +309,7 @@ const AuthForm = () => {
                 }}
               >
                 {isLogin ? tLogin("login") : tSignup("signup")}
-              </Button>
+              </LoadingButton>
             </Box>
           </FormProvider>
           <Typography variant="body2" align="center" mb={2}>

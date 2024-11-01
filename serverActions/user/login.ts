@@ -1,35 +1,34 @@
 "use server";
 import { prisma } from "@/helpers/db";
-import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
-export const login = async (data: Pick<User, "username" | "password">) => {
+
+export const login = async (data: {
+  countryCode: string;
+  phone: string;
+  password: string;
+}) => {
   try {
-    // Find the user by username in the database
-    const user = await prisma.user.findUnique({
+    // Find the user by country code and phone
+    const user = await prisma.user.findFirst({
       where: {
-        username: data.username,
+        countryCode: data.countryCode,
+        phone: data.phone,
       },
     });
 
-    // If the user is not found, set the login error message
-    if (!user?.username || !user?.password) {
+    if (!user?.password) {
       return null;
     }
 
-    // Compare the password with the hashed password in the database
-    const passwordMatch = await bcrypt.compare(data.password!, user.password);
+    const passwordMatch = await bcrypt.compare(data.password, user.password);
 
-    // If the password does not match, set the login error message
     if (!passwordMatch) {
       return null;
     }
 
-    // If the password matches, clear the login error message and log in the user
-    // Here you can set the user session or token or do whatever you want to log in the user
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   } catch (error) {
-    // Handle any errors
     console.error(error);
     return null;
   }

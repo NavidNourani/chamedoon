@@ -14,17 +14,23 @@ export const authOptions: AuthOptions = {
   providers: [
     credentialProvider({
       authorize: async (credentials) => {
+        const countryCode = credentials!?.countryCode;
+        const phone = credentials!?.phone;
+        
         const user = await login({
-          username: credentials!?.username,
+          countryCode,
+          phone,
           password: credentials!?.password,
         });
+
         if (user) {
           return user as any;
         }
         return null;
       },
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Your name" },
+        countryCode: { label: "Country Code", type: "text" },
+        phone: { label: "Phone", type: "text" },
         password: { label: "Password", type: "password" },
       },
     }),

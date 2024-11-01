@@ -23,12 +23,13 @@ enum DateSystemType {
 
 model User {
   id                  String           @id @default(uuid())
-  username            String           @unique
+  username            String?          @unique
   photo               String?
   email               String?          @unique
   name                String?
   family              String?
-  phone               String?          @unique
+  countryCode         String?
+  phone               String?
   password            String?
   telegramID          String?          @unique
   whatsappnumber      String?          @unique
@@ -38,6 +39,7 @@ model User {
   preferredDateSystem DateSystemType   @default(GREGORIAN)
   createdAt           DateTime         @default(now())
 
+  @@unique([countryCode, phone])
   @@map(name: "users")
 }
 

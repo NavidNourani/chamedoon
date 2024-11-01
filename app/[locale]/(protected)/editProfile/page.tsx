@@ -21,13 +21,15 @@ import * as yup from "yup";
 const editProfileSchema = yup.object().shape({
   username: yup
     .string()
-    .required("usernameRequired")
+    .nullable()
+    .transform((value) => value || null)
+    .matches(/^[a-zA-Z0-9_]+$/, "usernameFormat")
     .min(3, "usernameLength")
-    .max(20, "usernameLength")
-    .matches(/^[a-zA-Z0-9_]+$/, "usernameFormat"),
+    .max(20, "usernameLength"),
   email: yup.string().email("Invalid email").nullable(),
   name: yup.string().nullable(),
   family: yup.string().nullable(),
+  countryCode: yup.string().nullable(),
   phone: yup.string().nullable(),
   telegramID: yup.string().nullable(),
   whatsappnumber: yup.string().nullable(),
@@ -56,6 +58,7 @@ const EditProfileForm = () => {
       name: "",
       family: "",
       phone: "",
+      countryCode: "",
       telegramID: "",
       whatsappnumber: "",
       currencyType: "IRT",
@@ -258,6 +261,11 @@ const EditProfileForm = () => {
                 <RHFTextField
                   name="family"
                   label={editProfileT("family")}
+                  sx={{ mb: 2 }}
+                />
+                <RHFTextField
+                  name="countryCode"
+                  label={editProfileT("countryCode")}
                   sx={{ mb: 2 }}
                 />
                 <RHFTextField
