@@ -1,6 +1,7 @@
 "use client";
 
 import { uploadUserPhoto } from "@/app/@user/actions/uploadUserPhoto";
+import LoadingButton from "@/components/shared/LoadingButton";
 import { RHFSelect } from "@/components/shared/RHF/RHFSelect";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import { calculateProfileCompletion } from "@/helpers/calculateProfileCompletion";
@@ -9,6 +10,7 @@ import { useScopedI18n } from "@/locales/client";
 import { getCurrentUser } from "@/serverActions/getCurrentUser";
 import { updateUser } from "@/serverActions/updateUser";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Person } from "@mui/icons-material";
 import {
   Alert,
   AlertTitle,
@@ -16,6 +18,7 @@ import {
   Button,
   LinearProgress,
   MenuItem,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -175,7 +178,92 @@ const EditProfileForm = () => {
   };
 
   if (isLoading) {
-    return <Typography>{editProfileT("loading")}</Typography>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+          overflow: "hidden",
+          boxShadow: 3,
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            position: "relative",
+            display: { xs: "none", md: "block" },
+          }}
+        >
+          <Image
+            src="/images/parcels-on-luggages.jpeg"
+            alt="Edit Your Profile"
+            layout="fill"
+            objectFit="cover"
+          />
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "center",
+            p: 4,
+            color: "white",
+            overflow: "auto",
+            gap: "2rem",
+          }}
+        >
+          <Stack sx={{ width: "100%", maxWidth: 400 }}>
+            <Skeleton
+              variant="text"
+              width="80%"
+              height={60}
+              sx={{ mb: 4, alignSelf: "center" }}
+            />
+
+            <Stack sx={{ alignItems: "center", mb: 4, gap: 2 }}>
+              <Skeleton variant="rectangular" width="100%" height={10} />
+              <Skeleton variant="text" width={200} />
+            </Stack>
+
+            <Skeleton
+              variant="circular"
+              width={60}
+              height={60}
+              sx={{ alignSelf: "center", mb: 4 }}
+            />
+
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={40}
+              sx={{ mb: 4 }}
+            />
+
+            {/* Form field skeletons */}
+            {[...Array(10)].map((_, index) => (
+              <Skeleton
+                key={index}
+                variant="rectangular"
+                width="100%"
+                height={56}
+                sx={{ mb: 2 }}
+              />
+            ))}
+
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={40}
+              sx={{ mb: 2 }}
+            />
+          </Stack>
+        </Box>
+      </Box>
+    );
   }
 
   return (
@@ -300,13 +388,17 @@ const EditProfileForm = () => {
                 },
               }}
             >
-              <Image
-                src={photoUrl}
-                alt="User Photo"
-                width={200}
-                height={200}
-                quality={100}
-              />
+              {!photoUrl ? (
+                <Image
+                  src={photoUrl}
+                  alt="User Photo"
+                  width={200}
+                  height={200}
+                  quality={100}
+                />
+              ) : (
+                <Person sx={{ width: 60, height: 60 }} />
+              )}
             </Box>
             <Button
               variant="contained"
@@ -391,9 +483,10 @@ const EditProfileForm = () => {
                   label={editProfileT("whatsappNumber")}
                   sx={{ mb: 2 }}
                 />
-                <Button
+                <LoadingButton
                   type="submit"
                   variant="contained"
+                  loading={methods.formState.isSubmitting}
                   fullWidth
                   sx={{
                     mb: 2,
@@ -402,7 +495,7 @@ const EditProfileForm = () => {
                   }}
                 >
                   {editProfileT("updateProfile")}
-                </Button>
+                </LoadingButton>
               </Box>
             </FormProvider>
           </Stack>

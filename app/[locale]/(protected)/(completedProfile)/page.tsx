@@ -6,12 +6,13 @@ import { authOptions } from "@/helpers/authOptions";
 import { calculateProfileCompletion } from "@/helpers/calculateProfileCompletion";
 import { prisma } from "@/helpers/db";
 import { getScopedI18n } from "@/locales/server";
-import { FlightTakeoff, LocalShipping } from "@mui/icons-material";
+import { Add, FlightTakeoff, LocalShipping } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
   Container,
+  IconButton,
   Paper,
   Stack,
   Typography,
@@ -109,6 +110,7 @@ export default async function Home() {
     <Container
       sx={{
         height: "100%",
+        pb: 3,
       }}
     >
       <Stack direction="column" spacing={3} height="100%" width="100%">
@@ -236,12 +238,10 @@ export default async function Home() {
 
         <Stack mt={4} gap={2}>
           <Stack direction="row" alignItems="center" gap={2}>
-            <Typography variant="h5" gutterBottom>
-              {t("recent_flights")}
-            </Typography>
-            <Button variant="contained" component={Link} href="/addFlight">
-              {t("add_new_flight")}
-            </Button>
+            <Typography variant="h5">{t("recent_flights")}</Typography>
+            <IconButton color="secondary" component={Link} href="/addFlight">
+              <Add />
+            </IconButton>
           </Stack>
           {flights.length === 0 ? (
             <Typography>{t("add_your_first_flight")}</Typography>
@@ -261,12 +261,10 @@ export default async function Home() {
 
         <Stack mt={4} gap={2}>
           <Stack direction="row" alignItems="center" gap={2}>
-            <Typography variant="h5" gutterBottom>
-              {t("recent_parcels")}
-            </Typography>
-            <Button variant="contained" component={Link} href="/addParcel">
-              {t("add_new_parcel")}
-            </Button>
+            <Typography variant="h5">{t("recent_parcels")}</Typography>
+            <IconButton color="secondary" component={Link} href="/addParcel">
+              <Add />
+            </IconButton>
           </Stack>
           {userParcels.length === 0 ? (
             <Typography>{t("add_your_first_parcel")}</Typography>

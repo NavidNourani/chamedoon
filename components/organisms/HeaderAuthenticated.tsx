@@ -13,7 +13,7 @@ const HeaderAuthenticated: FunctionComponent = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <AppBar position="sticky" sx={{ mb: 2 }}>
+    <AppBar position="sticky">
       <Toolbar>
         {/* <IconButton
           size="large"
