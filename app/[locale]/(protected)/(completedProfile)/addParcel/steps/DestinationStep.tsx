@@ -19,7 +19,6 @@ const DestinationStep = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countries, setValue]);
-  console.log("aaaaaaaaaa", getValues("destinationCountry"));
   useEffect(() => {
     if (getValues("destinationCountry")) {
       getAirports({ countryId: getValues("destinationCountry").id }).then(

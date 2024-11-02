@@ -16,15 +16,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const t = await getScopedI18n("home");
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    return <Typography>{t("not_logged_in")}</Typography>;
+    redirect("/login");
   }
 
   // Fetch the user
@@ -33,7 +34,7 @@ export default async function Home() {
   });
 
   if (!user) {
-    return <Typography>{t("user_not_found")}</Typography>;
+    redirect("/login");
   }
 
   // Calculate profile completion percentage
