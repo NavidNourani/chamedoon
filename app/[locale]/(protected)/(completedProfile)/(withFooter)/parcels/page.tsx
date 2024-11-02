@@ -90,6 +90,7 @@ export default function Home() {
       </Container>
       <FilterModal
         isOpen={isFilterModalOpen}
+        onClearFilters={handleClearFilters}
         onClose={handleCloseFilterModal}
         countries={countries}
         methods={methods}

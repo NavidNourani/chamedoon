@@ -189,6 +189,7 @@ export default {
     Flight_updated_successfully: "Flight updated successfully",
   },
   parcelsPage: {
+    no_parcels_found: "No parcels found",
     parcels: "Parcels",
     document: "Document",
     all: "All",
@@ -196,6 +197,7 @@ export default {
     clear_all: "Clear All",
     filter_parcels: "Filter Parcels",
     close: "Close",
+    apply_filters: "Apply Filters",
   },
   flightsPage: {
     flights: "Flights",
@@ -206,6 +208,7 @@ export default {
     filter: "Filter",
     clear_filters: "Clear Filters",
     no_flights_found: "No flights found",
+    apply_filters: "Apply Filters",
   },
   flightItem: {
     departure: "Departure",
@@ -253,6 +256,7 @@ export default {
     completeProfileTitle: "Profile Incomplete",
     completeProfile: "Please complete your profile by filling in",
     profileCompletion: "Profile completion",
+    uploading: "Uploading...",
     phoneVisibilityNote:
       "Your phone number will be visible to other users to facilitate direct communication for parcel delivery arrangements.",
   },

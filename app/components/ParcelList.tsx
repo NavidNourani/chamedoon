@@ -1,8 +1,9 @@
 "use client";
 import ParcelItem from "@/app/components/atomic/molecules/ParcelItem";
 import ParcelItemSkeleton from "@/app/components/atomic/molecules/ParcelItemSkeleton";
+import { useScopedI18n } from "@/locales/client";
 import { GetParcelsResponseData } from "@/types/apis/parcels";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { memo } from "react";
 import ReactSign from "react-sign";
 
@@ -15,6 +16,11 @@ interface ParcelListProps {
 
 const ParcelList = memo(
   ({ isLoading, parcels, hasNextPage, fetchNextPage }: ParcelListProps) => {
+    const t = useScopedI18n("parcelsPage");
+    if (!isLoading && parcels?.length === 0) {
+      return <Typography>{t("no_parcels_found")}</Typography>;
+    }
+
     return (
       <Box
         gap={2}

@@ -89,6 +89,7 @@ export default function FlightsPage() {
       </Container>
       <FilterModal
         isOpen={isFilterModalOpen}
+        onClearFilters={handleClearFilters}
         onClose={handleCloseFilterModal}
         countries={countries}
         methods={methods}

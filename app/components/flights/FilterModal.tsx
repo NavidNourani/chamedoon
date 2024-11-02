@@ -16,6 +16,7 @@ import { UseFormReturn } from "react-hook-form";
 interface FilterModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onClearFilters: () => void;
   countries: Country[] | undefined;
   methods: UseFormReturn<any>;
 }
@@ -23,6 +24,7 @@ interface FilterModalProps {
 const FilterModal = ({
   isOpen,
   onClose,
+  onClearFilters,
   countries,
   methods,
 }: FilterModalProps) => {
@@ -70,8 +72,11 @@ const FilterModal = ({
               name="destinationCountry"
               label={flightsPageT("destination_country")}
             />
-            <Button variant="contained" onClick={onClose}>
-              {flightsPageT("close")}
+            <Button variant="contained" onClick={onClearFilters}>
+              {flightsPageT("clear_filters")}
+            </Button>
+            <Button variant="contained" type="submit" onClick={onClose}>
+              {flightsPageT("apply_filters")}
             </Button>
           </Stack>
         </form>

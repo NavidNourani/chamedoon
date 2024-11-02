@@ -3,13 +3,13 @@ import { RHFSelect } from "@/components/shared/RHF/RHFSelect";
 import { useScopedI18n } from "@/locales/client";
 import { Close } from "@mui/icons-material";
 import {
-    Box,
-    Button,
-    IconButton,
-    MenuItem,
-    Modal,
-    Stack,
-    Typography,
+  Box,
+  Button,
+  IconButton,
+  MenuItem,
+  Modal,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { Country } from "@prisma/client";
 import { memo } from "react";
@@ -20,6 +20,7 @@ interface FilterModalProps {
   onClose: () => void;
   countries: Country[] | undefined;
   methods: UseFormReturn<any>;
+  onClearFilters: () => void;
 }
 
 const FilterModal = ({
@@ -27,6 +28,7 @@ const FilterModal = ({
   onClose,
   countries,
   methods,
+  onClearFilters,
 }: FilterModalProps) => {
   const parcelsPageT = useScopedI18n("parcelsPage");
   const addParcelT = useScopedI18n("add_parcel");
@@ -77,8 +79,11 @@ const FilterModal = ({
               <MenuItem value="all">{parcelsPageT("all")}</MenuItem>
               <MenuItem value="Document">{parcelsPageT("document")}</MenuItem>
             </RHFSelect>
+            <Button variant="contained" onClick={onClearFilters}>
+              {parcelsPageT("clear_all")}
+            </Button>
             <Button variant="contained" onClick={onClose}>
-              {parcelsPageT("close")}
+              {parcelsPageT("apply_filters")}
             </Button>
           </Stack>
         </form>

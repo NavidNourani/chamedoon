@@ -187,6 +187,7 @@ export default {
     Flight_updated_successfully: "پرواز با موفقیت به‌روزرسانی شد",
   },
   parcelsPage: {
+    no_parcels_found: "هیچ بسته‌ای یافت نشد",
     parcels: "بسته‌ها",
     document: "مدارک",
     all: "همه",
@@ -194,6 +195,7 @@ export default {
     clear_all: "پاک کردن همه",
     filter_parcels: "فیلتر بسته‌ها",
     close: "بستن",
+    apply_filters: "اعمال فیلترها",
   },
   editProfileForm: {
     editProfileTitle: "به‌روزرسانی پروفایل شما",
@@ -223,6 +225,7 @@ export default {
     completeProfileTitle: "برای استفاده از سیستم پروفایل خود را کامل کنید",
     completeProfile: "وارد کردن این موارد الزامی است",
     profileCompletion: "تکمیل پروفایل",
+    uploading: "در حال آپلود...",
     phoneVisibilityNote:
       "شماره تلفن شما برای برقراری ارتباط مستقیم جهت هماهنگی‌های ارسال بسته، برای سایر کاربران قابل مشاهده خواهد بود.",
   },
@@ -238,7 +241,8 @@ export default {
     close: "بستن",
     filter: "فیلتر",
     clear_filters: "پاک کردن فیلترها",
-    no_flights_found: "یچ پروازی یافت نشد",
+    no_flights_found: "هیچ پروازی یافت نشد",
+    apply_filters: "اعمال فیلترها",
   },
   flightItem: {
     departure: "مبدا",

@@ -1,6 +1,7 @@
 "use client";
 
 import { uploadUserPhoto } from "@/app/@user/actions/uploadUserPhoto";
+import ImageUploader from "@/components/shared/ImageUploader";
 import LoadingButton from "@/components/shared/LoadingButton";
 import { RHFSelect } from "@/components/shared/RHF/RHFSelect";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
@@ -10,12 +11,10 @@ import { useScopedI18n } from "@/locales/client";
 import { getCurrentUser } from "@/serverActions/getCurrentUser";
 import { updateUser } from "@/serverActions/updateUser";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Person } from "@mui/icons-material";
 import {
   Alert,
   AlertTitle,
   Box,
-  Button,
   InputAdornment,
   LinearProgress,
   MenuItem,
@@ -24,6 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 import { CurrencyTypeType, DateSystemType } from "@prisma/client";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
@@ -68,6 +68,7 @@ const EditProfileForm = () => {
   const [missingRequiredFields, setMissingRequiredFields] = useState<string[]>(
     []
   );
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
   const methods = useForm({
     defaultValues: {
@@ -159,13 +160,20 @@ const EditProfileForm = () => {
     if (!file) return;
 
     try {
+      setUploadProgress(0);
       const result = await uploadUserPhoto(file.name, file.type);
+
       if (result.success) {
-        await fetch(result.signedUrl!, {
-          method: "PUT",
-          body: file,
+        await axios.put(result.signedUrl!, file, {
           headers: { "Content-Type": file.type },
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / (progressEvent.total ?? 100)
+            );
+            setUploadProgress(progress);
+          },
         });
+
         setPhotoUrl(result.photoUrl!);
         enqueueSnackbar(editProfileT("photoUploadSuccess"), {
           variant: "success",
@@ -175,6 +183,8 @@ const EditProfileForm = () => {
       }
     } catch (error) {
       enqueueSnackbar(editProfileT("photoUploadError"), { variant: "error" });
+    } finally {
+      setUploadProgress(null);
     }
   };
 
@@ -371,51 +381,14 @@ const EditProfileForm = () => {
                 {editProfileT("profileCompletion")}: {profileCompletion}%
               </Typography>
             </Stack>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                mb: 4,
-                outline: "2px solid white",
-                width: "fit-content",
-                outlineOffset: "4px",
-                borderRadius: "50%",
-                alignSelf: "center",
-                "&>img": {
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  width: "60px",
-                  height: "60px",
-                },
-              }}
-            >
-              {!photoUrl ? (
-                <Image
-                  src={photoUrl}
-                  alt="User Photo"
-                  width={200}
-                  height={200}
-                  quality={100}
-                />
-              ) : (
-                <Person sx={{ width: 60, height: 60 }} />
-              )}
-            </Box>
-            <Button
-              variant="contained"
-              component="label"
-              fullWidth
-              sx={{ mb: 4 }}
-            >
-              {editProfileT("uploadPhoto")}
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={handlePhotoUpload}
-              />
-            </Button>
-
+            <ImageUploader
+              photoUrl={photoUrl}
+              uploadProgress={uploadProgress}
+              onUpload={handlePhotoUpload}
+              uploadButtonText={editProfileT("uploadPhoto")}
+              uploadingText={editProfileT("uploading")}
+              size={60}
+            />
             <FormProvider {...methods}>
               <Box
                 component="form"

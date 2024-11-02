@@ -1,7 +1,7 @@
 "use client";
 import { useScopedI18n } from "@/locales/client";
 import { GetFlightsResponseData } from "@/types/apis/flights";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { memo } from "react";
 import ReactSign from "react-sign";
 import FlightItem from "../atomic/molecules/FlightItem";
@@ -26,10 +26,14 @@ const FlightList = ({
     return <CircularProgress />;
   }
 
+  if (!isLoading && flights?.length === 0) {
+    return <Typography>{flightsPageT("no_flights_found")}</Typography>;
+  }
+
   if (!flights || flights.length === 0) {
-    return new Array(12).fill(null).map((_, index) => (
-      <FlightItemSkeleton key={index} />
-    ));
+    return new Array(12)
+      .fill(null)
+      .map((_, index) => <FlightItemSkeleton key={index} />);
   }
 
   return (
