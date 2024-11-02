@@ -110,13 +110,14 @@ export default {
     },
     emailOrPhone: "ایمیل یا شماره تلفن",
     identifier: "ایمیل یا شماره تلفن",
-    identifierRequired: "ایمیل یا شماره تل��ن الزامی است",
+    identifierRequired: "ایمیل یا شماره تلن الزامی است",
     phone: "شماره تلفن",
     phoneRequired: "شماره تلفن الزامی است",
     invalidPhone: "فرمت شماره تلفن نامعتبر است",
     countryCode: "کد کشور",
     countryCodeRequired: "کد کشور الزامی است",
     invalidCountryCode: "فرمت کد کشور نامعتبر است",
+    loginSuccess: "با موفقیت وارد شدید. در حال انتقال...",
   },
   signupForm: {
     formTitle: "فرم ثبت نام",
@@ -147,6 +148,7 @@ export default {
     countryCode: "کد کشور",
     countryCodeRequired: "کد کشور الزامی است",
     invalidCountryCode: "فرمت کد کشور نامعتبر است",
+    signupSuccess: "با موفقیت ثبت‌نام شدید. در حال انتقال...",
   },
   errorPage: {
     errorTitle: "خطای احراز هویت",
@@ -207,7 +209,7 @@ export default {
     whatsappNumber: "شماره واتساپ",
     updateProfile: "به‌روزرسانی پروفایل",
     updateSuccess: "پروفایل با موفقیت به‌روز شد",
-    updateError: "طا در به‌روزرسانی پروفایل",
+    updateError: "طا در ب��‌روزرسانی پروفایل",
     fetchError: "خطا در دریافت اطلاعات کاربر",
     loading: "در حال بارگیری اطلاعات کاربر...",
     uploadPhoto: "آپلود عکس",
@@ -221,6 +223,8 @@ export default {
     completeProfileTitle: "برای استفاده از سیستم پروفایل خود را کامل کنید",
     completeProfile: "وارد کردن این موارد الزامی است",
     profileCompletion: "تکمیل پروفایل",
+    phoneVisibilityNote:
+      "شماره تلفن شما برای برقراری ارتباط مستقیم جهت هماهنگی‌های ارسال بسته، برای سایر کاربران قابل مشاهده خواهد بود.",
   },
   formErrors: {
     uniqueConstraintFailed:
@@ -270,5 +274,26 @@ export default {
   footer: {
     company_name: "اوربیت‌پکس",
     company_description: "راه حل هوشمند برای حمل و نقل بین‌المللی",
+  },
+  navigation: {
+    home: "خانه",
+    all_parcels: "همه بسته‌ها",
+    all_flights: "همه پروازها",
+    support: "پشتیبانی",
+  },
+  support: {
+    title: "مرکز پشتیبانی",
+    welcome_message:
+      "به مرکز پشتیبانی ما خوش آمدید. ما اینجا هستیم تا به سوالات و نگرانی‌های شما درباره خدمات ارسال بسته و پرواز پاسخ دهیم.",
+    contact_info: "اطلاعات تماس",
+    common_questions: "سوالات متداول",
+    track_parcel_title: "چگونه می‌توانم بسته خود را پیگیری کنم؟",
+    track_parcel_desc:
+      "شما می‌توانید با ورود به حساب کاربری خود و مراجعه به بخش «همه بسته‌ها»، وضعیت و موقعیت محموله خود را به صورت لحظه‌ای پیگیری کنید.",
+    modify_flight_title: "اگر نیا�� به تغییر رزرو پرواز داشته باشم چه کار کنم؟",
+    modify_flight_desc:
+      "برای هرگونه تغییر در رزرو پرواز، لطفاً مستقیماً از طریق تلگرام با تیم پشتیبانی ما تماس بگیرید. ما در اسرع وقت به شما در انجام تغییرات کمک خواهیم کرد.",
+    response_time:
+      "تیم پشتیبانی ما معمولاً در عرض ۲۴ ساعت پاسخ می‌دهد. برای موارد فوری، لطفاً از طریق تلگرام با ما تماس بگیرید.",
   },
 } as const;

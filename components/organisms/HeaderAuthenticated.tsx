@@ -4,26 +4,18 @@ import { authOptions } from "@/helpers/authOptions";
 import { getScopedI18n } from "@/locales/server";
 import { AppBar, Toolbar } from "@mui/material";
 import { getServerSession } from "next-auth";
-import { FunctionComponent } from "react";
 import ChangeLanguageButton from "../atoms/ChangeLanguageButton";
 import AuthorizationButton from "../molecules/AuthorizationButton";
+import Sidebar from "./Sidebar";
 
-const HeaderAuthenticated: FunctionComponent = async () => {
+const HeaderAuthenticated = async () => {
   const tPageTitle = await getScopedI18n("pageTitle");
   const session = await getServerSession(authOptions);
 
   return (
     <AppBar position="sticky">
       <Toolbar>
-        {/* <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton> */}
+        <Sidebar />
         <Link href="/" sx={{ flexGrow: 1 }} variant="h6" color="inherit">
           {tPageTitle("orbit_pax")}
         </Link>

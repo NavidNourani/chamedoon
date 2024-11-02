@@ -118,6 +118,7 @@ export default {
     countryCode: "Country Code",
     countryCodeRequired: "Country code is required",
     invalidCountryCode: "Invalid country code format",
+    loginSuccess: "Successfully logged in. Redirecting...",
   },
   signupForm: {
     formTitle: "Signup Form",
@@ -148,6 +149,7 @@ export default {
     countryCode: "Country Code",
     countryCodeRequired: "Country code is required",
     invalidCountryCode: "Invalid country code format",
+    signupSuccess: "Successfully registered. Redirecting...",
   },
   errorPage: {
     errorTitle: "Authentication Error",
@@ -251,6 +253,8 @@ export default {
     completeProfileTitle: "Profile Incomplete",
     completeProfile: "Please complete your profile by filling in",
     profileCompletion: "Profile completion",
+    phoneVisibilityNote:
+      "Your phone number will be visible to other users to facilitate direct communication for parcel delivery arrangements.",
   },
   formErrors: {
     uniqueConstraintFailed: "Value for {field} already used.",
@@ -271,5 +275,27 @@ export default {
   footer: {
     company_name: "OrbitPax",
     company_description: "Smart solution for international transportation",
+  },
+  navigation: {
+    home: "Home",
+    all_parcels: "All Parcels",
+    all_flights: "All Flights",
+    support: "Support",
+  },
+  support: {
+    title: "Support Center",
+    welcome_message:
+      "Welcome to our support center. We're here to help you with any questions or concerns you might have about our parcel delivery and flight services.",
+    contact_info: "Contact Information",
+    common_questions: "Common Questions",
+    track_parcel_title: "How can I track my parcel?",
+    track_parcel_desc:
+      "You can track your parcel by logging into your account and visiting the \"All Parcels\" section. There you'll find real-time updates on your shipment's status and location.",
+    modify_flight_title:
+      "What should I do if I need to modify my flight booking?",
+    modify_flight_desc:
+      "For any changes to your flight booking, please contact our support team directly through Telegram. We'll assist you with modifications as soon as possible.",
+    response_time:
+      "Our support team typically responds within 24 hours. For urgent matters, please reach out via Telegram.",
   },
 } as const;

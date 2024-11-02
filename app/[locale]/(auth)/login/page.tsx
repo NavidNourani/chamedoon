@@ -122,6 +122,8 @@ const AuthForm = () => {
         };
         await addUser(userData);
 
+        enqueueSnackbar(tSignup("signupSuccess"), { variant: "success" });
+
         // Automatically sign in after successful registration
         await loginHandler(() =>
           signIn("credentials", {
@@ -155,6 +157,7 @@ const AuthForm = () => {
   const loginHandler = async (func: () => Promise<any>) => {
     const res = await func();
     if (res?.ok) {
+      enqueueSnackbar(tLogin("loginSuccess"), { variant: "success" });
       router.push("/");
     }
     if (res?.error) {
@@ -225,7 +228,7 @@ const AuthForm = () => {
               sx={{ width: "100%" }}
             >
               {isLogin ? (
-                <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 1, mb: 2 }} dir="ltr">
                   <RHFTextField
                     name="countryCode"
                     label={tLogin("countryCode")}
@@ -246,7 +249,7 @@ const AuthForm = () => {
                   />
                 </Box>
               ) : (
-                <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+                <Box sx={{ display: "flex", gap: 1, mb: 2 }} dir="ltr">
                   <RHFTextField
                     name="countryCode"
                     label={tSignup("countryCode")}

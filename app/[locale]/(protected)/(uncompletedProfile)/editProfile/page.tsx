@@ -16,6 +16,7 @@ import {
   AlertTitle,
   Box,
   Button,
+  InputAdornment,
   LinearProgress,
   MenuItem,
   Skeleton,
@@ -359,7 +360,7 @@ const EditProfileForm = () => {
             >
               {editProfileT("editYourProfile")}
             </Typography>
-            <Stack sx={{ alignItems: "center", mb: 4, gap: 2 }}>
+            <Stack sx={{ alignItems: "center", mb: 4, gap: 2 }} dir="ltr">
               <LinearProgress
                 dir="ltr"
                 sx={{ width: "100%", direction: "ltr" }}
@@ -422,6 +423,43 @@ const EditProfileForm = () => {
                 sx={{ width: "100%" }}
               >
                 <RHFTextField
+                  name="name"
+                  label={editProfileT("name") + " *"}
+                  sx={{ mb: 2 }}
+                />
+                <RHFTextField
+                  name="family"
+                  label={editProfileT("family") + " *"}
+                  sx={{ mb: 2 }}
+                />
+                <Box sx={{ display: "flex", gap: 1, mb: 2 }} dir="ltr">
+                  <RHFTextField
+                    name="countryCode"
+                    label={editProfileT("countryCode") + " *"}
+                    placeholder="44"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">+</InputAdornment>
+                      ),
+                    }}
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    sx={{ width: "30%" }}
+                  />
+                  <RHFTextField
+                    name="phone"
+                    label={editProfileT("phone") + " *"}
+                    placeholder="1234567890"
+                    sx={{ flex: 1 }}
+                  />
+                </Box>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ mb: 2, display: "block" }}
+                >
+                  {editProfileT("phoneVisibilityNote")}
+                </Typography>
+                <RHFTextField
                   name="username"
                   label={editProfileT("username")}
                   sx={{ mb: 2 }}
@@ -429,26 +467,6 @@ const EditProfileForm = () => {
                 <RHFTextField
                   name="email"
                   label={editProfileT("email")}
-                  sx={{ mb: 2 }}
-                />
-                <RHFTextField
-                  name="name"
-                  label={editProfileT("name")}
-                  sx={{ mb: 2 }}
-                />
-                <RHFTextField
-                  name="family"
-                  label={editProfileT("family")}
-                  sx={{ mb: 2 }}
-                />
-                <RHFTextField
-                  name="countryCode"
-                  label={editProfileT("countryCode")}
-                  sx={{ mb: 2 }}
-                />
-                <RHFTextField
-                  name="phone"
-                  label={editProfileT("phone")}
                   sx={{ mb: 2 }}
                 />
                 <RHFSelect
