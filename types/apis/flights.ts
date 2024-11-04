@@ -1,4 +1,4 @@
-import { City, Country, Flight } from "@prisma/client";
+import { City, Country, Flight, User } from "@prisma/client";
 
 export interface GetFlightsResponseData {
   id: string;
@@ -31,6 +31,7 @@ export interface GetFlightsResponseData {
       };
     };
   };
+  user: Pick<User, "phone" | "countryCode" | "photo">;
   estimatedCost: number | null;
   acceptableParcelDescription: string;
   // Add any other fields from your Flight model that you want to display

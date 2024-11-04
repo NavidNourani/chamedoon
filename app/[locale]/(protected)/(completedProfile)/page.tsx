@@ -18,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { getServerSession } from "next-auth";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -142,11 +143,19 @@ export default async function Home() {
             alignItems="center"
             sx={{ position: "relative", zIndex: 2 }}
           >
-            <Avatar
-              alt={user.name ?? ""}
-              src={user.photo ?? ""}
-              sx={{ width: 80, height: 80 }}
-            />
+            <Avatar sx={{ width: 80, height: 80, position: "relative" }}>
+              {user.photo ? (
+                <Image
+                  alt={user.name ?? ""}
+                  src={user.photo}
+                  fill
+                  sizes="80px"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                user.name?.[0] ?? ""
+              )}
+            </Avatar>
             <Box>
               <Typography variant="h5">
                 {user.name} {user.family}

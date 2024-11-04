@@ -1,5 +1,4 @@
 import RHFCheckbox from "@/components/shared/RHF/RHFCheckbox";
-import RHFDatePicker from "@/components/shared/RHF/RHFDatePicker";
 import { RHFSelect } from "@/components/shared/RHF/RHFSelect";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import { useScopedI18n } from "@/locales/client";
@@ -39,11 +38,6 @@ const ParcelDetailsStep = () => {
         type="number"
         name="estimatedCost"
         label={t("Estimated_cost_(optional)")}
-      />
-      <RHFDatePicker
-        sx={{ width: "100%" }}
-        name="approximateDateTime"
-        label={t("Approximate_DateTime_optional")}
       />
       <RHFCheckbox name="immediateDelivery" label={t("Immediate_delivery")} />
     </>

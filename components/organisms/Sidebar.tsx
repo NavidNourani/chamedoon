@@ -13,7 +13,7 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,9 +42,8 @@ const Sidebar = () => {
         <Toolbar />
         <List sx={{ width: 250 }}>
           {menuItems.map((item, index) => (
-            <>
+            <Fragment key={item.text}>
               <ListItem
-                key={item.text}
                 component={Link}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
@@ -53,7 +52,7 @@ const Sidebar = () => {
                 <ListItemText primary={item.text} />
               </ListItem>
               {index < menuItems.length - 1 && <Divider />}
-            </>
+            </Fragment>
           ))}
         </List>
       </Drawer>

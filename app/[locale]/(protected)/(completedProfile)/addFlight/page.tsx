@@ -141,9 +141,22 @@ const FlightForm = () => {
     }
   };
 
-  const handleNext = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault(); // Prevent default form submission
-    setStep((prev) => prev + 1);
+  const handleNext = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    // Define fields to validate for each step
+    const fieldsToValidate = {
+      0: ["departureDateTime", "departureAirport", "departureCountry"],
+      1: ["arrivalDateTime", "destinationAirport", "destinationCountry"],
+      2: ["acceptableParcelDescription", "estimatedCost"],
+    }[step];
+
+    // Validate only the fields for the current step
+    const isStepValid = await methods.trigger(fieldsToValidate as any);
+
+    if (isStepValid) {
+      setStep((prev) => prev + 1);
+    }
   };
   const handleBack = () => setStep((prev) => prev - 1);
 

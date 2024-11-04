@@ -19,7 +19,6 @@ const ChangeLanguageButton = () => {
       sx={{ color: "white", "&>fieldset": { border: "unset" } }}
       value={currentLocale}
       onChange={handleChange}
-      id="demo-simple-select-standard"
     >
       <MenuItem value="en">{t("en")}</MenuItem>
       <MenuItem value="fa">{t("fa")}</MenuItem>

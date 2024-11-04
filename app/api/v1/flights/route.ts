@@ -57,13 +57,13 @@ export async function GET(req: Request) {
       },
       select: {
         id: true,
-        userID:true,
+        userID: true,
         estimatedCost: true,
         acceptableParcelDescription: true,
         arrivalDateTime: true,
         departureDateTime: true,
         departureAirport: {
-          include: { 
+          include: {
             city: {
               include: {
                 country: { select: { id: true, name: true, iso2: true } },
@@ -78,6 +78,13 @@ export async function GET(req: Request) {
                 country: { select: { id: true, name: true, iso2: true } },
               },
             },
+          },
+        },
+        user: {
+          select: {
+            photo: true,
+            countryCode: true,
+            phone: true,
           },
         },
       },

@@ -87,6 +87,7 @@ const ParcelForm = () => {
       immediateDelivery: false,
       parcelDescription: "",
       estimatedCost: undefined,
+      parcelType: "Document",
       approximateDateTime: new Date(),
     },
   });
@@ -110,6 +111,7 @@ const ParcelForm = () => {
         immediateDelivery: false,
         parcelDescription: "",
         estimatedCost: undefined,
+        parcelType: "Document",
         approximateDateTime: undefined,
       });
     }
@@ -140,14 +142,6 @@ const ParcelForm = () => {
             variant: "success",
           }
         );
-        // Call the revalidation API
-        // await fetch("/api/v1/revalidate", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({ path: "/" }),
-        // });
 
         router.push("/");
       } else {
@@ -163,9 +157,22 @@ const ParcelForm = () => {
     }
   };
 
-  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setStep((prev) => prev + 1);
+
+    // Define fields to validate for each step
+    const fieldsToValidate = {
+      0: ["departureCountry", "departureAirport"],
+      1: ["destinationCountry", "destinationAirport"],
+      2: ["parcelDescription", "parcelWeight", "parcelType"],
+    }[step];
+
+    // Validate only the fields for current step
+    const isStepValid = await methods.trigger(fieldsToValidate as any);
+
+    if (isStepValid) {
+      setStep((prev) => prev + 1);
+    }
   };
   const handleBack = () => setStep((prev) => prev - 1);
 

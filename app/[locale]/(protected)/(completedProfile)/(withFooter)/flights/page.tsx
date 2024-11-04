@@ -1,4 +1,5 @@
 "use client";
+import FlightItemSkeleton from "@/app/components/atomic/molecules/FlightItemSkeleton";
 import FilterButtons from "@/app/components/flights/FilterButtons";
 import FilterModal from "@/app/components/flights/FilterModal";
 import FlightList from "@/app/components/flights/FlightList";
@@ -6,7 +7,7 @@ import useGetInfiniteFlights from "@/hooks/useGetInfiniteFlights";
 import useLocations from "@/hooks/useLocations";
 import { useScopedI18n } from "@/locales/client";
 import { GetFlightsResponseData } from "@/types/apis/flights";
-import { Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { useCallback, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -78,12 +79,33 @@ export default function FlightsPage() {
               onClearFilters={handleClearFilters}
               activeFiltersCount={activeFiltersCount}
             />
-            <FlightList
-              isLoading={isLoading}
-              flights={flights}
-              hasNextPage={hasNextPage}
-              fetchNextPage={fetchNextPage}
-            />
+
+            {/* Loading state with skeletons */}
+            {isLoading ? (
+              <Box
+                sx={{
+                  display: "grid",
+                  gap: 2,
+                  width: "100%",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "1fr 1fr",
+                    md: "1fr 1fr 1fr",
+                  },
+                }}
+              >
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <FlightItemSkeleton key={index} />
+                ))}
+              </Box>
+            ) : (
+              <FlightList
+                isLoading={isLoading}
+                flights={flights}
+                hasNextPage={hasNextPage}
+                fetchNextPage={fetchNextPage}
+              />
+            )}
           </Stack>
         </Stack>
       </Container>

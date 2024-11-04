@@ -94,6 +94,24 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
                     </TableCell>
                   </TableRow>
                   <TableRow>
+                    <TableCell>{t("departure_hour")}</TableCell>
+                    <TableCell>
+                      {formatTime("jalali", flight.departureDateTime)}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>{t("phone")}</TableCell>
+                    <TableCell>
+                      <a
+                        href={`tel:+${
+                          flight.user.countryCode! + flight.user.phone!
+                        }`}
+                      >
+                        +{flight.user.countryCode} {flight.user.phone}
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableCell>{t("arrival_date")}</TableCell>
                     <TableCell>
                       {formatDate("jalali", flight.arrivalDateTime)}

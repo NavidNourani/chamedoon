@@ -261,6 +261,7 @@ export default {
     edit: "ویرایش",
     your_flight: "پرواز شما",
     acceptable_parcel_description: "بسته قابل قبول",
+    phone: "شماره تلفن",
   },
   currency: {
     IRT: "ریال ایران",
