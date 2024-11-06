@@ -16,7 +16,7 @@ export const authOptions: AuthOptions = {
       authorize: async (credentials) => {
         const countryCode = credentials!?.countryCode;
         const phone = credentials!?.phone;
-        
+
         const user = await login({
           countryCode,
           phone,
@@ -47,24 +47,24 @@ export const authOptions: AuthOptions = {
         });
 
         if (!existingUser) {
-          // Create a new user if they don't exist
           const newUser = await prisma.user.create({
             data: {
               email: profile?.email!,
               name: (profile?.name as any)?.givenName,
               family: (profile?.name as any)?.familyName,
               username: (profile?.email as any)!.split("@")[0],
+              photo: profile?.image || (profile as any)?.picture,
             },
           });
-          // Update the user object with the newly created user
           user.id = newUser.id;
           user.email = newUser.email;
           user.name = newUser.name;
+          (user as User).photo = newUser.photo;
         } else {
-          // Update the user object with the existing user's information
           user.id = existingUser.id;
           user.email = existingUser.email;
           user.name = existingUser.name;
+          (user as User).photo = existingUser.photo;
         }
       }
       return true;
