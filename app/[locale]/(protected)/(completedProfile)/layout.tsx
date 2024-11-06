@@ -1,6 +1,7 @@
 "use server";
 import { authOptions } from "@/helpers/authOptions";
 import { prisma } from "@/helpers/db";
+import { generatePageMetadata } from "@/helpers/metadata";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -17,3 +18,11 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
+
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  return generatePageMetadata("home", locale);
+}

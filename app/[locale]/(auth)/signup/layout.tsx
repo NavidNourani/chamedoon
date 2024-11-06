@@ -1,4 +1,4 @@
-import { getScopedI18n } from "@/locales/server";
+import { generatePageMetadata } from "@/helpers/metadata";
 
 export default function LoginLayout({
   children,
@@ -8,9 +8,10 @@ export default function LoginLayout({
   return <>{children}</>;
 }
 
-export async function generateMetadata() {
-  const tPageTitle = await getScopedI18n("pageTitle");
-  return {
-    title: tPageTitle("signup"),
-  };
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  return generatePageMetadata("signup", locale);
 }

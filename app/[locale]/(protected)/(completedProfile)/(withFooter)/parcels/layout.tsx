@@ -1,15 +1,13 @@
-import { getScopedI18n } from "@/locales/server";
-import { FunctionComponent, PropsWithChildren } from "react";
+import { generatePageMetadata } from "@/helpers/metadata";
 
-export async function generateMetadata() {
-  const tPageTitle = await getScopedI18n("pageTitle");
-  return {
-    title: tPageTitle("parcels"),
-  };
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  return generatePageMetadata("parcels", locale);
 }
 
-const layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
-};
-
-export default layout;
+}

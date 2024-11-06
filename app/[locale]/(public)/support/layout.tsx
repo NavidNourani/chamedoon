@@ -5,13 +5,8 @@ export async function generateMetadata({
 }: {
   params: { locale: string };
 }) {
-  return generatePageMetadata("flights", locale);
+  return generatePageMetadata("support", locale);
 }
-
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

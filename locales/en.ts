@@ -309,4 +309,19 @@ export default {
     connect_travel: "Connect, Travel, Deliver:",
     your_parcels: "Your Parcels, Their Journey",
   },
+  metaDescription: {
+    home: "Manage your international parcel deliveries and flights. Connect with travelers and send your parcels worldwide.",
+    login:
+      "Log in to your OrbitPax account to manage your parcels and flights.",
+    signup:
+      "Create your OrbitPax account to start sending parcels and managing flights.",
+    error: "Error page - Something went wrong with your request.",
+    addCargo: "Add a new parcel to be delivered internationally.",
+    parcels:
+      "View and manage all your parcels and track their delivery status.",
+    flights: "Browse available flights and connect with travelers.",
+    addFlight: "Add your flight details to help deliver parcels.",
+    support: "Get help and support for using OrbitPax services.",
+    editProfile: "Update your profile information and settings.",
+  },
 } as const;

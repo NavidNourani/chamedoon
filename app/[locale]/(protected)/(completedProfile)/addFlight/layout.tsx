@@ -1,5 +1,5 @@
 import { TranslationProvider } from "@/components/providers/TranslationProvider";
-import { getScopedI18n } from "@/locales/server";
+import { generatePageMetadata } from "@/helpers/metadata";
 
 export default function RootLayout({
   params: { locale },
@@ -11,9 +11,10 @@ export default function RootLayout({
   return <TranslationProvider>{children}</TranslationProvider>;
 }
 
-export async function generateMetadata() {
-  const tPageTitle = await getScopedI18n("pageTitle");
-  return {
-    title: tPageTitle("addFlight"),
-  };
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  return generatePageMetadata("addFlight", locale);
 }
