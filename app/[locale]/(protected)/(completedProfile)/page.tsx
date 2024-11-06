@@ -132,7 +132,7 @@ export default async function Home() {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.7)", // Adjust the color and opacity as needed
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
               zIndex: 1,
             },
           }}
@@ -157,19 +157,30 @@ export default async function Home() {
               )}
             </Avatar>
             <Box>
-              <Typography variant="h5">
+              <Typography variant="h5" sx={{ color: "white" }}>
                 {user.name} {user.family}
               </Typography>
-              <Typography color="textSecondary">
+              <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
                 {user.username} • {user.email}
               </Typography>
-              <Typography color="textSecondary">
+              <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
                 {t("profile_completion")}: {profileCompletionPercentage}%
               </Typography>
             </Box>
           </Stack>
           <Box mt={2} sx={{ position: "relative", zIndex: 2 }}>
-            <Button variant="contained" component={Link} href="/editProfile">
+            <Button
+              variant="contained"
+              component={Link}
+              href="/editProfile"
+              sx={{
+                bgcolor: "rgba(255, 255, 255, 0.15)",
+                color: "white",
+                "&:hover": {
+                  bgcolor: "rgba(255, 255, 255, 0.25)",
+                },
+              }}
+            >
               {t("edit_profile")}
             </Button>
           </Box>

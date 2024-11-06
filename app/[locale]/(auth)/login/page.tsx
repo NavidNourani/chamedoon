@@ -1,4 +1,6 @@
 "use client";
+import ChangeLanguageButton from "@/components/atoms/ChangeLanguageButton";
+import ThemeToggleButton from "@/components/atoms/ThemeToggleButton";
 import LoadingButton from "@/components/shared/LoadingButton";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import { useScopedI18n } from "@/locales/client";
@@ -13,6 +15,7 @@ import {
   Tab,
   Tabs,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { CurrencyTypeType, DateSystemType } from "@prisma/client";
 import { signIn } from "next-auth/react";
@@ -80,6 +83,8 @@ const AuthForm = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const theme = useTheme();
+  const tTheme = useScopedI18n("theme");
 
   const methods = useForm<LoginFormValues | SignupFormValues>({
     defaultValues: isLogin
@@ -179,6 +184,20 @@ const AuthForm = () => {
     <Box sx={{ display: "flex", height: "100%" }}>
       <Box
         sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+          zIndex: 1,
+          display: "flex",
+          gap: 1,
+          alignItems: "center",
+        }}
+      >
+        <ChangeLanguageButton />
+        <ThemeToggleButton />
+      </Box>
+      <Box
+        sx={{
           flex: 1,
           position: "relative",
           display: { xs: "none", md: "block" },
@@ -186,7 +205,7 @@ const AuthForm = () => {
       >
         <Image
           src="/images/passenger.jpg"
-          alt="Connect, Travel, Deliver: Your Parcels, Their Journey"
+          alt={`${tTheme("connect_travel")} ${tTheme("your_parcels")}`}
           layout="fill"
           objectFit="cover"
         />
@@ -194,10 +213,10 @@ const AuthForm = () => {
           sx={{ position: "absolute", bottom: 40, left: 40, color: "white" }}
         >
           <Typography variant="h4" fontWeight="bold">
-            Connect, Travel, Deliver:
+            {tTheme("connect_travel")}
           </Typography>
           <Typography variant="h4" fontWeight="bold">
-            Your Parcels, Their Journey
+            {tTheme("your_parcels")}
           </Typography>
         </Box>
       </Box>
@@ -209,7 +228,8 @@ const AuthForm = () => {
           justifyContent: "center",
           alignItems: "center",
           p: 4,
-          color: "white",
+          bgcolor: theme.palette.background.default,
+          color: theme.palette.text.primary,
         }}
       >
         <Box sx={{ width: "100%", maxWidth: 400 }}>
@@ -217,6 +237,7 @@ const AuthForm = () => {
             value={isLogin ? "login" : "signup"}
             onChange={handleTabChange}
             sx={{ mb: 2 }}
+            textColor="primary"
           >
             <Tab label={tLogin("login")} value="login" />
             <Tab label={tSignup("signup")} value="signup" />
@@ -338,7 +359,16 @@ const AuthForm = () => {
             variant="outlined"
             startIcon={<FcGoogle />}
             fullWidth
-            sx={{ mb: 2, color: "white", borderColor: "gray" }}
+            sx={{
+              mb: 2,
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.divider,
+              height: 48,
+              "&:hover": {
+                borderColor: theme.palette.primary.main,
+                bgcolor: theme.palette.action.hover,
+              },
+            }}
           >
             {tLogin("signInWithGoogle")}
           </Button>

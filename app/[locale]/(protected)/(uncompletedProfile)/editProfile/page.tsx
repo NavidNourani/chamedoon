@@ -22,6 +22,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { CurrencyTypeType, DateSystemType } from "@prisma/client";
 import axios from "axios";
 import Image from "next/image";
@@ -69,6 +70,7 @@ const EditProfileForm = () => {
     []
   );
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const theme = useTheme();
 
   const methods = useForm({
     defaultValues: {
@@ -197,7 +199,10 @@ const EditProfileForm = () => {
           overflow: "hidden",
           boxShadow: 3,
           backdropFilter: "blur(10px)",
-          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          backgroundColor:
+            theme.palette.mode === "dark"
+              ? "rgba(0, 0, 0, 0.3)"
+              : "rgba(255, 255, 255, 0.7)",
         }}
       >
         <Box
@@ -222,7 +227,7 @@ const EditProfileForm = () => {
             justifyContent: "start",
             alignItems: "center",
             p: 4,
-            color: "white",
+            color: theme.palette.text.primary,
             overflow: "auto",
             gap: "2rem",
           }}
@@ -284,6 +289,16 @@ const EditProfileForm = () => {
           position: "fixed",
           inset: "0",
           display: { xs: "block", md: "none" },
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? "rgba(0, 0, 0, 0.3)"
+                : "rgba(255, 255, 255, 0.7)",
+            backdropFilter: "blur(10px)",
+          },
         }}
       >
         <Image
@@ -300,7 +315,10 @@ const EditProfileForm = () => {
           overflow: "hidden",
           boxShadow: 3,
           backdropFilter: "blur(10px)",
-          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          backgroundColor:
+            theme.palette.mode === "dark"
+              ? "rgba(0, 0, 0, 0.3)"
+              : "rgba(255, 255, 255, 0.7)",
         }}
       >
         <Box
@@ -317,7 +335,13 @@ const EditProfileForm = () => {
             objectFit="cover"
           />
           <Box
-            sx={{ position: "absolute", bottom: 40, left: 40, color: "white" }}
+            sx={{
+              position: "absolute",
+              bottom: 40,
+              left: 40,
+              color: "white",
+              textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+            }}
           >
             <Typography variant="h4" fontWeight="bold">
               {editProfileT("editProfileTitle")}
@@ -335,7 +359,7 @@ const EditProfileForm = () => {
             justifyContent: "start",
             alignItems: "center",
             p: 4,
-            color: "white",
+            color: theme.palette.text.primary,
             overflow: "auto",
             gap: "2rem",
           }}
@@ -348,12 +372,36 @@ const EditProfileForm = () => {
                 top: 0,
                 zIndex: 1000,
                 width: "100%",
+                backgroundColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.warning.dark // Much darker background for dark mode
+                    : theme.palette.warning.light, // Much lighter background for light mode
+                "& .MuiAlert-icon": {
+                  color: theme.palette.warning.main, // Keep the warning icon color
+                },
+                border: `1px solid ${theme.palette.warning.main}`, // Add border for better definition
               }}
             >
-              <AlertTitle fontSize="1.2rem" fontWeight="bold">
+              <AlertTitle
+                fontSize="1.2rem"
+                fontWeight="bold"
+                sx={{
+                  color:
+                    theme.palette.mode === "dark"
+                      ? theme.palette.warning.main // Use main warning color for dark mode
+                      : theme.palette.warning.dark, // Use darker warning color for light mode
+                }}
+              >
                 {editProfileT("completeProfileTitle")}
               </AlertTitle>
-              <Typography>
+              <Typography
+                sx={{
+                  color:
+                    theme.palette.mode === "dark"
+                      ? theme.palette.warning.light // Light warning color for dark mode
+                      : theme.palette.warning.dark, // Darker warning color for light mode
+                }}
+              >
                 {editProfileT("completeProfile")}:{" "}
                 {missingRequiredFields
                   .map((field) => editProfileT(`${field}` as any))
@@ -367,6 +415,7 @@ const EditProfileForm = () => {
               fontWeight="bold"
               textAlign="center"
               marginBottom={4}
+              color={theme.palette.text.primary}
             >
               {editProfileT("editYourProfile")}
             </Typography>
@@ -377,7 +426,7 @@ const EditProfileForm = () => {
                 value={profileCompletion}
                 variant="determinate"
               />
-              <Typography>
+              <Typography color={theme.palette.text.primary}>
                 {editProfileT("profileCompletion")}: {profileCompletion}%
               </Typography>
             </Stack>
@@ -427,8 +476,11 @@ const EditProfileForm = () => {
                 </Box>
                 <Typography
                   variant="caption"
-                  color="text.secondary"
-                  sx={{ mb: 2, display: "block" }}
+                  sx={{
+                    mb: 2,
+                    display: "block",
+                    color: theme.palette.text.secondary,
+                  }}
                 >
                   {editProfileT("phoneVisibilityNote")}
                 </Typography>

@@ -303,4 +303,10 @@ export default {
     response_time:
       "Our support team typically responds within 24 hours. For urgent matters, please reach out via Telegram.",
   },
+  theme: {
+    dark_mode: "Dark mode",
+    light_mode: "Light mode",
+    connect_travel: "Connect, Travel, Deliver:",
+    your_parcels: "Your Parcels, Their Journey",
+  },
 } as const;

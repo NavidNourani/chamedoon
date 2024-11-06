@@ -6,7 +6,9 @@ import useGetInfiniteParcels from "@/hooks/useGetInfiniteParcels";
 import useLocations from "@/hooks/useLocations";
 import { useScopedI18n } from "@/locales/client";
 import { GetParcelsResponseData } from "@/types/apis/parcels";
-import { Container, Stack, Typography } from "@mui/material";
+import { Add } from "@mui/icons-material";
+import { Container, Fab, Stack, Typography } from "@mui/material";
+import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -68,7 +70,9 @@ export default function Home() {
 
   return (
     <FormProvider {...methods}>
-      <Container sx={{ height: "100%", overflow: "auto" }}>
+      <Container
+        sx={{ height: "100%", overflow: "auto", position: "relative" }}
+      >
         <Stack direction="row" gap={2} width="100%">
           <Stack width="100%" flexWrap="wrap">
             <Typography variant="h1" mb="36px" textAlign="center">
@@ -87,6 +91,20 @@ export default function Home() {
             />
           </Stack>
         </Stack>
+
+        {/* Add Parcel FAB */}
+        <Fab
+          component={Link}
+          href="/addParcel"
+          color="primary"
+          sx={{
+            position: "fixed",
+            bottom: 24,
+            right: 24,
+          }}
+        >
+          <Add />
+        </Fab>
       </Container>
       <FilterModal
         isOpen={isFilterModalOpen}

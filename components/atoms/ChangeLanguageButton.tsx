@@ -16,7 +16,11 @@ const ChangeLanguageButton = () => {
   };
   return (
     <Select
-      sx={{ color: "white", "&>fieldset": { border: "unset" } }}
+      sx={{
+        color: "inherit",
+        "&>fieldset": { border: "unset" },
+        "& .MuiSelect-icon": { color: "inherit" },
+      }}
       value={currentLocale}
       onChange={handleChange}
     >

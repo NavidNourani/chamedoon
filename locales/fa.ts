@@ -1,6 +1,6 @@
 console.log("Loaded FA");
 
-export const APP_NAME = "OrbitPax";
+export const APP_NAME = "اربیت پکس";
 
 export default {
   add_parcel: {
@@ -163,7 +163,7 @@ export default {
     addFlight: `افزودن پرواز | ${APP_NAME}`,
     parcels: `بسته ها | ${APP_NAME}`,
     flights: `پرواز ها | ${APP_NAME}`,
-    orbit_pax: `OrbitPax | ${APP_NAME}`,
+    orbit_pax: `${APP_NAME}`,
   },
   translate: "ترجمه",
   add_flight: {
@@ -211,7 +211,7 @@ export default {
     whatsappNumber: "شماره واتساپ",
     updateProfile: "به‌روزرسانی پروفایل",
     updateSuccess: "پروفایل با موفقیت به‌روز شد",
-    updateError: "طا در ب��‌روزرسانی پروفایل",
+    updateError: "طا در ب‌روزرسانی پروفایل",
     fetchError: "خطا در دریافت اطلاعات کاربر",
     loading: "در حال بارگیری اطلاعات کاربر...",
     uploadPhoto: "آپلود عکس",
@@ -295,10 +295,16 @@ export default {
     track_parcel_title: "چگونه می‌توانم بسته خود را پیگیری کنم؟",
     track_parcel_desc:
       "شما می‌توانید با ورود به حساب کاربری خود و مراجعه به بخش «همه بسته‌ها»، وضعیت و موقعیت محموله خود را به صورت لحظه‌ای پیگیری کنید.",
-    modify_flight_title: "اگر نیا�� به تغییر رزرو پرواز داشته باشم چه کار کنم؟",
+    modify_flight_title: "اگر نیا به تغییر رزرو پرواز داشته باشم چه کار کنم؟",
     modify_flight_desc:
       "برای هرگونه تغییر در رزرو پرواز، لطفاً مستقیماً از طریق تلگرام با تیم پشتیبانی ما تماس بگیرید. ما در اسرع وقت به شما در انجام تغییرات کمک خواهیم کرد.",
     response_time:
       "تیم پشتیبانی ما معمولاً در عرض ۲۴ ساعت پاسخ می‌دهد. برای موارد فوری، لطفاً از طریق تلگرام با ما تماس بگیرید.",
+  },
+  theme: {
+    dark_mode: "حالت تاریک",
+    light_mode: "حالت روشن",
+    connect_travel: "ارتباط، سفر، تحویل:",
+    your_parcels: "بسته‌های شما، سفر آنها",
   },
 } as const;

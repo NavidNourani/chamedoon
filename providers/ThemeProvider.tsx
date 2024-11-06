@@ -14,7 +14,7 @@ import { faIR } from "@mui/x-date-pickers/locales";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Open_Sans, Vazirmatn } from "next/font/google";
 import { SnackbarProvider } from "notistack";
-import { useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
 import { useAppSettings } from "./AppSettingsProvider";
@@ -24,14 +24,48 @@ const vazirmatn = Vazirmatn({
   display: "swap",
 });
 
+interface ThemeSettings {
+  mode: "light" | "dark";
+  setMode: (mode: "light" | "dark") => void;
+}
+
+const ThemeSettingsContext = createContext<ThemeSettings | null>(null);
+
+export const useThemeSettings = () => {
+  const context = useContext(ThemeSettingsContext);
+  if (!context) {
+    throw new Error("useThemeSettings must be used within a ThemeProvider");
+  }
+  return context;
+};
+
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const [mode, setMode] = useState<"light" | "dark">(() => {
+    if (typeof window !== "undefined") {
+      const savedMode = localStorage.getItem("theme-mode");
+      if (savedMode === "light" || savedMode === "dark") {
+        return savedMode;
+      }
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+    return "dark";
+  });
+
+  const handleModeChange = (newMode: "light" | "dark") => {
+    setMode(newMode);
+    localStorage.setItem("theme-mode", newMode);
+  };
+
   const { dateFormat } = useAppSettings();
   const locale = useCurrentLocale();
+
   const theme = useMemo(
     () =>
       createTheme(
         {
-          ...getThemeOptions("dark"),
+          ...getThemeOptions(mode),
           typography: {
             fontFamily:
               getDirection(locale) === "ltr"
@@ -42,7 +76,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         },
         faIR
       ),
-    [locale]
+    [locale, mode]
   );
 
   const cacheRtl = useMemo(
@@ -75,17 +109,35 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     return AdapterMoment;
   }, [dateFormat]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const storedMode = localStorage.getItem("theme-mode");
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (!storedMode) {
+        setMode(e.matches ? "dark" : "light");
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
   return (
-    <CacheProvider value={getDirection(locale) === "ltr" ? cacheLtr : cacheRtl}>
-      <MUIThemeProvider theme={theme}>
-        <CssBaseline />
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <SnackbarProvider autoHideDuration={4000}>
-            {children}
-          </SnackbarProvider>
-        </LocalizationProvider>
-      </MUIThemeProvider>
-    </CacheProvider>
+    <ThemeSettingsContext.Provider value={{ mode, setMode: handleModeChange }}>
+      <CacheProvider
+        value={getDirection(locale) === "ltr" ? cacheLtr : cacheRtl}
+      >
+        <MUIThemeProvider theme={{ ...theme }}>
+          <CssBaseline />
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <SnackbarProvider autoHideDuration={4000}>
+              {children}
+            </SnackbarProvider>
+          </LocalizationProvider>
+        </MUIThemeProvider>
+      </CacheProvider>
+    </ThemeSettingsContext.Provider>
   );
 };
 export default ThemeProvider;

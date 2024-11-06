@@ -5,6 +5,7 @@ import { getScopedI18n } from "@/locales/server";
 import { AppBar, Toolbar } from "@mui/material";
 import { getServerSession } from "next-auth";
 import ChangeLanguageButton from "../atoms/ChangeLanguageButton";
+import ThemeToggleButton from "../atoms/ThemeToggleButton";
 import AuthorizationButton from "../molecules/AuthorizationButton";
 import Sidebar from "./Sidebar";
 
@@ -13,12 +14,13 @@ const HeaderAuthenticated = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ mb: "12px" }}>
       <Toolbar>
         <Sidebar />
         <Link href="/" sx={{ flexGrow: 1 }} variant="h6" color="inherit">
           {tPageTitle("orbit_pax")}
         </Link>
+        <ThemeToggleButton />
         <ChangeLanguageButton />
         <AuthorizationButton session={session} />
       </Toolbar>
