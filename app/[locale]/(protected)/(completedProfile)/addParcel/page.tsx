@@ -132,6 +132,7 @@ const ParcelForm = () => {
         parcelType: data.parcelType ?? null,
       };
       const res = await createOrUpdateParcelForCurrentUser(dataToSend);
+
       if (res.success) {
         queryClient.invalidateQueries({ queryKey: ["parcels"], exact: false });
         enqueueSnackbar(
