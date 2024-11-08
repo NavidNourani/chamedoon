@@ -8,23 +8,26 @@ const I18nMiddleware = createI18nMiddleware({
 });
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
   const nextUrl = request.nextUrl.clone();
   // Check if the user is authenticated
   const token = await getToken({ req: request });
-  const isAuth = !!token;
-  const isAuthPage =
+  const isAuthenticated = !!token;
+
+  const isAuthPageOrIntro =
     request.nextUrl.pathname.includes("/login") ||
     request.nextUrl.pathname.includes("/error") ||
-    request.nextUrl.pathname.includes("/signup");
+    request.nextUrl.pathname.includes("/signup") ||
+    request.nextUrl.pathname.includes("/intro");
 
-  if (!isAuth && !isAuthPage) {
+  if (!isAuthenticated && !isAuthPageOrIntro) {
     // Redirect unauthenticated users to the login page
-    nextUrl.pathname = "/login";
+    nextUrl.pathname = "/intro";
     // const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(nextUrl);
   }
 
-  if (isAuth && isAuthPage) {
+  if (isAuthenticated && isAuthPageOrIntro) {
     // Redirect authenticated users away from the login page
     nextUrl.pathname = "/";
     return NextResponse.redirect(nextUrl);

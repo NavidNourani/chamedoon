@@ -36,3 +36,7 @@ a {
 *::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.react-swipeable-view-container {
+  height: 100%;
+}

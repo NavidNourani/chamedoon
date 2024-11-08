@@ -324,4 +324,18 @@ export default {
     support: "Get help and support for using OrbitPax services.",
     editProfile: "Update your profile information and settings.",
   },
+  intro: {
+    slide1_title: "Connect Globally",
+    slide1_description:
+      "Join a worldwide network of travelers and senders, making international parcel delivery personal and efficient.",
+    // slide2_title: "Safe & Reliable",
+    // slide2_description:
+    //   "Trust in our secure platform connecting verified travelers with senders for reliable parcel delivery.",
+    slide3_title: "Start Your Journey",
+    slide3_description:
+      "Whether you're traveling or sending, begin your OrbitPax experience today.",
+    skip: "Skip",
+    next: "Next",
+    get_started: "Get Started",
+  },
 } as const;
