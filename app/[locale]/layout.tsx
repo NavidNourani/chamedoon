@@ -10,6 +10,10 @@ export async function generateMetadata() {
   const tPageTitle = await getScopedI18n("pageTitle");
   return {
     title: tPageTitle("orbit_pax"),
+    icons: {
+      icon: "/logo.svg",
+      shortcut: "/logo.svg",
+    },
   };
 }
 export default async function RootLayout({
@@ -23,6 +27,9 @@ export default async function RootLayout({
   const direction = getDirection(locale);
   return (
     <html lang={locale} dir={direction}>
+      <head>
+        <link rel="icon" href="/logo.svg" />
+      </head>
       <body>
         <AppSettingsProvider>
           <ClientSideProviders session={session!}>
