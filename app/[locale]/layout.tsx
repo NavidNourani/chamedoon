@@ -4,6 +4,7 @@ import AppSettingsProvider from "@/providers/AppSettingsProvider";
 import ClientSideProviders from "@/providers/ClientSideProviders";
 import { Stack } from "@mui/material";
 import { getSession } from "next-auth/react";
+import GoogleAnalytics from "../components/GoogleAnalytics";
 import "./globals.css";
 
 export async function generateMetadata() {
@@ -32,6 +33,7 @@ export default async function RootLayout({
         <link rel="icon" href="/logo.svg" />
       </head>
       <body>
+        <GoogleAnalytics />
         <AppSettingsProvider>
           <ClientSideProviders session={session!}>
             <Stack width="100%" height="100%" overflow="hidden">

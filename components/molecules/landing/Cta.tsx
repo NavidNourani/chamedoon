@@ -53,7 +53,7 @@ export default async function Cta() {
             </Button>
             <Button
               component={Link}
-              href="/contact"
+              href="/support"
               variant="text"
               sx={{ color: "common.white" }}
             >
