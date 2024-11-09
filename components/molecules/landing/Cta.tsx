@@ -44,7 +44,7 @@ export default async function Cta() {
           <Stack direction="row" spacing={2} justifyContent="center">
             <Button
               component={Link}
-              href="/register"
+              href="/login"
               variant="contained"
               color="inherit"
               sx={{ color: "grey.900" }}
