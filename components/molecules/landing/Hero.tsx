@@ -38,7 +38,7 @@ export default async function Hero() {
             <Stack direction="row" spacing={2}>
               <Button
                 component={Link}
-                href="/register"
+                href="/login"
                 variant="contained"
                 size="large"
                 color="primary"
