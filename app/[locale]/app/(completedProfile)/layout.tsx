@@ -11,7 +11,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     where: { id: session?.user?.id },
   });
   if (!user?.countryCode || !user?.phone || !user?.name || !user?.family) {
-    redirect("/editProfile");
+    redirect("/app/editProfile");
   }
 
   return <>{children}</>;

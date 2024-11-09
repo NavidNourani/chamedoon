@@ -92,9 +92,6 @@ importers:
       react-sign:
         specifier: ^1.0.15
         version: 1.0.15(react@18.3.1)
-      react-swipeable-views:
-        specifier: ^0.14.0
-        version: 0.14.0(react@18.3.1)
       stylis:
         specifier: ^4.3.2
         version: 4.3.4
@@ -354,9 +351,6 @@ packages:
     resolution: {integrity: sha512-reoQYNiAJreZNsJzyrDNzFQ+IQ5JFiIzAHJg9bn94S3l+4++J7RsIhNMoB+lgP/9tpmiAQqspv+xfdxTSzREOw==}
     engines: {node: '>=6.0.0'}
     hasBin: true
-
-  '@babel/runtime@7.0.0':
-    resolution: {integrity: sha512-7hGhzlcmg01CvH1EHdSPVXYX1aJ8KCEyz6I9xYIi/asDtzBPMyMhVibhM/K6g/5qnKBwjZtp10bNZIEFTRW1MA==}
 
   '@babel/runtime@7.26.0':
     resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
@@ -1931,9 +1925,6 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
-  keycode@2.2.1:
-    resolution: {integrity: sha512-Rdgz9Hl9Iv4QKi8b0OlCRQEzp4AgVxyCtz5S/+VIHezDmrDhkp2N2TqBWOLz0/gbeREXOOiI9/4b8BY9uw2vFg==}
-
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -2239,11 +2230,6 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
-  react-event-listener@0.6.6:
-    resolution: {integrity: sha512-+hCNqfy7o9wvO6UgjqFmBzARJS7qrNoda0VqzvOuioEpoEXKutiKuv92dSz6kP7rYLmyHPyYNLesi5t/aH1gfw==}
-    peerDependencies:
-      react: ^16.3.0
-
   react-hook-form@7.53.1:
     resolution: {integrity: sha512-6aiQeBda4zjcuaugWvim9WsGqisoUk+etmFEsSUMm451/Ic8L/UAb7sRtMj3V+Hdzm6mMjU1VhiSzYUZeBm0Vg==}
     engines: {node: '>=18.0.0'}
@@ -2267,20 +2253,6 @@ packages:
     peerDependencies:
       react: '>=16'
 
-  react-swipeable-views-core@0.14.0:
-    resolution: {integrity: sha512-0W/e9uPweNEOSPjmYtuKSC/SvKKg1sfo+WtPdnxeLF3t2L82h7jjszuOHz9C23fzkvLfdgkaOmcbAxE9w2GEjA==}
-    engines: {node: '>=6.0.0'}
-
-  react-swipeable-views-utils@0.14.0:
-    resolution: {integrity: sha512-W+fXBOsDqgFK1/g7MzRMVcDurp3LqO3ksC8UgInh2P/tKgb5DusuuB1geKHFc6o1wKl+4oyER4Zh3Lxmr8xbXA==}
-    engines: {node: '>=6.0.0'}
-
-  react-swipeable-views@0.14.0:
-    resolution: {integrity: sha512-wrTT6bi2nC3JbmyNAsPXffUXLn0DVT9SbbcFr36gKpbaCgEp7rX/OFxsu5hPc/NBsUhHyoSRGvwqJNNrWTwCww==}
-    engines: {node: '>=6.0.0'}
-    peerDependencies:
-      react: ^15.3.0 || ^16.0.0 || ^17.0.0
-
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
     peerDependencies:
@@ -2294,9 +2266,6 @@ packages:
   reflect.getprototypeof@1.0.6:
     resolution: {integrity: sha512-fmfw4XgoDke3kdI6h4xcUz1dG8uaiv5q9gcEwLS4Pnth2kxT+GZ7YehS1JTMGBQmtV7Y4GFGbs2re2NqhdozUg==}
     engines: {node: '>= 0.4'}
-
-  regenerator-runtime@0.12.1:
-    resolution: {integrity: sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==}
 
   regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
@@ -2362,9 +2331,6 @@ packages:
   set-function-name@2.0.2:
     resolution: {integrity: sha512-7PGFlmtwsEADb0WYyvCMa1t+yke6daIG4Wirafur5kcf+MhUnPms1UeR0CKQdTZD81yESwMHbtn+TR+dMviakQ==}
     engines: {node: '>= 0.4'}
-
-  shallow-equal@1.2.1:
-    resolution: {integrity: sha512-S4vJDjHHMBaiZuT9NPb616CSmLf618jawtv3sufLl6ivK8WocjAo58cXwbRV1cgqxH0Qbv+iUt6m05eqEa2IRA==}
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
@@ -2586,9 +2552,6 @@ packages:
 
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
-
-  warning@4.0.3:
-    resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
 
   which-boxed-primitive@1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
@@ -3199,10 +3162,6 @@ snapshots:
   '@babel/parser@7.26.1':
     dependencies:
       '@babel/types': 7.26.0
-
-  '@babel/runtime@7.0.0':
-    dependencies:
-      regenerator-runtime: 0.12.1
 
   '@babel/runtime@7.26.0':
     dependencies:
@@ -5059,8 +5018,6 @@ snapshots:
       object.assign: 4.1.5
       object.values: 1.2.0
 
-  keycode@2.2.1: {}
-
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -5367,13 +5324,6 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
-  react-event-listener@0.6.6(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.26.0
-      prop-types: 15.8.1
-      react: 18.3.1
-      warning: 4.0.3
-
   react-hook-form@7.53.1(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -5389,31 +5339,6 @@ snapshots:
   react-sign@1.0.15(react@18.3.1):
     dependencies:
       react: 18.3.1
-
-  react-swipeable-views-core@0.14.0:
-    dependencies:
-      '@babel/runtime': 7.0.0
-      warning: 4.0.3
-
-  react-swipeable-views-utils@0.14.0(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.0.0
-      keycode: 2.2.1
-      prop-types: 15.8.1
-      react-event-listener: 0.6.6(react@18.3.1)
-      react-swipeable-views-core: 0.14.0
-      shallow-equal: 1.2.1
-    transitivePeerDependencies:
-      - react
-
-  react-swipeable-views@0.14.0(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.0.0
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-swipeable-views-core: 0.14.0
-      react-swipeable-views-utils: 0.14.0(react@18.3.1)
-      warning: 4.0.3
 
   react-transition-group@4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -5437,8 +5362,6 @@ snapshots:
       get-intrinsic: 1.2.4
       globalthis: 1.0.4
       which-builtin-type: 1.1.4
-
-  regenerator-runtime@0.12.1: {}
 
   regenerator-runtime@0.14.1: {}
 
@@ -5513,8 +5436,6 @@ snapshots:
       es-errors: 1.3.0
       functions-have-names: 1.2.3
       has-property-descriptors: 1.0.2
-
-  shallow-equal@1.2.1: {}
 
   shebang-command@2.0.0:
     dependencies:
@@ -5743,10 +5664,6 @@ snapshots:
   uuid@9.0.1: {}
 
   v8-compile-cache-lib@3.0.1: {}
-
-  warning@4.0.3:
-    dependencies:
-      loose-envify: 1.4.0
 
   which-boxed-primitive@1.0.2:
     dependencies:

@@ -7,9 +7,10 @@ import { getSession } from "next-auth/react";
 import "./globals.css";
 
 export async function generateMetadata() {
-  const tPageTitle = await getScopedI18n("pageTitle");
+  const t = await getScopedI18n("metaData");
   return {
-    title: tPageTitle("orbit_pax"),
+    title: t("title"),
+    description: t("description"),
     icons: {
       icon: "/logo.svg",
       shortcut: "/logo.svg",

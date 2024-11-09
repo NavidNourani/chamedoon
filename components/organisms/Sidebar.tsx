@@ -23,9 +23,9 @@ const Sidebar = () => {
   const t = useScopedI18n("navigation");
 
   const menuItems = [
-    { text: t("home"), icon: <Home />, href: "/" },
-    { text: t("all_parcels"), icon: <LocalShipping />, href: "/parcels" },
-    { text: t("all_flights"), icon: <FlightTakeoff />, href: "/flights" },
+    { text: t("dashboard"), icon: <Home />, href: "/app" },
+    { text: t("all_parcels"), icon: <LocalShipping />, href: "/app/parcels" },
+    { text: t("all_flights"), icon: <FlightTakeoff />, href: "/app/flights" },
     { text: t("support"), icon: <Help />, href: "/support" },
   ];
 

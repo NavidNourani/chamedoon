@@ -282,7 +282,7 @@ export default {
     company_description: "Smart solution for international transportation",
   },
   navigation: {
-    home: "Home",
+    dashboard: "Dashboard",
     all_parcels: "All Parcels",
     all_flights: "All Flights",
     support: "Support",
@@ -337,5 +337,64 @@ export default {
     skip: "Skip",
     next: "Next",
     get_started: "Get Started",
+  },
+  landing: {
+    hero: {
+      title: "Connect Travelers with Package Delivery",
+      description:
+        "Join OrbitPax and revolutionize the way packages travel. Travelers earn extra money, while senders get fast, reliable delivery through trusted individuals.",
+      getStarted: "Get started",
+      learnMore: "Learn more",
+    },
+    benefits: {
+      title: "Why Choose OrbitPax",
+      subtitle: "Everything you need to send or deliver packages",
+      description:
+        "Whether you're a traveler looking to earn extra money or someone needing to send a package, OrbitPax makes it simple, safe, and rewarding.",
+      items: {
+        forTravelers: {
+          name: "For Travelers",
+          description:
+            "Turn your journey into an earning opportunity. Deliver packages along your route and earn extra money with minimal effort.",
+        },
+        forSenders: {
+          name: "For Senders",
+          description:
+            "Find trusted travelers heading to your package's destination. Get fast delivery at competitive rates.",
+        },
+        safeAndSecure: {
+          name: "Safe & Secure",
+          description:
+            "Verified users, secure payments, and package tracking for peace of mind.",
+        },
+        easyToUse: {
+          name: "Easy to Use",
+          description:
+            "Simple interface to post your travel plans or find travelers for your packages.",
+        },
+        costEffective: {
+          name: "Cost-Effective",
+          description:
+            "Save money on shipping while travelers earn extra income. Win-win for everyone.",
+        },
+        communityDriven: {
+          name: "Community Driven",
+          description:
+            "Join a growing community of travelers and senders, making package delivery more personal.",
+        },
+      },
+    },
+    cta: {
+      title: "Start your journey with OrbitPax today",
+      description:
+        "Join thousands of users who are already benefiting from our platform. Whether you're traveling or sending, OrbitPax makes it happen.",
+      getStarted: "Get started",
+      contactUs: "Contact us",
+    },
+  },
+  metaData: {
+    title: APP_NAME,
+    description:
+      "Earn money while traveling by delivering parcels. Send packages quickly and easily with trusted travelers.",
   },
 } as const;

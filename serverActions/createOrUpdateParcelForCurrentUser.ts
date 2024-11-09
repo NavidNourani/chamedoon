@@ -27,7 +27,9 @@ export const createOrUpdateParcelForCurrentUser = async (
         data: { ...data, userID: session.user.id },
       });
     }
-    revalidatePath("/");
+    revalidatePath("/app");
+    revalidatePath("/app/flights");
+    revalidatePath("/app/parcels");
 
     return { success: true, parcel };
   } catch (error) {
