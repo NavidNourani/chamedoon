@@ -103,7 +103,7 @@ const AuthForm = () => {
           countryCode: loginData.countryCode,
           phone: loginData.phone,
           password: loginData.password,
-          callbackUrl: "/",
+          callbackUrl: "/app",
           redirect: false,
         })
       );
@@ -135,7 +135,7 @@ const AuthForm = () => {
             countryCode: data.countryCode,
             phone: data.phone,
             password: data.password,
-            callbackUrl: "/",
+            callbackUrl: "/app",
             redirect: false,
           })
         );
@@ -156,14 +156,15 @@ const AuthForm = () => {
   };
 
   const handleGoogleSignIn = () => {
-    loginHandler(() => signIn("google", { callbackUrl: "/" }));
+    loginHandler(() => signIn("google", { callbackUrl: "/app" }));
   };
 
   const loginHandler = async (func: () => Promise<any>) => {
     const res = await func();
+    console.log("22222222222", res);
     if (res?.ok) {
       enqueueSnackbar(tLogin("loginSuccess"), { variant: "success" });
-      router.push("/");
+      router.replace("/app");
     }
     if (res?.error) {
       setLoginError(res.error);

@@ -128,7 +128,7 @@ const FlightForm = () => {
             variant: "success",
           }
         );
-        router.push("/");
+        router.push("/app");
       } else {
         enqueueSnackbar(t("There_was_an_error_on_creating_flight"), {
           variant: "error",

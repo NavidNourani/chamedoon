@@ -124,7 +124,7 @@ const EditProfileForm = () => {
       const result = await updateUser(data);
       if (result.success) {
         enqueueSnackbar(editProfileT("updateSuccess"), { variant: "success" });
-        router.push("/");
+        router.push("/app");
       } else {
         // Handle specific errors returned by updateUser
         if (typeof result.error === "object") {

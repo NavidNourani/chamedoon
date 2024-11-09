@@ -24,7 +24,7 @@ export const updateUser = async (
       data: data,
     });
 
-    revalidatePath("/");
+    revalidatePath("/app");
     return { success: true, user: updatedUser };
   } catch (error: unknown) {
     console.error("Error updating user with ID:", session.user.id, error);

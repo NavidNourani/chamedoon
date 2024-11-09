@@ -1,31 +1,32 @@
 "use client";
-import FilterButtons from "@/app/components/FilterButtons";
-import FilterModal from "@/app/components/FilterModal";
-import ParcelList from "@/app/components/ParcelList";
-import useGetInfiniteParcels from "@/hooks/useGetInfiniteParcels";
+import FlightItemSkeleton from "@/app/components/atomic/molecules/FlightItemSkeleton";
+import FilterButtons from "@/app/components/flights/FilterButtons";
+import FilterModal from "@/app/components/flights/FilterModal";
+import FlightList from "@/app/components/flights/FlightList";
+import useGetInfiniteFlights from "@/hooks/useGetInfiniteFlights";
 import useLocations from "@/hooks/useLocations";
 import { useScopedI18n } from "@/locales/client";
-import { GetParcelsResponseData } from "@/types/apis/parcels";
+import { GetFlightsResponseData } from "@/types/apis/flights";
 import { Add } from "@mui/icons-material";
-import { Container, Fab, Stack, Typography } from "@mui/material";
+import { Box, Container, Fab, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const normalizeFilters = (filters: any) => {
-  const { departureCountry, destinationCountry, parcelType, ...rest } = filters;
+  const { departureCountry, destinationCountry, ...rest } = filters;
   return {
     ...(departureCountry && { departureCountryId: departureCountry?.id }),
     ...(destinationCountry && { destinationCountryId: destinationCountry?.id }),
-    ...(parcelType !== "all" && { parcelType }),
+    ...rest,
   };
 };
-export default function Home() {
-  const parcelsPageT = useScopedI18n("parcelsPage");
+
+export default function FlightsPage() {
+  const flightsPageT = useScopedI18n("flightsPage");
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const methods = useForm({
     defaultValues: {
-      parcelType: "all",
       departureCountry: null,
       destinationCountry: null,
     },
@@ -37,19 +38,19 @@ export default function Home() {
   const activeFiltersCount = Object.keys(normalizeFilters(filters)).length;
 
   const {
-    data: paginatedParcels,
+    data: paginatedFlights,
     hasNextPage,
     isLoading,
     fetchNextPage,
-  } = useGetInfiniteParcels({ filters: normalizeFilters(filters) });
+  } = useGetInfiniteFlights({ filters: normalizeFilters(filters) });
 
-  const parcels = useMemo(
+  const flights = useMemo(
     () =>
-      paginatedParcels?.pages.reduce<GetParcelsResponseData[]>(
+      paginatedFlights?.pages.reduce<GetFlightsResponseData[]>(
         (acc, cur) => [...acc, ...cur.data],
         []
       ),
-    [paginatedParcels?.pages]
+    [paginatedFlights?.pages]
   );
 
   const handleOpenFilterModal = useCallback(
@@ -62,7 +63,6 @@ export default function Home() {
   );
   const handleClearFilters = useCallback(() => {
     reset({
-      parcelType: "all",
       departureCountry: null,
       destinationCountry: null,
     });
@@ -76,26 +76,47 @@ export default function Home() {
         <Stack direction="row" gap={2} width="100%">
           <Stack width="100%" flexWrap="wrap">
             <Typography variant="h1" mb="36px" textAlign="center">
-              {parcelsPageT("parcels")}
+              {flightsPageT("flights")}
             </Typography>
             <FilterButtons
               onOpenFilterModal={handleOpenFilterModal}
               onClearFilters={handleClearFilters}
               activeFiltersCount={activeFiltersCount}
             />
-            <ParcelList
-              isLoading={isLoading}
-              parcels={parcels}
-              hasNextPage={hasNextPage}
-              fetchNextPage={fetchNextPage}
-            />
+
+            {/* Loading state with skeletons */}
+            {isLoading ? (
+              <Box
+                sx={{
+                  display: "grid",
+                  gap: 2,
+                  width: "100%",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "1fr 1fr",
+                    md: "1fr 1fr 1fr",
+                  },
+                }}
+              >
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <FlightItemSkeleton key={index} />
+                ))}
+              </Box>
+            ) : (
+              <FlightList
+                isLoading={isLoading}
+                flights={flights}
+                hasNextPage={hasNextPage}
+                fetchNextPage={fetchNextPage}
+              />
+            )}
           </Stack>
         </Stack>
 
-        {/* Add Parcel FAB */}
+        {/* Add Flight FAB */}
         <Fab
           component={Link}
-          href="/addParcel"
+          href="/app/addFlight"
           color="primary"
           sx={{
             position: "fixed",

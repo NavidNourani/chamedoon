@@ -43,7 +43,9 @@ export const createOrUpdateFlightForCurrentUser = async (
         data: { ...data, userID: session.user.id },
       });
 
-      revalidatePath("/");
+      revalidatePath("/app");
+      revalidatePath("/app/flights");
+      revalidatePath("/app/parcels");
       return { success: true, flight: newFlight };
     }
   } catch (error) {

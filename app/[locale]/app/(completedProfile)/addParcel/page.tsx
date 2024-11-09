@@ -144,7 +144,7 @@ const ParcelForm = () => {
           }
         );
 
-        router.push("/");
+        router.push("/app");
       } else {
         enqueueSnackbar(t("There_was_an_error_on_creating_parcel"), {
           variant: "error",

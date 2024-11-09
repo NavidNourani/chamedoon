@@ -172,7 +172,7 @@ export default async function Home() {
             <Button
               variant="contained"
               component={Link}
-              href="/editProfile"
+              href="/app/editProfile"
               sx={{
                 bgcolor: "rgba(255, 255, 255, 0.15)",
                 color: "white",
@@ -205,7 +205,7 @@ export default async function Home() {
                   startIcon={<FlightTakeoff />}
                   variant="contained"
                   component={Link}
-                  href="/addFlight"
+                  href="/app/addFlight"
                 >
                   {t("add_your_flight")}
                 </Button>
@@ -216,7 +216,7 @@ export default async function Home() {
                   startIcon={<LocalShipping />}
                   variant="contained"
                   component={Link}
-                  href="/parcels"
+                  href="/app/parcels"
                 >
                   {t("view_parcels")}
                 </Button>
@@ -236,7 +236,7 @@ export default async function Home() {
                   startIcon={<LocalShipping />}
                   variant="contained"
                   component={Link}
-                  href="/addParcel"
+                  href="/app/addParcel"
                 >
                   {t("add_your_parcel")}
                 </Button>
@@ -247,7 +247,7 @@ export default async function Home() {
                   startIcon={<FlightTakeoff />}
                   variant="contained"
                   component={Link}
-                  href="/flights"
+                  href="/app/flights"
                 >
                   {t("view_flights")}
                 </Button>
@@ -259,7 +259,11 @@ export default async function Home() {
         <Stack mt={4} gap={2}>
           <Stack direction="row" alignItems="center" gap={2}>
             <Typography variant="h5">{t("recent_flights")}</Typography>
-            <IconButton color="secondary" component={Link} href="/addFlight">
+            <IconButton
+              color="secondary"
+              component={Link}
+              href="/app/addFlight"
+            >
               <Add />
             </IconButton>
           </Stack>
@@ -270,7 +274,7 @@ export default async function Home() {
               <FlightList flights={flights.slice(0, 10)} isLoading={false} />
               {flights.length > 5 && (
                 <Box mt={2}>
-                  <Button variant="text" component={Link} href="/flights">
+                  <Button variant="text" component={Link} href="/app/flights">
                     {t("view_all_flights")}
                   </Button>
                 </Box>
@@ -282,7 +286,11 @@ export default async function Home() {
         <Stack mt={4} gap={2}>
           <Stack direction="row" alignItems="center" gap={2}>
             <Typography variant="h5">{t("recent_parcels")}</Typography>
-            <IconButton color="secondary" component={Link} href="/addParcel">
+            <IconButton
+              color="secondary"
+              component={Link}
+              href="/app/addParcel"
+            >
               <Add />
             </IconButton>
           </Stack>
@@ -293,7 +301,7 @@ export default async function Home() {
               <ParcelList parcels={userParcels.slice(0, 5)} isLoading={false} />
               {userParcels.length > 5 && (
                 <Box mt={2}>
-                  <Button variant="text" component={Link} href="/parcels">
+                  <Button variant="text" component={Link} href="/app/parcels">
                     {t("view_all_parcels")}
                   </Button>
                 </Box>
