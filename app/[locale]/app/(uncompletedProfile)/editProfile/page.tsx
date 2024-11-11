@@ -372,13 +372,6 @@ const EditProfileForm = () => {
                 top: 0,
                 zIndex: 1000,
                 width: "100%",
-                backgroundColor:
-                  theme.palette.mode === "dark"
-                    ? theme.palette.warning.dark // Much darker background for dark mode
-                    : theme.palette.warning.light, // Much lighter background for light mode
-                "& .MuiAlert-icon": {
-                  color: theme.palette.warning.main, // Keep the warning icon color
-                },
                 border: `1px solid ${theme.palette.warning.main}`, // Add border for better definition
               }}
             >

@@ -161,7 +161,6 @@ const AuthForm = () => {
 
   const loginHandler = async (func: () => Promise<any>) => {
     const res = await func();
-    console.log("22222222222", res);
     if (res?.ok) {
       enqueueSnackbar(tLogin("loginSuccess"), { variant: "success" });
       router.replace("/app");

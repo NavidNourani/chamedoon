@@ -3,6 +3,9 @@ import { ThemeOptions } from "@mui/material/styles";
 
 const lightPalette = {
   mode: "light" as PaletteMode,
+  primary: {
+    main: "#219ebc",
+  },
   background: {
     default: "#ffffff", // Light background color
     paper: "#f5f5f5", // Slightly darker light color for paper elements
@@ -12,6 +15,9 @@ const lightPalette = {
 
 const darkPalette = {
   mode: "dark" as PaletteMode,
+  primary: {
+    main: "#219ebc",
+  },
   background: {
     default: "#121212", // Dark background color
     paper: "#1e1e1e", // Slightly lighter dark color for paper elements

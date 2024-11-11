@@ -46,7 +46,6 @@ export default async function Cta() {
               component={Link}
               href="/login"
               variant="contained"
-              color="inherit"
               sx={{ color: "grey.900" }}
             >
               {t("getStarted")}

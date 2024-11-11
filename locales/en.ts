@@ -92,6 +92,7 @@ export default {
   authorization: {
     login: "Login",
     logout: "Logout",
+    dashboard: "Dashboard",
   },
   loginForm: {
     formTitle: "Login to your account",
@@ -396,5 +397,25 @@ export default {
     title: APP_NAME,
     description:
       "Earn money while traveling by delivering parcels. Send packages quickly and easily with trusted travelers.",
+  },
+  how_it_works: {
+    title: "How It Works",
+    intro:
+      "Our platform connects travelers and senders for efficient package delivery. Choose your role and start your journey.",
+    for_senders: {
+      title: "For Senders",
+      description:
+        "Browse traveler listings to find someone who can deliver your package, or post your package details and wait for a traveler to contact you.",
+    },
+    for_travelers: {
+      title: "For Travelers",
+      description:
+        "Post your travel plans and wait for senders to contact you, or browse available packages and coordinate with senders.",
+    },
+    safety_tips: {
+      title: "Safety Tips",
+      description:
+        "For security, only accept packages that are verifiable. We recommend handling documents or purchases you make yourself and get reimbursed.",
+    },
   },
 } as const;
