@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import ChangeLanguageButton from "../atoms/ChangeLanguageButton";
 import AuthorizationButton from "../molecules/AuthorizationButton";
-import Sidebar from "./Sidebar";
+import NavigationSelector from "../molecules/NavigationSelector";
 
 const HeaderAuthenticated = async () => {
   const session = await getServerSession(authOptions);
@@ -14,16 +14,13 @@ const HeaderAuthenticated = async () => {
   return (
     <AppBar position="sticky" sx={{ mb: "12px" }}>
       <Toolbar>
-        <Sidebar />
+        <NavigationSelector />
         <Link href="/app" sx={{ flexGrow: 1 }} color="inherit">
           <Image
             src="/logo-type.svg"
             alt="OrbitPax"
             width={150}
             height={30}
-            style={{
-              filter: "brightness(0) invert(1)", // Always white in dark header
-            }}
             priority
           />
         </Link>

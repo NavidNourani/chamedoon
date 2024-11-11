@@ -65,7 +65,7 @@ export default async function Hero() {
             }}
           >
             <Image
-              src="/images/landing/hero.png"
+              src="/images/landing/hero-2.png"
               alt="OrbitPax Platform Preview"
               width={615}
               height={500}

@@ -156,7 +156,7 @@ export default async function Home() {
                 user.name?.[0] ?? ""
               )}
             </Avatar>
-            <Box>
+            <Box dir="rtl">
               <Typography variant="h5" sx={{ color: "white" }}>
                 {user.name} {user.family}
               </Typography>
@@ -164,7 +164,7 @@ export default async function Home() {
                 {user.username} • {user.email}
               </Typography>
               <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-                {t("profile_completion")}: {profileCompletionPercentage}%
+                {`${t("profile_completion")}: ${profileCompletionPercentage} %`}
               </Typography>
             </Box>
           </Stack>

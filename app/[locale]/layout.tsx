@@ -1,9 +1,10 @@
+import { authOptions } from "@/helpers/authOptions";
 import { getDirection } from "@/helpers/getDirection";
 import { getScopedI18n } from "@/locales/server";
 import AppSettingsProvider from "@/providers/AppSettingsProvider";
 import ClientSideProviders from "@/providers/ClientSideProviders";
 import { Stack } from "@mui/material";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 import GoogleAnalytics from "../components/GoogleAnalytics";
 import "./globals.css";
 
@@ -25,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }>) {
-  const session = await getSession();
+  const session = await getServerSession(authOptions);
   const direction = getDirection(locale);
   return (
     <html lang={locale} dir={direction}>

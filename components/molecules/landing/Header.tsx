@@ -1,12 +1,15 @@
 import ChangeLanguageButton from "@/components/atoms/ChangeLanguageButton";
 import ThemeToggleButton from "@/components/atoms/ThemeToggleButton";
+import { authOptions } from "@/helpers/authOptions";
 import { getScopedI18n } from "@/locales/server";
 import { Box, Button, Container, Stack } from "@mui/material";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Header() {
   const t = await getScopedI18n("authorization");
+  const session = await getServerSession(authOptions);
 
   return (
     <Box
@@ -30,9 +33,6 @@ export default async function Header() {
               alt="OrbitPax"
               width={150}
               height={30}
-              style={{
-                filter: "brightness(0) invert(var(--logo-invert))",
-              }}
               priority
             />
           </Link>
@@ -42,11 +42,11 @@ export default async function Header() {
             <ThemeToggleButton />
             <Button
               component={Link}
-              href="/login"
+              href={session ? "/app" : "/login"}
               variant="contained"
               color="primary"
             >
-              {t("login")}
+              {session?.user ? t("dashboard") : t("login")}
             </Button>
           </Stack>
         </Stack>
