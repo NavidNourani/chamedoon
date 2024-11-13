@@ -80,7 +80,15 @@ export async function GET(req: Request) {
         ...(parcelType && { parcelType: parcelType }), // Updated field name
       },
       include: {
-        User: { select: { id: true, name: true, family: true } },
+        User: {
+          select: {
+            id: true,
+            name: true,
+            family: true,
+            phone: true,
+            countryCode: true,
+          },
+        },
         departureAirport: {
           include: {
             city: {

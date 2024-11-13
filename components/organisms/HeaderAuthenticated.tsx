@@ -1,7 +1,7 @@
 "use server";
 import Link from "@/components/atoms/Link";
 import { authOptions } from "@/helpers/authOptions";
-import { AppBar, Toolbar } from "@mui/material";
+import { AppBar, Box, Toolbar } from "@mui/material";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import ChangeLanguageButton from "../atoms/ChangeLanguageButton";
@@ -24,8 +24,10 @@ const HeaderAuthenticated = async () => {
             priority
           />
         </Link>
-        <ChangeLanguageButton />
-        <AuthorizationButton session={session} />
+        <Box sx={{ display: { xs: "none", sm: "flex" } }}>
+          <ChangeLanguageButton />
+          <AuthorizationButton session={session} />
+        </Box>
       </Toolbar>
     </AppBar>
   );

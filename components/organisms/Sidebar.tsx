@@ -16,11 +16,15 @@ import {
   Stack,
   Toolbar,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 import { Fragment, useState } from "react";
+import ChangeLanguageButton from "../atoms/ChangeLanguageButton";
+import AuthorizationButton from "../molecules/AuthorizationButton";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useScopedI18n("navigation");
+  const { data: session } = useSession();
 
   const menuItems = [
     { text: t("dashboard"), icon: <Home />, href: "/app" },
@@ -36,7 +40,7 @@ const Sidebar = () => {
         edge="start"
         color="inherit"
         aria-label="menu"
-        sx={{ mr: 2, display: {} }}
+        sx={{ mr: 2 }}
         onClick={() => setIsOpen(true)}
       >
         <MenuIcon />
@@ -68,12 +72,14 @@ const Sidebar = () => {
           </List>
           <Divider />
           <Stack
-            direction="row"
+            direction="column"
             alignItems="center"
             justifyContent="center"
             sx={{ py: 2 }}
           >
             <ThemeToggleButton />
+            <ChangeLanguageButton />
+            <AuthorizationButton session={session} />
           </Stack>
         </Box>
       </Drawer>

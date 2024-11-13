@@ -84,7 +84,7 @@ const SignupForm = () => {
         email: data.email ?? null,
         whatsappnumber: data.whatsappnumber ?? null,
         currencyType: "USD" as CurrencyTypeType,
-        preferredDateSystem: "GREGORIAN" as DateSystemType,
+        preferredDateSystem: "JALALI" as DateSystemType,
         countryCode: null,
         photo: null,
         createdAt: new Date(),

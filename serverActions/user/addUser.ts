@@ -18,9 +18,10 @@ export const addUser = async (user: Omit<User, "id">) => {
     });
 
     if (checkUser) {
-      throw new Error(
-        JSON.stringify({ fields: { username: "usernameAlreadyExists" } })
-      );
+      return {
+        success: false,
+        error: "userAlreadyExists",
+      };
     }
 
     // Create the user record in the database
@@ -33,10 +34,16 @@ export const addUser = async (user: Omit<User, "id">) => {
     });
 
     // Return the created user
-    return newUser;
+    return {
+      success: true,
+      user: newUser,
+    };
   } catch (error) {
     // Handle any errors
     console.error(error);
-    throw error;
+    return {
+      success: false,
+      error: "serverError",
+    };
   }
 };
