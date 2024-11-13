@@ -108,25 +108,25 @@ const AuthForm = () => {
         })
       );
     } else {
-      try {
-        methods.clearErrors();
-        const userData = {
-          username: null,
-          password: data.password,
-          email: null,
-          name: null,
-          family: null,
-          countryCode: data.countryCode,
-          phone: data.phone,
-          telegramID: null,
-          whatsappnumber: null,
-          photo: null,
-          currencyType: "USD" as CurrencyTypeType,
-          preferredDateSystem: "GREGORIAN" as DateSystemType,
-          createdAt: new Date(),
-        };
-        await addUser(userData);
+      methods.clearErrors();
+      const userData = {
+        username: null,
+        password: data.password,
+        email: null,
+        name: null,
+        family: null,
+        countryCode: data.countryCode,
+        phone: data.phone,
+        telegramID: null,
+        whatsappnumber: null,
+        photo: null,
+        currencyType: "USD" as CurrencyTypeType,
+        preferredDateSystem: "JALALI" as DateSystemType,
+        createdAt: new Date(),
+      };
+      const res = await addUser(userData);
 
+      if (res.success) {
         enqueueSnackbar(tSignup("signupSuccess"), { variant: "success" });
 
         // Automatically sign in after successful registration
@@ -139,18 +139,16 @@ const AuthForm = () => {
             redirect: false,
           })
         );
-      } catch (e) {
-        try {
-          const error = JSON.parse(e as any);
-          if (error.fields) {
-            Object.keys(error.fields).forEach((key) => {
-              methods.setError(key as any, { message: error.fields[key] });
-            });
-          }
-        } catch (e) {}
-        enqueueSnackbar(tSignup("registrationError"), {
-          variant: "error",
-        });
+      } else {
+        if (res.error === "userAlreadyExists") {
+          methods.setError("phone", {
+            message: "phoneAlreadyExists",
+          });
+        } else {
+          enqueueSnackbar(tSignup("registrationError"), {
+            variant: "error",
+          });
+        }
       }
     }
   };
@@ -254,18 +252,67 @@ const AuthForm = () => {
                     name="countryCode"
                     label={tLogin("countryCode")}
                     placeholder="44"
+                    autoComplete="tel-country-code"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">+</InputAdornment>
                       ),
                     }}
-                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    inputProps={{
+                      maxLength: 3,
+                      inputMode: "numeric",
+                      pattern: "[0-9]*",
+                    }}
+                    onKeyDown={(e) => {
+                      // Allow: backspace, delete, tab, escape, enter, arrows
+                      if (
+                        [
+                          "Backspace",
+                          "Delete",
+                          "Tab",
+                          "Escape",
+                          "Enter",
+                          "ArrowLeft",
+                          "ArrowRight",
+                        ].includes(e.key)
+                      ) {
+                        return;
+                      }
+                      // Prevent non-numeric input
+                      if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
                     sx={{ width: "30%" }}
                   />
                   <RHFTextField
                     name="phone"
                     label={tLogin("phone")}
                     placeholder="1234567890"
+                    inputProps={{
+                      inputMode: "numeric",
+                      pattern: "[1-9][0-9]*",
+                    }}
+                    onKeyDown={(e) => {
+                      // Allow: backspace, delete, tab, escape, enter
+                      if (
+                        [
+                          "Backspace",
+                          "Delete",
+                          "Tab",
+                          "Escape",
+                          "Enter",
+                        ].includes(e.key)
+                      ) {
+                        return;
+                      }
+                      const isNumber = /[0-9]/.test(e.key);
+                      const isFirstChar =
+                        (e.target as HTMLInputElement).value.length === 0;
+                      if (!isNumber || (isFirstChar && e.key === "0")) {
+                        e.preventDefault();
+                      }
+                    }}
                     sx={{ flex: 1 }}
                   />
                 </Box>

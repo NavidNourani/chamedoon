@@ -49,6 +49,7 @@ export default {
     show_less_details: "نمایش جزئیات کمتر",
     edit: "ویرایش",
     your_parcel: "بسته شما",
+    phone: "شماره تلفن",
   },
   home: {
     add_new_parcel: "اضافه کردن بسته جدید",
@@ -150,6 +151,9 @@ export default {
     countryCodeRequired: "کد کشور الزامی است",
     invalidCountryCode: "فرمت کد کشور نامعتبر است",
     signupSuccess: "با موفقیت ثبت‌نام شدید. در حال انتقال...",
+    errors: {
+      phoneAlreadyExists: "شماره تلفن قبلاً استفاده شده است",
+    },
   },
   errorPage: {
     errorTitle: "خطای احراز هویت",
@@ -212,7 +216,7 @@ export default {
     whatsappNumber: "شماره واتساپ",
     updateProfile: "به‌روزرسانی پروفایل",
     updateSuccess: "پروفایل با موفقیت به‌روز شد",
-    updateError: "طا در ب‌روزرسانی پروفایل",
+    updateError: "خطا در ب‌روزرسانی پروفایل",
     fetchError: "خطا در دریافت اطلاعات کاربر",
     loading: "در حال بارگیری اطلاعات کاربر...",
     uploadPhoto: "آپلود عکس",

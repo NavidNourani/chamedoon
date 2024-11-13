@@ -50,6 +50,7 @@ export default {
     show_less_details: "Show less details",
     edit: "Edit",
     your_parcel: "Your Parcel",
+    phone: "Phone Number",
   },
   home: {
     add_new_parcel: "Add new parcel",
@@ -151,6 +152,9 @@ export default {
     countryCodeRequired: "Country code is required",
     invalidCountryCode: "Invalid country code format",
     signupSuccess: "Successfully registered. Redirecting...",
+    errors: {
+      phoneAlreadyExists: "Phone number already exists",
+    },
   },
   errorPage: {
     errorTitle: "Authentication Error",
@@ -264,6 +268,7 @@ export default {
   },
   formErrors: {
     uniqueConstraintFailed: "Value for {field} already used.",
+    phoneAlreadyExists: "Phone number already exists",
   },
   currency: {
     IRT: "Iranian Rial",

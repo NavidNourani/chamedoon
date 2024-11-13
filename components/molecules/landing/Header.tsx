@@ -6,6 +6,7 @@ import { Box, Button, Container, Stack } from "@mui/material";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import MobileHeader from "./MobileHeader";
 
 export default async function Header() {
   const t = await getScopedI18n("authorization");
@@ -38,13 +39,17 @@ export default async function Header() {
           </Link>
 
           <Stack direction="row" spacing={2} alignItems="center">
-            <ChangeLanguageButton />
-            <ThemeToggleButton />
+            <MobileHeader />
+            <ChangeLanguageButton
+              sx={{ display: { xs: "none", md: "block" } }}
+            />
+            <ThemeToggleButton sx={{ display: { xs: "none", md: "block" } }} />
             <Button
               component={Link}
               href={session ? "/app" : "/login"}
               variant="contained"
               color="primary"
+              sx={{ display: { xs: "none", md: "block" } }}
             >
               {session?.user ? t("dashboard") : t("login")}
             </Button>

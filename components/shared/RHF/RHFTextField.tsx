@@ -1,3 +1,4 @@
+import { useScopedI18n } from "@/locales/client";
 import { TextField, TextFieldProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -7,6 +8,7 @@ type Props = TextFieldProps & {
 
 export default function RHFTextField({ name, helperText, ...other }: Props) {
   const { control } = useFormContext();
+  const t = useScopedI18n("formErrors");
   return (
     <Controller
       name={name}
@@ -31,7 +33,7 @@ export default function RHFTextField({ name, helperText, ...other }: Props) {
             }
           }}
           error={!!error}
-          helperText={error ? error?.message : helperText}
+          helperText={error ? t(error?.message as any) : helperText}
           {...other}
         />
       )}

@@ -101,7 +101,7 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
                   </TableRow>
                   <TableRow>
                     <TableCell>{t("phone")}</TableCell>
-                    <TableCell>
+                    <TableCell dir="ltr">
                       <a
                         href={`tel:+${
                           flight.user.countryCode! + flight.user.phone!

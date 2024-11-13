@@ -83,7 +83,7 @@ const EditProfileForm = () => {
       telegramID: "",
       whatsappnumber: "",
       currencyType: "IRT",
-      preferredDateSystem: "GREGORIAN",
+      preferredDateSystem: "JALALI",
     },
     resolver: yupResolver(editProfileSchema),
   });
@@ -136,6 +136,7 @@ const EditProfileForm = () => {
               });
             }
           }
+          enqueueSnackbar(editProfileT("updateError"), { variant: "error" });
         } else {
           enqueueSnackbar(editProfileT("updateError"), { variant: "error" });
         }

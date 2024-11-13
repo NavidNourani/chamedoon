@@ -95,6 +95,18 @@ const ParcelItem: FunctionComponent<ParcelItemProps> = ({ parcel }) => {
                       </TableCell>
                     </TableRow>
                   )}
+                  <TableRow>
+                    <TableCell>{t("phone")}</TableCell>
+                    <TableCell dir="ltr">
+                      <a
+                        href={`tel:+${
+                          parcel.User.countryCode! + parcel.User.phone!
+                        }`}
+                      >
+                        +{parcel.User.countryCode} {parcel.User.phone}
+                      </a>
+                    </TableCell>
+                  </TableRow>
                   {parcel.parcelType && (
                     <TableRow>
                       <TableCell>{t("parcel_type")}</TableCell>
