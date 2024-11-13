@@ -83,7 +83,15 @@ export default async function Home() {
   const userParcels = await prisma.parcel.findMany({
     where: { userID: user.id },
     include: {
-      User: { select: { id: true, name: true, family: true } },
+      User: {
+        select: {
+          id: true,
+          name: true,
+          family: true,
+          phone: true,
+          countryCode: true,
+        },
+      },
       departureAirport: {
         include: {
           city: {

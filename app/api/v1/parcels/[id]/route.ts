@@ -11,9 +11,18 @@ export async function GET(
   try {
     const parcel = await prisma.parcel.findUnique({
       where: { id },
-      include:{
+      include: {
+        User: {
+          select: {
+            id: true,
+            name: true,
+            family: true,
+            phone: true,
+            countryCode: true,
+          },
+        },
         departureAirport: {
-          include: { 
+          include: {
             city: {
               include: {
                 country: { select: { id: true, name: true, iso2: true } },
@@ -30,7 +39,7 @@ export async function GET(
             },
           },
         },
-      }
+      },
     });
 
     if (!parcel) {
