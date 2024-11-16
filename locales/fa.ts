@@ -34,6 +34,7 @@ export default {
     Document: "مدارک",
     Other: "سایر",
     Parcel_updated_successfully: "بسته با موفقیت به‌روزرسانی شد",
+    Destination_City: "شهر مقصد",
   },
   parcelItem: {
     parcel_description: "توضیحات بسته",
@@ -183,13 +184,14 @@ export default {
     Destination_Airport: "فرودگاه مقصد",
     destination_details: "جزئیات مقصد",
     Departure_Date_and_Time: "تاریخ و زمان حرکت",
-    Arrival_Date_and_Time: "تاریخ و زمان ورود",
+    Arrival_Date_and_Time: "تاریخ و زمان رسیدن",
     Acceptable_Parcel_Description: "توضیحات بسته قابل قبول",
     "Estimated_cost_(optional)": "هزینه تخمینی (اختیاری)",
     Submit: "ثبت",
     Next: "بعدی",
     Back: "قبلی",
     Flight_updated_successfully: "پرواز با موفقیت به‌روزرسانی شد",
+    Destination_City: "شهر مقصد",
   },
   parcelsPage: {
     no_parcels_found: "هیچ بسته‌ای یافت نشد",
@@ -334,7 +336,7 @@ export default {
       "به پلتفرم امن ما اعتماد کنید که مسافران تأیید شده را با فرستندگان برای تحویل مطمئن بسته‌ها متصل می‌کند.",
     slide3_title: "سفر خود را آغاز کنید",
     slide3_description:
-      "چه مسافر باشید و چه فرستنده، امروز تجربه اربیت‌پکس خود را شروع کنید.",
+      "چه مسافر باشید و چه فرستنده، امروز تجربه اربیت‌پکس خود را شروع کن��د.",
     skip: "رد کردن",
     next: "بعدی",
     get_started: "شروع کنید",

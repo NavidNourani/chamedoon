@@ -8,7 +8,8 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const DestinationStep = () => {
-  const { countries, getAirports } = useLocations();
+  const { countries, getAirports, getCities } = useLocations();
+  const [destinationAirports, setDestinationAirports] = useState<City[]>([]);
   const [destinationCities, setDestinationCities] = useState<City[]>([]);
   const { watch, setValue, getValues } = useFormContext();
   const t = useScopedI18n("add_flight");
@@ -24,16 +25,31 @@ const DestinationStep = () => {
   useEffect(() => {
     if (watch("destinationCountry")) {
       getAirports({ countryId: watch("destinationCountry").id }).then(
+        (airports) => {
+          if (airports && airports.length > 0) {
+            setDestinationAirports(airports as City[]);
+            if (
+              !getValues("destinationAirport") ||
+              !airports.find(
+                (city) => city.id === getValues("destinationAirport").id
+              )
+            ) {
+              setValue("destinationAirport", airports[0]);
+            }
+          }
+        }
+      );
+      getCities({ countryId: watch("destinationCountry").id }).then(
         (cities) => {
           if (cities && cities.length > 0) {
             setDestinationCities(cities as City[]);
             if (
-              !getValues("destinationAirport") ||
+              !getValues("destinationCity") ||
               !cities.find(
-                (city) => city.id === getValues("destinationAirport").id
+                (city) => city.id === getValues("destinationCity").id
               )
             ) {
-              setValue("destinationAirport", cities[0]);
+              setValue("destinationCity", cities[0]);
             }
           }
         }
@@ -59,16 +75,24 @@ const DestinationStep = () => {
         name="destinationCountry"
         label={t("Destination_country")}
       />
-      {!!destinationCities.length && (
+      {!!destinationAirports.length && (
         <RHFAutocomplete<City, false, true, false>
-          options={destinationCities ?? []}
+          options={destinationAirports ?? []}
           getOptionLabel={(option) => option?.name ?? ""}
           name="destinationAirport"
           label={t("Destination_Airport")}
           disableClearable
         />
       )}
-
+      {!!destinationAirports.length && (
+        <RHFAutocomplete<City, false, true, false>
+          options={destinationAirports ?? []}
+          getOptionLabel={(option) => option?.name ?? ""}
+          name="destinationCity"
+          label={t("Destination_City")}
+          disableClearable
+        />
+      )}
       <RHFDateTimePicker
         name="arrivalDateTime"
         label={t("Arrival_Date_and_Time")}

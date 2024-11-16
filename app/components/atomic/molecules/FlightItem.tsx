@@ -68,7 +68,8 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
             />
             <Typography>
               {flight.destinationAirport.city.country.name} -{" "}
-              {flight.destinationAirport.city.name}{" "}
+              {flight.destinationAirport.city.name} (
+              {flight.destinationCity.name})
             </Typography>
           </Stack>
         </Stack>

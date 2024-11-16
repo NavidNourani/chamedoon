@@ -45,15 +45,32 @@ async function main() {
           })),
         },
         cities: {
-          create: countryData.cities.map((cityData: any) => ({
-            id: cityData.id,
-            name: cityData.name,
-            airports: {
-              create:
-                cityData.airports?.map((airportData: any) => ({
+          upsert: countryData.cities.map((cityData: any) => ({
+            where: { id: cityData.id },
+            create: {
+              id: cityData.id,
+              name: cityData.name,
+              airports: {
+                create: cityData.airports?.map((airportData: any) => ({
                   id: airportData.id,
                   name: airportData.name,
                 })) || [],
+              },
+            },
+            update: {
+              name: cityData.name,
+              airports: {
+                upsert: (cityData.airports || []).map((airportData: any) => ({
+                  where: { id: airportData.id },
+                  create: {
+                    id: airportData.id,
+                    name: airportData.name,
+                  },
+                  update: {
+                    name: airportData.name,
+                  },
+                })),
+              },
             },
           })),
         },

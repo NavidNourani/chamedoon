@@ -68,7 +68,8 @@ const ParcelItem: FunctionComponent<ParcelItemProps> = ({ parcel }) => {
             />
             <Typography>
               {parcel.destinationAirport.city.country.name} -{" "}
-              {parcel.destinationAirport.city.name}{" "}
+              {parcel.destinationAirport.city.name} (
+              {parcel.destinationCity.name})
             </Typography>
           </Stack>
         </Stack>

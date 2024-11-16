@@ -35,6 +35,7 @@ export default {
     Document: "Document",
     Other: "Other",
     Parcel_updated_successfully: "Parcel updated successfully",
+    Destination_City: "Destination City",
   },
   parcelItem: {
     parcel_description: "Description",
@@ -192,6 +193,7 @@ export default {
     Next: "Next",
     Back: "Back",
     Flight_updated_successfully: "Flight updated successfully",
+    Destination_City: "Destination City",
   },
   parcelsPage: {
     no_parcels_found: "No parcels found",

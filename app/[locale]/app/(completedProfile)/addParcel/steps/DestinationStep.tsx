@@ -61,6 +61,15 @@ const DestinationStep = () => {
         <RHFAutocomplete<City, false, true, false>
           options={destinationCities ?? []}
           getOptionLabel={(option) => option?.name ?? ""}
+          name="destinationCity"
+          label={t("Destination_City")}
+          disableClearable
+        />
+      )}
+      {!!destinationCities.length && (
+        <RHFAutocomplete<City, false, true, false>
+          options={destinationCities ?? []}
+          getOptionLabel={(option) => option?.name ?? ""}
           name="destinationAirport"
           label={t("Destination_Airport")}
           disableClearable

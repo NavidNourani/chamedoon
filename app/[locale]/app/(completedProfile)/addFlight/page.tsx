@@ -53,6 +53,12 @@ const schema = yup.object().shape({
       name: yup.string().required(),
     })
     .required("Destination Country is required"),
+  destinationCity: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required("Destination City is required"),
 });
 
 const FlightForm = () => {
@@ -80,6 +86,7 @@ const FlightForm = () => {
       estimatedCost: undefined,
       departureCountry: undefined,
       destinationCountry: undefined,
+      destinationCity: undefined,
     },
   });
 
@@ -94,6 +101,7 @@ const FlightForm = () => {
         destinationAirport: flight.destinationAirport,
         departureCountry: flight.departureAirport.city.country,
         destinationCountry: flight.destinationAirport.city.country,
+        destinationCity: flight.destinationAirport.city,
       });
     } else {
       methods.reset({
@@ -116,6 +124,7 @@ const FlightForm = () => {
         estimatedCost: data.estimatedCost ?? null,
         departureAirportId: data.departureAirport.id,
         destinationAirportId: data.destinationAirport.id,
+        destinationCityId: data.destinationCity.id,
       };
       const res = await createOrUpdateFlightForCurrentUser(dataToSend);
       if (res.success) {

@@ -50,6 +50,8 @@ model Flight {
   acceptableParcelDescription String   @default("")
   estimatedCost               Float?
   userID                      String
+  destinationCityId           String   @default("")
+  destinationCity             City     @relation(fields: [destinationCityId], references: [id])
   user                        User     @relation(fields: [userID], references: [id])
   departureAirportId          String   @map("departureAirportId")
   destinationAirportId        String   @map("destinationAirportId")
@@ -67,6 +69,8 @@ model Parcel {
   parcelWeight         Float?
   parcelType           String?
   estimatedCost        Float?
+  destinationCityId    String    @default("")
+  destinationCity      City      @relation(fields: [destinationCityId], references: [id])
   userID               String
   departureAirportId   String    @map("departureAirportId")
   destinationAirportId String    @map("destinationAirportId")
@@ -97,7 +101,7 @@ model Country {
   nationality     String?
   timezones       Timezone[]
   translationsId  String?       @unique
-  translations    Translations? @relation(fields: [translationsId], references: [id])
+  translations    Translations? @relation("CountryTranslations", fields: [translationsId], references: [id])
   latitude        String?
   longitude       String?
   emoji           String?
@@ -106,11 +110,15 @@ model Country {
 }
 
 model City {
-  id        String    @id @default(uuid())
-  name      String
-  countryId String
-  country   Country   @relation(fields: [countryId], references: [id])
-  airports  Airport[]
+  id             String        @id @default(uuid())
+  name           String
+  countryId      String
+  country        Country       @relation(fields: [countryId], references: [id])
+  airports       Airport[]
+  flights        Flight[]
+  parcels        Parcel[]
+  translationsId String?       @unique
+  translations   Translations? @relation("CityTranslations", fields: [translationsId], references: [id])
 }
 
 model Airport {
@@ -140,7 +148,8 @@ model Translations {
   it      String?
   cn      String?
   tr      String?
-  country Country?
+  country Country? @relation("CountryTranslations")
+  city    City?    @relation("CityTranslations")
 }
 
 model Timezone {

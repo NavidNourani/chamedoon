@@ -35,10 +35,22 @@ const useLocations = () => {
         .then((x) => x.data),
   });
 
+  const { mutateAsync: getCities } = useMutation<
+    City[],
+    Error,
+    { countryId: string }
+  >({
+    mutationFn: ({ countryId }: { countryId: string }) =>
+      axios
+        .get<City[]>(`/api/v1/locations/cities?countryId=${countryId}`)
+        .then((x) => x.data),
+  });
+
   return {
     countries: countriesData,
     countriesLoading,
     getAirports,
+    getCities,
     setCountrySearchTerm,
     setCitySearchTerm,
   };

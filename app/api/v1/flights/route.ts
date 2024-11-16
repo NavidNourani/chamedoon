@@ -62,6 +62,7 @@ export async function GET(req: Request) {
         acceptableParcelDescription: true,
         arrivalDateTime: true,
         departureDateTime: true,
+        destinationCity: true,
         departureAirport: {
           include: {
             city: {

@@ -18,6 +18,7 @@ export interface GetFlightsResponseData {
       };
     };
   };
+  destinationCity: City;
   destinationAirport: {
     id: string;
     name: string;

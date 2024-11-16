@@ -15,28 +15,23 @@ export const GET = async (req: NextRequest) => {
       return new Response("Country id is required!", { status: 400 });
     }
 
-    const airports = await prisma.airport.findMany({
+    const cities = await prisma.city.findMany({
       where: {
         name: { startsWith: query, mode: "insensitive" },
-        city: {
-          countryId: countryId,
-        },
-      },
-      include: {
-        city: true,
+        countryId: countryId,
       },
     });
 
-    if (airports.length === 0) {
-      return new Response("No airport found!", { status: 404 });
+    if (cities.length === 0) {
+      return new Response("No city found!", { status: 404 });
     }
 
-    return new Response(JSON.stringify(airports), {
+    return new Response(JSON.stringify(cities), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (e) {
-    console.error("Server error in /locations/airport", e);
+    console.error("Server error in /locations/cities", e);
     return new Response("Server error!", { status: 500 });
   }
 };
