@@ -229,7 +229,7 @@ export default {
     phoneTaken: "این شماره تلفن قبلاً استفاده شده است",
     telegramIDTaken: "این شناسه تلگرام قبلاً استفاده شده است",
     whatsappNumberTaken: "این شماره واتساپ قبلاً استفاده شده است",
-    completeProfileTitle: "برای استفاده از سیستم پروفایل خود را کمل کنید",
+    completeProfileTitle: "برای استفاده از سیستم پروفایل خود را کامل کنید",
     completeProfile: "وارد کردن این موارد الزامی است",
     profileCompletion: "تکمیل پروفایل",
     uploading: "در حال آپلود...",
