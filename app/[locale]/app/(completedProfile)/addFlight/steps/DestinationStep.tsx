@@ -94,26 +94,22 @@ const DestinationStep = () => {
         label={t("Destination_country")}
         loading={countriesLoading}
       />
-      {!!destinationAirports.length && (
-        <RHFAutocomplete<AirportWithTranslations, false, true, false>
-          options={destinationAirports ?? []}
-          getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
-          name="destinationAirport"
-          label={t("Destination_Airport")}
-          disableClearable
-          loading={airportsLoading}
-        />
-      )}
-      {!!destinationAirports.length && (
-        <RHFAutocomplete<CityWithTranslations, false, true, false>
-          options={destinationCities ?? []}
-          getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
-          name="destinationCity"
-          label={t("Destination_City")}
-          disableClearable
-          loading={citiesLoading}
-        />
-      )}
+      <RHFAutocomplete<AirportWithTranslations, false, true, false>
+        options={destinationAirports ?? []}
+        getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
+        name="destinationAirport"
+        label={t("Destination_Airport")}
+        disableClearable
+        loading={airportsLoading}
+      />
+      <RHFAutocomplete<CityWithTranslations, false, true, false>
+        options={destinationCities ?? []}
+        getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
+        name="destinationCity"
+        label={t("Destination_City")}
+        disableClearable
+        loading={citiesLoading}
+      />
       <RHFDateTimePicker
         name="arrivalDateTime"
         label={t("Arrival_Date_and_Time")}

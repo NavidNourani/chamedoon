@@ -73,17 +73,15 @@ const DepartureStep = () => {
         disableClearable
         loading={countriesLoading}
       />
-      {!!departureAirports.length && (
-        <RHFAutocomplete<AirportWithTranslations, false, true, false>
-          sx={{ width: "100%" }}
-          options={departureAirports ?? []}
-          getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
-          name="departureAirport"
-          label={t("Departure_Airport")}
-          disableClearable
-          loading={airportsLoading}
-        />
-      )}
+      <RHFAutocomplete<AirportWithTranslations, false, true, false>
+        sx={{ width: "100%" }}
+        options={departureAirports ?? []}
+        getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
+        name="departureAirport"
+        label={t("Departure_Airport")}
+        disableClearable
+        loading={airportsLoading}
+      />
 
       <RHFDateTimePicker
         name="departureDateTime"
