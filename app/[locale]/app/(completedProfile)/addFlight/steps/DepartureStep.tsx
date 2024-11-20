@@ -12,7 +12,8 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const DepartureStep = () => {
-  const { countries, getAirports } = useLocations();
+  const { countries, getAirports, countriesLoading, airportsLoading } =
+    useLocations();
   const [departureAirports, setDepartureAirports] = useState<
     AirportWithTranslations[]
   >([]);
@@ -70,6 +71,7 @@ const DepartureStep = () => {
         name="departureCountry"
         label={t("Departure_country")}
         disableClearable
+        loading={countriesLoading}
       />
       {!!departureAirports.length && (
         <RHFAutocomplete<AirportWithTranslations, false, true, false>
@@ -79,6 +81,7 @@ const DepartureStep = () => {
           name="departureAirport"
           label={t("Departure_Airport")}
           disableClearable
+          loading={airportsLoading}
         />
       )}
       <RHFDateTimePicker
