@@ -2,6 +2,7 @@
 import ChangeLanguageButton from "@/components/atoms/ChangeLanguageButton";
 import ThemeToggleButton from "@/components/atoms/ThemeToggleButton";
 import LoadingButton from "@/components/shared/LoadingButton";
+import { RHFSelect } from "@/components/shared/RHF/RHFSelect";
 import RHFTextField from "@/components/shared/RHF/RHFTextField";
 import { useScopedI18n } from "@/locales/client";
 import { addUser } from "@/serverActions/user/addUser";
@@ -12,6 +13,7 @@ import {
   Button,
   IconButton,
   InputAdornment,
+  MenuItem,
   Tab,
   Tabs,
   Typography,
@@ -46,7 +48,7 @@ const loginSchema = yup.object().shape({
   countryCode: yup
     .string()
     .required("countryCodeRequired")
-    .matches(/^\d{1,4}$/, "Invalid country code"),
+    .matches(/^\+\d{1,4}$/, "Invalid country code"),
   phone: yup
     .string()
     .required("phoneRequired")
@@ -59,7 +61,7 @@ const signupSchema = yup.object().shape({
   countryCode: yup
     .string()
     .required("countryCodeRequired")
-    .matches(/^\d{1,4}$/, "Invalid country code"),
+    .matches(/^\+\d{1,4}$/, "Invalid country code"),
   phone: yup
     .string()
     .required("phoneRequired")
@@ -88,8 +90,8 @@ const AuthForm = () => {
 
   const methods = useForm<LoginFormValues | SignupFormValues>({
     defaultValues: isLogin
-      ? { countryCode: "44", phone: "", password: "" }
-      : { countryCode: "44", phone: "", password: "", repeatPassword: "" },
+      ? { countryCode: "+98", phone: "", password: "" }
+      : { countryCode: "+98", phone: "", password: "", repeatPassword: "" },
     resolver: yupResolver(isLogin ? loginSchema : signupSchema),
   });
 
@@ -98,6 +100,7 @@ const AuthForm = () => {
   const onSubmit = async (data: LoginFormValues | SignupFormValues) => {
     if (isLogin) {
       const loginData = data as LoginFormValues;
+      methods.clearErrors();
       await loginHandler(() =>
         signIn("credentials", {
           countryCode: loginData.countryCode,
@@ -128,7 +131,6 @@ const AuthForm = () => {
 
       if (res.success) {
         enqueueSnackbar(tSignup("signupSuccess"), { variant: "success" });
-
         // Automatically sign in after successful registration
         await loginHandler(() =>
           signIn("credentials", {
@@ -248,43 +250,15 @@ const AuthForm = () => {
             >
               {isLogin ? (
                 <Box sx={{ display: "flex", gap: 1, mb: 2 }} dir="ltr">
-                  <RHFTextField
+                  <RHFSelect
                     name="countryCode"
                     label={tLogin("countryCode")}
-                    placeholder="44"
-                    autoComplete="tel-country-code"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">+</InputAdornment>
-                      ),
-                    }}
-                    inputProps={{
-                      maxLength: 3,
-                      inputMode: "numeric",
-                      pattern: "[0-9]*",
-                    }}
-                    onKeyDown={(e) => {
-                      // Allow: backspace, delete, tab, escape, enter, arrows
-                      if (
-                        [
-                          "Backspace",
-                          "Delete",
-                          "Tab",
-                          "Escape",
-                          "Enter",
-                          "ArrowLeft",
-                          "ArrowRight",
-                        ].includes(e.key)
-                      ) {
-                        return;
-                      }
-                      // Prevent non-numeric input
-                      if (!/[0-9]/.test(e.key)) {
-                        e.preventDefault();
-                      }
-                    }}
-                    sx={{ width: "30%" }}
-                  />
+                    sx={{ width: "30%", mb: 2 }}
+                  >
+                    <MenuItem value="+971">+971 UAE</MenuItem>
+                    <MenuItem value="+98">+98 Iran</MenuItem>
+                    <MenuItem value="+44">+44 UK</MenuItem>
+                  </RHFSelect>
                   <RHFTextField
                     name="phone"
                     label={tLogin("phone")}
@@ -318,18 +292,15 @@ const AuthForm = () => {
                 </Box>
               ) : (
                 <Box sx={{ display: "flex", gap: 1, mb: 2 }} dir="ltr">
-                  <RHFTextField
+                  <RHFSelect
                     name="countryCode"
                     label={tSignup("countryCode")}
-                    placeholder="44"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">+</InputAdornment>
-                      ),
-                    }}
-                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                    sx={{ width: "30%" }}
-                  />
+                    sx={{ width: "30%", mb: 2 }}
+                  >
+                    <MenuItem value="+971">+971 UAE</MenuItem>
+                    <MenuItem value="+98">+98 Iran</MenuItem>
+                    <MenuItem value="+44">+44 UK</MenuItem>
+                  </RHFSelect>
                   <RHFTextField
                     name="phone"
                     label={tSignup("phone")}

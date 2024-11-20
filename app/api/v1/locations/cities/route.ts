@@ -15,10 +15,10 @@ export const GET = async (req: NextRequest) => {
       return new Response("Country id is required!", { status: 400 });
     }
 
-    const cities = await prisma.airport.findMany({
+    const cities = await prisma.city.findMany({
       where: {
         name: { startsWith: query, mode: "insensitive" },
-        city: { countryId },
+        countryId: countryId,
       },
       include: {
         translations: true,
@@ -27,10 +27,10 @@ export const GET = async (req: NextRequest) => {
         name: "asc",
       },
     });
-
     if (cities.length === 0) {
       return new Response("No city found!", { status: 404 });
     }
+
     return new Response(JSON.stringify(cities), {
       status: 200,
       headers: { "Content-Type": "application/json" },

@@ -21,6 +21,11 @@ export async function GET(
             countryCode: true,
           },
         },
+        destinationCity: {
+          include: {
+            country: { select: { id: true, name: true, iso2: true } },
+          },
+        },
         departureAirport: {
           include: {
             city: {

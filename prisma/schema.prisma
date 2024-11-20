@@ -122,14 +122,16 @@ model City {
 }
 
 model Airport {
-  id                        String   @id @default(uuid())
+  id                        String        @id @default(uuid())
   name                      String
   cityId                    String
-  city                      City     @relation(fields: [cityId], references: [id])
-  departureFlights          Flight[] @relation("flightDepurtures")
-  destinationFlights        Flight[] @relation("flightDestinations")
-  destinationCargoShipments Parcel[] @relation("parcelShipmentDestinations")
-  departureCargoShipments   Parcel[] @relation("parcelShipmentDepurtures")
+  city                      City          @relation(fields: [cityId], references: [id])
+  departureFlights          Flight[]      @relation("flightDepurtures")
+  destinationFlights        Flight[]      @relation("flightDestinations")
+  destinationCargoShipments Parcel[]      @relation("parcelShipmentDestinations")
+  departureCargoShipments   Parcel[]      @relation("parcelShipmentDepurtures")
+  translationsId            String?       @unique
+  translations              Translations? @relation("AirportTranslations", fields: [translationsId], references: [id])
 }
 
 model Translations {
@@ -150,6 +152,13 @@ model Translations {
   tr      String?
   country Country? @relation("CountryTranslations")
   city    City?    @relation("CityTranslations")
+  airport Airport? @relation("AirportTranslations")
+
+  countryId String?
+  cityId    String?
+  airportId String?
+
+  @@unique([countryId, cityId, airportId])
 }
 
 model Timezone {

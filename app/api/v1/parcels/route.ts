@@ -98,6 +98,11 @@ export async function GET(req: Request) {
             },
           },
         },
+        destinationCity: {
+          include: {
+            country: { select: { id: true, name: true, iso2: true } },
+          },
+        },
         destinationAirport: {
           include: {
             city: {

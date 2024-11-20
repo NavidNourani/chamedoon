@@ -1,19 +1,30 @@
 import RHFAutocomplete from "@/components/shared/RHF/RHFAutocomplete";
 import RHFDateTimePicker from "@/components/shared/RHF/RHFDateTimePicker";
+import { getTranslation } from "@/helpers/getTranslation";
 import useLocations from "@/hooks/useLocations";
-import { useScopedI18n } from "@/locales/client";
+import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import {
+  AirportWithTranslations,
+  CityWithTranslations,
+  CountryWithTranslations,
+} from "@/types/models";
 import { Typography } from "@mui/material";
-import { City, Country } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const DestinationStep = () => {
   const { countries, getAirports, getCities } = useLocations();
-  const [destinationAirports, setDestinationAirports] = useState<City[]>([]);
-  const [destinationCities, setDestinationCities] = useState<City[]>([]);
+  const [destinationAirports, setDestinationAirports] = useState<
+    AirportWithTranslations[]
+  >([]);
+  const [destinationCities, setDestinationCities] = useState<
+    CityWithTranslations[]
+  >([]);
   const { watch, setValue, getValues } = useFormContext();
   const t = useScopedI18n("add_flight");
+  const locale = useCurrentLocale();
 
+  console.log("destinationCities", destinationCities);
   useEffect(() => {
     if (countries && countries.length > 0) {
       !getValues("destinationCountry") &&
@@ -27,7 +38,7 @@ const DestinationStep = () => {
       getAirports({ countryId: watch("destinationCountry").id }).then(
         (airports) => {
           if (airports && airports.length > 0) {
-            setDestinationAirports(airports as City[]);
+            setDestinationAirports(airports as AirportWithTranslations[]);
             if (
               !getValues("destinationAirport") ||
               !airports.find(
@@ -42,7 +53,7 @@ const DestinationStep = () => {
       getCities({ countryId: watch("destinationCountry").id }).then(
         (cities) => {
           if (cities && cities.length > 0) {
-            setDestinationCities(cities as City[]);
+            setDestinationCities(cities as CityWithTranslations[]);
             if (
               !getValues("destinationCity") ||
               !cities.find(
@@ -69,25 +80,25 @@ const DestinationStep = () => {
       >
         {t("destination_details")}
       </Typography>
-      <RHFAutocomplete<Country, false, true, false>
+      <RHFAutocomplete<CountryWithTranslations, false, true, false>
         options={countries ?? []}
-        getOptionLabel={(option) => option?.name ?? ""}
+        getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
         name="destinationCountry"
         label={t("Destination_country")}
       />
       {!!destinationAirports.length && (
-        <RHFAutocomplete<City, false, true, false>
+        <RHFAutocomplete<AirportWithTranslations, false, true, false>
           options={destinationAirports ?? []}
-          getOptionLabel={(option) => option?.name ?? ""}
+          getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
           name="destinationAirport"
           label={t("Destination_Airport")}
           disableClearable
         />
       )}
       {!!destinationAirports.length && (
-        <RHFAutocomplete<City, false, true, false>
-          options={destinationAirports ?? []}
-          getOptionLabel={(option) => option?.name ?? ""}
+        <RHFAutocomplete<CityWithTranslations, false, true, false>
+          options={destinationCities ?? []}
+          getOptionLabel={(option) => getTranslation(option, locale) ?? ""}
           name="destinationCity"
           label={t("Destination_City")}
           disableClearable

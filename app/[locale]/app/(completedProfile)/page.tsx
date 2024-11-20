@@ -62,6 +62,7 @@ export default async function Home() {
           },
         },
       },
+      destinationCity: true,
       destinationAirport: {
         include: {
           city: {
@@ -92,6 +93,7 @@ export default async function Home() {
           countryCode: true,
         },
       },
+      destinationCity: true,
       departureAirport: {
         include: {
           city: {

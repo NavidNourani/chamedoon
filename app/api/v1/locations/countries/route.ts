@@ -14,6 +14,9 @@ export const GET = async (req: NextRequest) => {
       where: {
         name: { startsWith: query, mode: "insensitive" },
       },
+      include: {
+        translations: true,
+      },
     });
 
     if (countries.length === 0) {

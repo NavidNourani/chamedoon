@@ -1,7 +1,12 @@
 // form
 import { Controller, useFormContext } from "react-hook-form";
 // @mui
-import { Autocomplete, AutocompleteProps, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  AutocompleteProps,
+  CircularProgress,
+  TextField,
+} from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +33,8 @@ export default function RHFAutocomplete<
   helperText,
   isValueArray,
   renderInput,
+  loading = false,
+  disabled = false,
   ...other
 }: Omit<Props<T, Multiple, DisableClearable, FreeSolo>, "renderInput"> &
   Partial<
@@ -45,6 +52,7 @@ export default function RHFAutocomplete<
         return (
           <Autocomplete
             {...field}
+            disabled={loading || disabled}
             value={field.value ?? defaultValue}
             onChange={(event, newValue) =>
               setValue(name, newValue, {
@@ -62,6 +70,17 @@ export default function RHFAutocomplete<
                   helperText={error ? error?.message : helperText}
                   {...params}
                   value={params.inputProps.value}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {loading && (
+                          <CircularProgress color="inherit" size={20} />
+                        )}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
+                  }}
                 />
               )
             }

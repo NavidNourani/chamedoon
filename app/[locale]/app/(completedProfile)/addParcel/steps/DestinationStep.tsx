@@ -1,16 +1,34 @@
 import RHFAutocomplete from "@/components/shared/RHF/RHFAutocomplete";
+import { getTranslation } from "@/helpers/getTranslation";
 import useLocations from "@/hooks/useLocations";
-import { useScopedI18n } from "@/locales/client";
+import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import {
+  AirportWithTranslations,
+  CityWithTranslations,
+  CountryWithTranslations,
+} from "@/types/models";
 import { Typography } from "@mui/material";
-import { City, Country } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const DestinationStep = () => {
-  const { countries, getAirports } = useLocations();
-  const [destinationCities, setDestinationCities] = useState<City[]>([]);
+  const {
+    countries,
+    countriesLoading,
+    getAirports,
+    airportsLoading,
+    getCities,
+    citiesLoading,
+  } = useLocations();
+  const [destinationAirports, setDestinationAirports] = useState<
+    AirportWithTranslations[]
+  >([]);
+  const [destinationCities, setDestinationCities] = useState<
+    CityWithTranslations[]
+  >([]);
   const { watch, setValue, getValues } = useFormContext();
   const t = useScopedI18n("add_parcel");
+  const locale = useCurrentLocale();
 
   useEffect(() => {
     if (countries && countries.length > 0) {
@@ -21,17 +39,32 @@ const DestinationStep = () => {
   }, [countries, setValue]);
   useEffect(() => {
     if (getValues("destinationCountry")) {
-      getAirports({ countryId: getValues("destinationCountry").id }).then(
+      getCities({ countryId: getValues("destinationCountry").id }).then(
         (cities) => {
           if (cities && cities.length > 0) {
-            setDestinationCities(cities as City[]);
+            setDestinationCities(cities as CityWithTranslations[]);
             if (
-              !getValues("destinationAirport") ||
+              !getValues("destinationCity") ||
               !cities.find(
-                (city) => city.id === getValues("destinationAirport").id
+                (city) => city.id === getValues("destinationCity").id
               )
             ) {
-              setValue("destinationAirport", cities[0]);
+              setValue("destinationCity", cities[0]);
+            }
+          }
+        }
+      );
+      getAirports({ countryId: getValues("destinationCountry").id }).then(
+        (airports) => {
+          if (airports && airports.length > 0) {
+            setDestinationAirports(airports as AirportWithTranslations[]);
+            if (
+              !getValues("destinationAirport") ||
+              !airports.find(
+                (airport) => airport.id === getValues("destinationAirport").id
+              )
+            ) {
+              setValue("destinationAirport", airports[0]);
             }
           }
         }
@@ -51,30 +84,29 @@ const DestinationStep = () => {
       >
         {t("destination_details")}
       </Typography>
-      <RHFAutocomplete<Country, false, true, false>
+      <RHFAutocomplete<CountryWithTranslations, false, true, false>
         options={countries ?? []}
-        getOptionLabel={(option) => option?.name ?? ""}
+        getOptionLabel={(option) => getTranslation(option, locale)}
         name="destinationCountry"
         label={t("Destination_country")}
+        loading={countriesLoading}
       />
-      {!!destinationCities.length && (
-        <RHFAutocomplete<City, false, true, false>
-          options={destinationCities ?? []}
-          getOptionLabel={(option) => option?.name ?? ""}
-          name="destinationCity"
-          label={t("Destination_City")}
-          disableClearable
-        />
-      )}
-      {!!destinationCities.length && (
-        <RHFAutocomplete<City, false, true, false>
-          options={destinationCities ?? []}
-          getOptionLabel={(option) => option?.name ?? ""}
-          name="destinationAirport"
-          label={t("Destination_Airport")}
-          disableClearable
-        />
-      )}
+      <RHFAutocomplete<AirportWithTranslations, false, true, false>
+        options={destinationAirports ?? []}
+        getOptionLabel={(option) => getTranslation(option, locale)}
+        name="destinationAirport"
+        label={t("Destination_Airport")}
+        disableClearable
+        loading={airportsLoading}
+      />
+      <RHFAutocomplete<CityWithTranslations, false, true, false>
+        options={destinationCities ?? []}
+        getOptionLabel={(option) => getTranslation(option, locale)}
+        name="destinationCity"
+        label={t("Destination_City")}
+        disableClearable
+        loading={citiesLoading}
+      />
     </>
   );
 };

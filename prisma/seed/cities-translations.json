@@ -1,0 +1,354 @@
+[
+  {
+    "id": "d1e2f3a4-b5c6-738e-9f0a-b1c2d3e4f5a6",
+    "name": "Tehran",
+    "translations": {
+      "fa": "تهران",
+      "ar": "طهران"
+    }
+  },
+  {
+    "id": "f6g7h8i9-j0k1-l2m3-n3o5-p6q7r8s9t0u1",
+    "name": "Mashhad",
+    "translations": {
+      "fa": "مشهد",
+      "ar": "مشهد"
+    }
+  },
+  {
+    "id": "v2w3x4y5-z6a7-b2c9-d0e1-f2g3h4i5j6k7",
+    "name": "Isfahan",
+    "translations": {
+      "fa": "اصفهان",
+      "ar": "أصفهان"
+    }
+  },
+  {
+    "id": "l8m9n0o1-p2q3-r2s3-t6u7-v8w9x0y1z2a3",
+    "name": "Karaj",
+    "translations": {
+      "fa": "کرج",
+      "ar": "كرج"
+    }
+  },
+  {
+    "id": "b4c5d6e7-f8g9-h0i3-j2k3-l4m5n6o7p8q9",
+    "name": "Shiraz",
+    "translations": {
+      "fa": "شیراز",
+      "ar": "شيراز"
+    }
+  },
+  {
+    "id": "r0s1t2u3-v4w5-x6y3-z8a9-b0c1d2e3f4g5",
+    "name": "Tabriz",
+    "translations": {
+      "fa": "تبریز",
+      "ar": "تبريز"
+    }
+  },
+  {
+    "id": "r8s9t0u1-v2w3-x4y3-z6a7-b8c9d0e1f2g3",
+    "name": "Semnan",
+    "translations": {
+      "fa": "سمنان",
+      "ar": "سمنان"
+    }
+  },
+  {
+    "id": "x2y3z4a5-b6c7-d8e3-f0g1-h2i3j4k5l6m7",
+    "name": "Ahvaz",
+    "translations": {
+      "fa": "اهواز",
+      "ar": "الأهواز"
+    }
+  },
+  {
+    "id": "n8o9p0q1-r2s3-t4u3-v6w7-x8y9z0a1b2c3",
+    "name": "Kermanshah",
+    "translations": {
+      "fa": "کرمانشاه",
+      "ar": "كرمانشاه"
+    }
+  },
+  {
+    "id": "d4e5f6g7-h8i9-j0k3-l2m3-n4o5p6q7r8s9",
+    "name": "Urmia",
+    "translations": {
+      "fa": "ارومیه",
+      "ar": "أورمية"
+    }
+  },
+  {
+    "id": "t0u1v2w3-x4y5-z6a3-b8c9-d0e1f2g3h4i5",
+    "name": "Rasht",
+    "translations": {
+      "fa": "رشت",
+      "ar": "رشت"
+    }
+  },
+  {
+    "id": "j6k7l8m9-n0o1-p2q3-r4s5-t6u7v8w9x0y1",
+    "name": "Zahedan",
+    "translations": {
+      "fa": "زاهدان",
+      "ar": "زاهدان"
+    }
+  },
+  {
+    "id": "k1l2m3n4-o5p6q228-s9t0u1v2w3-x4y5-z6a7",
+    "name": "Kerman",
+    "translations": {
+      "fa": "کرمان",
+      "ar": "كرمان"
+    }
+  },
+  {
+    "id": "KHM",
+    "name": "Khorramabad",
+    "translations": {
+      "fa": "خرم‌آباد",
+      "ar": "خرم آباد"
+    }
+  },
+  {
+    "id": "BND",
+    "name": "Bandar Abbas",
+    "translations": {
+      "fa": "بندرعباس",
+      "ar": "بندر عباس"
+    }
+  },
+  {
+    "id": "KSH",
+    "name": "Kish Island",
+    "translations": {
+      "fa": "جزیره کیش",
+      "ar": "جزيرة كيش"
+    }
+  },
+  {
+    "id": "GCH",
+    "name": "Gorgan",
+    "translations": {
+      "fa": "گرگان",
+      "ar": "جرجان"
+    }
+  },
+  {
+    "id": "SNDJ",
+    "name": "Sanandaj",
+    "translations": {
+      "fa": "سنندج",
+      "ar": "سنندج"
+    }
+  },
+  {
+    "id": "KSHM",
+    "name": "Khorramshahr",
+    "translations": {
+      "fa": "خرمشهر",
+      "ar": "خرمشهر"
+    }
+  },
+  {
+    "id": "ABH",
+    "name": "Abadan",
+    "translations": {
+      "fa": "آبادان",
+      "ar": "آبادان"
+    }
+  },
+  {
+    "id": "h1i2j3k4-l5m6-7n8o-9p0q-r1s2t3u4v5w6",
+    "name": "Abu Dhabi",
+    "translations": {
+      "fa": "ابوظبی",
+      "ar": "أبو ظبي"
+    }
+  },
+  {
+    "id": "z2a3b4c5-d6e7-f8g9-h0i1-j2k3l4m5n6o7",
+    "name": "Dubai",
+    "translations": {
+      "fa": "دبی",
+      "ar": "دبي"
+    }
+  },
+  {
+    "id": "p8q9r0s1-t2u3-v4w5-x6y7-z8a9b0c1d2e3",
+    "name": "Sharjah",
+    "translations": {
+      "fa": "شارجه",
+      "ar": "الشارقة"
+    }
+  },
+  {
+    "id": "f4g5h6i7-j8k9-l0m1-n2o3-p4q5r6s7t8u9",
+    "name": "Al Ain",
+    "translations": {
+      "fa": "العین",
+      "ar": "العين"
+    }
+  },
+  {
+    "id": "v0w1x2y3-z4a5-b6c7-d8e9-f0g1h2i3j4k5",
+    "name": "Ajman",
+    "translations": {
+      "fa": "عجمان",
+      "ar": "عجمان"
+    }
+  },
+  {
+    "id": "l6m7n8o9-p0q1-r2s3-t4u5-v6w7x8y9z0a1",
+    "name": "Ras Al Khaimah",
+    "translations": {
+      "fa": "رأس‌الخیمه",
+      "ar": "رأس الخيمة"
+    }
+  },
+  {
+    "id": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
+    "name": "Fujairah",
+    "translations": {
+      "fa": "فجیره",
+      "ar": "الفجيرة"
+    }
+  },
+  {
+    "id": "r8s9t0u1-v2w3-x4y5-z6a7-b8c9d0e1f2g3",
+    "name": "Umm Al Quwain",
+    "translations": {
+      "fa": "ام‌القوین",
+      "ar": "أم القيوين"
+    }
+  },
+  {
+    "id": "h4i5j6k7-l8m9-n0o1-p2q3-r4s5t6u7v8w9",
+    "name": "Khor Fakkan",
+    "translations": {
+      "fa": "خورفکان",
+      "ar": "خورفكان"
+    }
+  },
+  {
+    "id": "x0y1z2a3-b4c5-d6e7-f8g9-h0i1j2k3l4m5",
+    "name": "Dibba Al-Fujairah",
+    "translations": {
+      "fa": "دبا الفجیره",
+      "ar": "دبا الفجيرة"
+    }
+  },
+  {
+    "id": "n6o7p8q9-r0s1-t2u3-v4w5-x6y7z8a9b0c1",
+    "name": "Madinat Zayed",
+    "translations": {
+      "fa": "مدینه زاید",
+      "ar": "مدينة زايد"
+    }
+  },
+  {
+    "id": "d2e3f4g5-h6i7-j8k9-l0m1-n2o3p4q5r6s7",
+    "name": "Ruwais",
+    "translations": {
+      "fa": "رویس",
+      "ar": "الرويس"
+    }
+  },
+  {
+    "id": "t8u9v0w1-x2y3-z4a5-b6c7-d8e9f0g1h2i3",
+    "name": "London",
+    "translations": {
+      "fa": "لندن",
+      "ar": "لندن"
+    }
+  },
+  {
+    "id": "j4k5l6m7-n8o9-p0q1-r2s3-t4u5v6w7x8y9",
+    "name": "Birmingham",
+    "translations": {
+      "fa": "بیرمنگام",
+      "ar": "برمنغهام"
+    }
+  },
+  {
+    "id": "z0a1b2c3-d4e5-f6g7-h8i9-j0k1l2m3n4o5",
+    "name": "Manchester",
+    "translations": {
+      "fa": "منچستر",
+      "ar": "مانشستر"
+    }
+  },
+  {
+    "id": "p6q7r8s9-t0u1-v2w3-x4y5-z6a7b8c9d0e1",
+    "name": "Glasgow",
+    "translations": {
+      "fa": "گلاسگو",
+      "ar": "غلاسكو"
+    }
+  },
+  {
+    "id": "f2g3h4i5-j6k7-l8m9-n0o1-p2q3r4s5t6u7",
+    "name": "Liverpool",
+    "translations": {
+      "fa": "لیورپول",
+      "ar": "ليفربول"
+    }
+  },
+  {
+    "id": "v8w9x0y1-z2a3-b4c5-d6e7-f8g9h0i1j2k3",
+    "name": "Leeds",
+    "translations": {
+      "fa": "لیدز",
+      "ar": "ليدز"
+    }
+  },
+  {
+    "id": "l4m5n6o7-p8q9-r0s1-t2u3-v4w5x6y7z8a9",
+    "name": "Sheffield",
+    "translations": {
+      "fa": "شفیلد",
+      "ar": "شيفيلد"
+    }
+  },
+  {
+    "id": "b0c1d2e3-f4g5-h6i7-j8k9-l0m1n2o3p4q5",
+    "name": "Edinburgh",
+    "translations": {
+      "fa": "ادینبرو",
+      "ar": "إدنبرة"
+    }
+  },
+  {
+    "id": "r6s7t8u9-v0w1-x2y3-z4a5-b6c7d8e9f0g1",
+    "name": "Bristol",
+    "translations": {
+      "fa": "بریستول",
+      "ar": "بريستول"
+    }
+  },
+  {
+    "id": "h2i3j4k5-l6m7-n8o9-p0q1-r2s3t4u5v6w7",
+    "name": "Leicester",
+    "translations": {
+      "fa": "لستر",
+      "ar": "ليستر"
+    }
+  },
+  {
+    "id": "x8y9z0a1-b2c3-d4e5-f6g7-h8i9j0k1l2m3",
+    "name": "Belfast",
+    "translations": {
+      "fa": "بلفاست",
+      "ar": "بلفاست"
+    }
+  },
+  {
+    "id": "n4o5p6q7-r8s9-t0u1-v2w3-x4y5z6a7b8c9",
+    "name": "Nottingham",
+    "translations": {
+      "fa": "ناتینگهام",
+      "ar": "نوتنغهام"
+    }
+  }
+]

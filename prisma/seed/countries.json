@@ -42,6 +42,10 @@
           {
             "id": "thr001-a1b2-c334-e5f6-g7h8i9j0k1l2",
             "name": "Imam Khomeini International Airport"
+          },
+          {
+            "id": "THR",
+            "name": "Mehrabad International Airport"
           }
         ]
       },
@@ -166,60 +170,6 @@
         ]
       },
       {
-        "id": "THR",
-        "name": "Tehran",
-        "airports": [
-          {
-            "id": "IKA",
-            "name": "Imam Khomeini International Airport"
-          },
-          {
-            "id": "THR",
-            "name": "Mehrabad International Airport"
-          }
-        ]
-      },
-      {
-        "id": "MHD",
-        "name": "Mashhad",
-        "airports": [
-          {
-            "id": "MHD",
-            "name": "Mashhad International Airport"
-          }
-        ]
-      },
-      {
-        "id": "ISF",
-        "name": "Isfahan",
-        "airports": [
-          {
-            "id": "ISF",
-            "name": "Isfahan International Airport"
-          }
-        ]
-      },
-      {
-        "id": "SHZ",
-        "name": "Shiraz",
-        "airports": [
-          {
-            "id": "SYZ",
-            "name": "Shiraz International Airport"
-          }
-        ]
-      },
-      {
-        "id": "TBZ",
-        "name": "Tabriz",
-        "airports": [
-          {
-            "id": "TBZ",
-            "name": "Tabriz International Airport"
-          }
-        ]
-      },
-      {
         "id": "BND",
         "name": "Bandar Abbas",
         "airports": [
@@ -236,56 +186,6 @@
           {
             "id": "KIH",
             "name": "Kish International Airport"
-          }
-        ]
-      },
-      {
-        "id": "URM",
-        "name": "Urmia",
-        "airports": [
-          {
-            "id": "OMH",
-            "name": "Urmia International Airport"
-          }
-        ]
-      },
-      {
-        "id": "AHW",
-        "name": "Ahvaz",
-        "airports": [
-          {
-            "id": "AWZ",
-            "name": "Ahvaz International Airport"
-          }
-        ]
-      },
-      {
-        "id": "KER",
-        "name": "Kerman",
-        "airports": [
-          {
-            "id": "KER",
-            "name": "Kerman Airport"
-          }
-        ]
-      },
-      {
-        "id": "ZAH",
-        "name": "Zahedan",
-        "airports": [
-          {
-            "id": "ZAH",
-            "name": "Zahedan International Airport"
-          }
-        ]
-      },
-      {
-        "id": "RSH",
-        "name": "Rasht",
-        "airports": [
-          {
-            "id": "RAS",
-            "name": "Rasht Airport"
           }
         ]
       },

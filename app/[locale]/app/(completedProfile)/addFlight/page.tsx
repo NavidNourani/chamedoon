@@ -156,7 +156,12 @@ const FlightForm = () => {
     // Define fields to validate for each step
     const fieldsToValidate = {
       0: ["departureDateTime", "departureAirport", "departureCountry"],
-      1: ["arrivalDateTime", "destinationAirport", "destinationCountry"],
+      1: [
+        "arrivalDateTime",
+        "destinationAirport",
+        "destinationCountry",
+        "destinationCity",
+      ],
       2: ["acceptableParcelDescription", "estimatedCost"],
     }[step];
 

@@ -1,3 +1,4 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "ignorePatterns": ["prisma/seed/airport-translations.ts","prisma/seed/cities-translations.ts"]
 }

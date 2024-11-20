@@ -1,22 +1,30 @@
 import RHFAutocomplete from "@/components/shared/RHF/RHFAutocomplete";
+import { getTranslation } from "@/helpers/getTranslation";
 import useLocations from "@/hooks/useLocations";
-import { useScopedI18n } from "@/locales/client";
+import { useCurrentLocale, useScopedI18n } from "@/locales/client";
+import {
+  AirportWithTranslations,
+  CountryWithTranslations,
+} from "@/types/models";
 import { Typography } from "@mui/material";
-import { City, Country } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const DepartureStep = () => {
-  const { countries, getAirports } = useLocations();
-  const [departureCities, setDepartureCities] = useState<City[]>([]);
+  const { countries, getAirports, countriesLoading, airportsLoading } =
+    useLocations();
+  const [departureAirports, setDepartureAirports] = useState<
+    AirportWithTranslations[]
+  >([]);
   const { watch, setValue, getValues } = useFormContext();
   const t = useScopedI18n("add_parcel");
+  const locale = useCurrentLocale();
 
   // Select first country from countries list if departureCountry is not selected
   useEffect(() => {
     if (countries && countries.length > 0) {
       !getValues("departureCountry") &&
-      setValue("departureCountry", countries[0]);
+        setValue("departureCountry", countries[0]);
     }
   }, [countries, setValue]);
 
@@ -27,7 +35,7 @@ const DepartureStep = () => {
       getAirports({ countryId: getValues("departureCountry").id }).then(
         (cities) => {
           if (cities && cities.length > 0) {
-            setDepartureCities(cities as City[]);
+            setDepartureAirports(cities as AirportWithTranslations[]);
             if (
               !getValues("departureAirport") ||
               !cities.find(
@@ -54,24 +62,24 @@ const DepartureStep = () => {
       >
         {t("departure_details")}
       </Typography>
-      <RHFAutocomplete<Country, false, true, false>
+      <RHFAutocomplete<CountryWithTranslations, false, true, false>
         sx={{ width: "100%" }}
         options={countries ?? []}
-        getOptionLabel={(option) => option?.name ?? ""}
+        getOptionLabel={(option) => getTranslation(option, locale)}
         name="departureCountry"
         label={t("Departure_country")}
         disableClearable
+        loading={countriesLoading}
       />
-      {!!departureCities.length && (
-        <RHFAutocomplete<City, false, true, false>
-          sx={{ width: "100%" }}
-          options={departureCities ?? []}
-          getOptionLabel={(option) => option?.name ?? ""}
-          name="departureAirport"
-          label={t("Departure_Airport")}
-          disableClearable
-        />
-      )}
+      <RHFAutocomplete<AirportWithTranslations, false, true, false>
+        sx={{ width: "100%" }}
+        options={departureAirports ?? []}
+        getOptionLabel={(option) => getTranslation(option, locale)}
+        name="departureAirport"
+        label={t("Departure_Airport")}
+        disableClearable
+        loading={airportsLoading}
+      />
     </>
   );
 };

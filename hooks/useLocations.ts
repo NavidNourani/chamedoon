@@ -1,4 +1,4 @@
-import { City, Country } from "@prisma/client";
+import { Airport, City, Country, Translations } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
@@ -11,7 +11,7 @@ const useLocations = () => {
   const [citySearchTerm, setCitySearchTerm] = useState("");
 
   const { data: countriesData, isLoading: countriesLoading } = useQuery<
-    Country[]
+    (Country & { translations: Translations })[]
   >({
     queryKey: ["countries", debouncedCountrySearchTerm],
     queryFn: () =>
@@ -24,25 +24,29 @@ const useLocations = () => {
         .then((x) => x.data),
   });
 
-  const { mutateAsync: getAirports } = useMutation<
-    City[],
+  const { mutateAsync: getAirports, isPending: airportsLoading } = useMutation<
+    (Airport & { translations: Translations })[],
     Error,
     { countryId: string }
   >({
     mutationFn: ({ countryId }: { countryId: string }) =>
       axios
-        .get<City[]>(`/api/v1/locations/airports?countryId=${countryId}`)
+        .get<(Airport & { translations: Translations })[]>(
+          `/api/v1/locations/airports?countryId=${countryId}`
+        )
         .then((x) => x.data),
   });
 
-  const { mutateAsync: getCities } = useMutation<
-    City[],
+  const { mutateAsync: getCities, isPending: citiesLoading } = useMutation<
+    (City & { translations: Translations })[],
     Error,
     { countryId: string }
   >({
     mutationFn: ({ countryId }: { countryId: string }) =>
       axios
-        .get<City[]>(`/api/v1/locations/cities?countryId=${countryId}`)
+        .get<(City & { translations: Translations })[]>(
+          `/api/v1/locations/cities?countryId=${countryId}`
+        )
         .then((x) => x.data),
   });
 
@@ -50,7 +54,9 @@ const useLocations = () => {
     countries: countriesData,
     countriesLoading,
     getAirports,
+    airportsLoading,
     getCities,
+    citiesLoading,
     setCountrySearchTerm,
     setCitySearchTerm,
   };

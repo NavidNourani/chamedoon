@@ -124,6 +124,7 @@ const ParcelForm = () => {
         id: parcelID ?? undefined,
         departureAirportId: data.departureAirport.id,
         destinationAirportId: data.destinationAirport.id,
+        destinationCityId: data.destinationAirport.id,
         parcelDescription: data.parcelDescription,
         estimatedCost: data.estimatedCost ?? null,
         immediateDelivery: data.immediateDelivery,
@@ -164,7 +165,7 @@ const ParcelForm = () => {
     // Define fields to validate for each step
     const fieldsToValidate = {
       0: ["departureCountry", "departureAirport"],
-      1: ["destinationCountry", "destinationAirport"],
+      1: ["destinationCountry", "destinationAirport", "destinationCity"],
       2: ["parcelDescription", "parcelWeight", "parcelType"],
     }[step];
 

@@ -18,8 +18,9 @@ export async function GET(
         acceptableParcelDescription: true,
         arrivalDateTime: true,
         departureDateTime: true,
+        destinationCityId: true,
         departureAirport: {
-          include: { 
+          include: {
             city: {
               include: {
                 country: { select: { id: true, name: true, iso2: true } },
