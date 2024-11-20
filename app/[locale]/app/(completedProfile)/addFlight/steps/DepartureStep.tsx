@@ -84,6 +84,7 @@ const DepartureStep = () => {
           loading={airportsLoading}
         />
       )}
+
       <RHFDateTimePicker
         name="departureDateTime"
         label={t("Departure_Date_and_Time")}
