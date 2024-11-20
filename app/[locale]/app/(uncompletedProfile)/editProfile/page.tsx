@@ -15,7 +15,6 @@ import {
   Alert,
   AlertTitle,
   Box,
-  InputAdornment,
   LinearProgress,
   MenuItem,
   Skeleton,
@@ -44,8 +43,14 @@ const editProfileSchema = yup.object().shape({
   email: yup.string().email("Invalid email").nullable(),
   name: yup.string().required("nameRequired"),
   family: yup.string().required("familyRequired"),
-  countryCode: yup.string().required("countryCodeRequired"),
-  phone: yup.string().required("phoneRequired"),
+  countryCode: yup
+    .string()
+    .required("countryCodeRequired")
+    .matches(/^\+\d{1,4}$/, "Invalid country code"),
+  phone: yup
+    .string()
+    .required("phoneRequired")
+    .matches(/^[1-9]\d*$/, "Phone number cannot start with 0"),
   telegramID: yup.string().nullable(),
   whatsappnumber: yup.string().nullable(),
   currencyType: yup.string().oneOf(Object.values(CurrencyTypeType)).required(),
@@ -449,22 +454,43 @@ const EditProfileForm = () => {
                   sx={{ mb: 2 }}
                 />
                 <Box sx={{ display: "flex", gap: 1, mb: 2 }} dir="ltr">
-                  <RHFTextField
+                  <RHFSelect
                     name="countryCode"
-                    label={editProfileT("countryCode") + " *"}
-                    placeholder="44"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">+</InputAdornment>
-                      ),
-                    }}
-                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                    sx={{ width: "30%" }}
-                  />
+                    label={editProfileT("countryCode")}
+                    sx={{ width: "30%", mb: 2 }}
+                  >
+                    <MenuItem value="+971">+971 UAE</MenuItem>
+                    <MenuItem value="+98">+98 Iran</MenuItem>
+                    <MenuItem value="+44">+44 UK</MenuItem>
+                  </RHFSelect>
                   <RHFTextField
                     name="phone"
-                    label={editProfileT("phone") + " *"}
+                    label={editProfileT("phone")}
                     placeholder="1234567890"
+                    inputProps={{
+                      inputMode: "numeric",
+                      pattern: "[1-9][0-9]*",
+                    }}
+                    onKeyDown={(e) => {
+                      // Allow: backspace, delete, tab, escape, enter
+                      if (
+                        [
+                          "Backspace",
+                          "Delete",
+                          "Tab",
+                          "Escape",
+                          "Enter",
+                        ].includes(e.key)
+                      ) {
+                        return;
+                      }
+                      const isNumber = /[0-9]/.test(e.key);
+                      const isFirstChar =
+                        (e.target as HTMLInputElement).value.length === 0;
+                      if (!isNumber || (isFirstChar && e.key === "0")) {
+                        e.preventDefault();
+                      }
+                    }}
                     sx={{ flex: 1 }}
                   />
                 </Box>
