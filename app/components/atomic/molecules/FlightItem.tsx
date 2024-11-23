@@ -1,7 +1,8 @@
 import { formatDate, formatTime } from "@/helpers/formatDate";
-import { useScopedI18n } from "@/locales/client";
+import { getTranslation } from "@/helpers/getTranslation";
+import { useCurrentLocale, useScopedI18n } from "@/locales/client";
 import { GetFlightsResponseData } from "@/types/apis/flights";
-import { ArrowDropDownTwoTone } from "@mui/icons-material";
+import { ArrowDropDownTwoTone, FlightTakeoff } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -27,6 +28,7 @@ interface FlightItemProps {
 
 const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
   const t = useScopedI18n("flightItem");
+  const locale = useCurrentLocale();
   const [showCompleteDetails, setShowCompleteDetails] = useState(false);
   const { data: session } = useSession();
 
@@ -40,37 +42,59 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
   return (
     <Card sx={{ height: "fit-content" }}>
       <CardContent sx={{ gap: 1, display: "flex", flexDirection: "column" }}>
-        <Stack direction="row" width="100%" gap={1} textAlign="center">
-          <Stack width="50%" gap={1} alignItems={"center"}>
-            <Typography sx={{ fontSize: "1rem", fontWeight: "bold" }}>
-              {t("departure")}
-            </Typography>
-            <StyledImage
-              width={140}
-              height={100}
-              src={`https://flagpedia.net/data/flags/w702/${flight.departureAirport.city.country.iso2?.toLocaleLowerCase()}.webp`}
-              alt={flight.departureAirport.city.country.name}
+        <Stack direction="column" width="100%" gap={1} textAlign="center">
+          <Stack width="100%" direction="row" gap={1} position="relative">
+            <Stack width="50%" gap={1} alignItems={"center"}>
+              <Typography sx={{ fontSize: "1rem", fontWeight: "bold" }}>
+                {t("departure")}
+              </Typography>
+              <StyledImage
+                width={140}
+                height={100}
+                src={`https://flagpedia.net/data/flags/w702/${flight.departureAirport.city.country.iso2?.toLocaleLowerCase()}.webp`}
+                alt={flight.departureAirport.city.country.name}
+              />
+            </Stack>
+            <Stack width="50%" gap={1} alignItems={"center"}>
+              <Typography sx={{ fontSize: "1rem", fontWeight: "bold" }}>
+                {t("destination")}
+              </Typography>
+              <StyledImage
+                width={140}
+                height={100}
+                src={`https://flagpedia.net/data/flags/w702/${flight.destinationAirport.city.country.iso2?.toLocaleLowerCase()}.webp`}
+                alt={flight.destinationAirport.city.country.name}
+              />
+            </Stack>
+            <FlightTakeoff
+              sx={{
+                fontSize: 40,
+                position: "absolute",
+                left: "50%",
+                transform: (theme) =>
+                  `translateX(-50%) ${
+                    theme.direction === "rtl" ? "scaleX(-1)" : ""
+                  }`,
+                bottom: "0",
+                filter: "drop-shadow(0 0 1px rgba(255, 255, 255, 1))",
+                color: "primary.main",
+              }}
             />
-            <Typography textAlign="center">
-              {flight.departureAirport.city.country.name} -{" "}
-              {flight.departureAirport.city.name}
-            </Typography>
           </Stack>
-          <Stack width="50%" gap={1} alignItems={"center"}>
-            <Typography sx={{ fontSize: "1rem", fontWeight: "bold" }}>
-              {t("destination")}
-            </Typography>
-            <StyledImage
-              width={140}
-              height={100}
-              src={`https://flagpedia.net/data/flags/w702/${flight.destinationAirport.city.country.iso2?.toLocaleLowerCase()}.webp`}
-              alt={flight.destinationAirport.city.country.name}
-            />
-            <Typography>
-              {flight.destinationAirport.city.country.name} -{" "}
-              {flight.destinationAirport.city.name} (
-              {flight.destinationCity.name})
-            </Typography>
+          <Stack direction="row" gap={1}>
+            <Stack width="50%" gap={1} alignItems={"center"}>
+              <Typography textAlign="center">
+                {flight.departureAirport.city.country.name} -{" "}
+                {flight.departureAirport.city.name}
+              </Typography>
+            </Stack>
+            <Stack width="50%" gap={1} alignItems={"center"}>
+              <Typography>
+                {flight.destinationAirport.city.country.name} -{" "}
+                {flight.destinationAirport.city.name} (
+                {flight.destinationCity.name})
+              </Typography>
+            </Stack>
           </Stack>
         </Stack>
         <Divider sx={{ my: 1 }} />
@@ -125,6 +149,12 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
                     </TableCell>
                   </TableRow>
                   <TableRow>
+                    <TableCell>{t("destination_city")}</TableCell>
+                    <TableCell>
+                      {getTranslation(flight.destinationCity, locale)}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableCell>{t("acceptable_parcel_description")}</TableCell>
                     <TableCell>{flight.acceptableParcelDescription}</TableCell>
                   </TableRow>
@@ -158,7 +188,7 @@ const FlightItem: FunctionComponent<FlightItemProps> = ({ flight }) => {
             alignItems="center"
             mt={2}
           >
-            <Link href={`/addFlight?flightID=${flight.id}`}>
+            <Link href={`/app/addFlight?flightID=${flight.id}`}>
               <Button variant="contained" color="secondary">
                 {t("edit")}
               </Button>

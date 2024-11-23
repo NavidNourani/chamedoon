@@ -6,12 +6,18 @@ import { authOptions } from "@/helpers/authOptions";
 import { calculateProfileCompletion } from "@/helpers/calculateProfileCompletion";
 import { prisma } from "@/helpers/db";
 import { getScopedI18n } from "@/locales/server";
-import { Add, FlightTakeoff, LocalShipping } from "@mui/icons-material";
+import { Add, FlightTakeoff } from "@mui/icons-material";
+import RedeemIcon from "@mui/icons-material/Redeem";
 import {
   Avatar,
   Box,
   Button,
+  ButtonGroup,
+  Card,
+  CardContent,
+  CardMedia,
   Container,
+  Fade,
   IconButton,
   Paper,
   Stack,
@@ -62,7 +68,7 @@ export default async function Home() {
           },
         },
       },
-      destinationCity: true,
+      destinationCity: { include: { translations: true } },
       destinationAirport: {
         include: {
           city: {
@@ -93,7 +99,7 @@ export default async function Home() {
           countryCode: true,
         },
       },
-      destinationCity: true,
+      destinationCity: { include: { translations: true } },
       departureAirport: {
         include: {
           city: {
@@ -118,23 +124,25 @@ export default async function Home() {
   user.password = "";
 
   return (
-    <Container
-      sx={{
-        height: "100%",
-        pb: 3,
-      }}
-    >
+    <Container sx={{ height: "100%", pb: 3 }}>
       <Stack direction="column" spacing={3} height="100%" width="100%">
         <Paper
           elevation={3}
           sx={{
-            p: 3,
-            mb: 3,
+            p: 4,
+            mb: 4,
             width: "100%",
+            height: "auto",
+            minHeight: "200px",
             position: "relative",
-            backgroundImage: "url('/images/parcels-on-luggages.jpeg')",
             backgroundSize: "cover",
+            backgroundImage: "url('/images/parcels-on-luggages.jpeg')",
             backgroundPosition: "center",
+            borderRadius: 2,
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
             "&::before": {
               content: '""',
               position: "absolute",
@@ -142,53 +150,72 @@ export default async function Home() {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              background:
+                "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8))",
               zIndex: 1,
             },
           }}
         >
           <Stack
             direction="row"
-            spacing={2}
+            spacing={3}
             alignItems="center"
             sx={{ position: "relative", zIndex: 2 }}
           >
-            <Avatar sx={{ width: 80, height: 80, position: "relative" }}>
+            <Avatar
+              sx={{
+                width: 90,
+                height: 90,
+                position: "relative",
+                border: "2px solid white",
+              }}
+            >
               {user.photo ? (
                 <Image
                   alt={user.name ?? ""}
                   src={user.photo}
                   fill
-                  sizes="80px"
-                  style={{ objectFit: "cover" }}
+                  sizes="90px"
+                  style={{ objectFit: "cover", borderRadius: "50%" }}
                 />
               ) : (
                 user.name?.[0] ?? ""
               )}
             </Avatar>
             <Box dir="rtl">
-              <Typography variant="h5" sx={{ color: "white" }}>
+              <Typography
+                variant="h4"
+                sx={{ color: "white", fontWeight: "bold" }}
+              >
                 {user.name} {user.family}
               </Typography>
-              <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+              <Typography
+                sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "0.9rem" }}
+              >
                 {user.username} • {user.email}
               </Typography>
-              <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+              <Typography
+                sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "0.9rem" }}
+              >
                 {`${t("profile_completion")}: ${profileCompletionPercentage} %`}
               </Typography>
             </Box>
           </Stack>
-          <Box mt={2} sx={{ position: "relative", zIndex: 2 }}>
+          <Box mt={3} sx={{ position: "relative", zIndex: 2 }}>
             <Button
               variant="contained"
               component={Link}
               href="/app/editProfile"
               sx={{
-                bgcolor: "rgba(255, 255, 255, 0.15)",
+                bgcolor: "rgba(255, 255, 255, 0.2)",
                 color: "white",
                 "&:hover": {
-                  bgcolor: "rgba(255, 255, 255, 0.25)",
+                  bgcolor: "rgba(255, 255, 255, 0.3)",
+                  transition: "background-color 0.3s ease",
                 },
+                borderRadius: 1,
+                px: 3,
+                py: 1,
               }}
             >
               {t("edit_profile")}
@@ -196,127 +223,181 @@ export default async function Home() {
           </Box>
         </Paper>
 
-        <Paper
-          elevation={3}
-          sx={{ width: "fit-content", p: 3, mb: 3, alignSelf: "center" }}
-        >
-          <Stack gap={2}>
-            <Stack
-              direction="column"
-              spacing={2}
-              alignSelf="center"
-              alignItems="center"
-            >
-              <Typography variant="h6" gutterBottom>
-                {t("do_you_have_a_flight")}
-              </Typography>{" "}
-              <Stack direction="row" spacing={2}>
-                <Button
-                  startIcon={<FlightTakeoff />}
-                  variant="contained"
-                  component={Link}
-                  href="/app/addFlight"
-                >
-                  {t("add_your_flight")}
-                </Button>
+        <Stack direction={{ xs: "column", md: "row" }} gap={3}>
+          <Box sx={{ flex: "1 1 45%" }}>
+            <Card>
+              <CardMedia
+                component="img"
+                height="140"
+                image="/images/passenger_in_airport.png"
+                alt="Flight"
+              />
+              <CardContent>
                 <Typography variant="h6" gutterBottom>
-                  {t("or")}
+                  {t("do_you_have_a_flight")}
                 </Typography>
-                <Button
-                  startIcon={<LocalShipping />}
-                  variant="contained"
-                  component={Link}
-                  href="/app/parcels"
-                >
-                  {t("view_parcels")}
-                </Button>
-              </Stack>
-            </Stack>
-            <Stack
-              direction="column"
-              spacing={2}
-              alignSelf="center"
-              alignItems="center"
-            >
-              <Typography variant="h6" gutterBottom>
-                {t("do_you_want_to_send_something")}
-              </Typography>
-              <Stack direction="row" spacing={2}>
-                <Button
-                  startIcon={<LocalShipping />}
-                  variant="contained"
-                  component={Link}
-                  href="/app/addParcel"
-                >
-                  {t("add_your_parcel")}
-                </Button>
+                <ButtonGroup variant="contained" fullWidth>
+                  <Button
+                    startIcon={<FlightTakeoff />}
+                    component={Link}
+                    href="/app/addFlight"
+                  >
+                    {t("add_your_flight")}
+                  </Button>
+                  <Button
+                    startIcon={<RedeemIcon />}
+                    component={Link}
+                    href="/app/parcels"
+                  >
+                    {t("view_parcels")}
+                  </Button>
+                </ButtonGroup>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box sx={{ flex: "1 1 45%" }}>
+            <Card>
+              <CardMedia
+                component="img"
+                height="140"
+                image="/images/ready_parcel.png"
+                alt="Parcel"
+              />
+              <CardContent>
                 <Typography variant="h6" gutterBottom>
-                  {t("or")}
+                  {t("do_you_want_to_send_something")}
                 </Typography>
-                <Button
-                  startIcon={<FlightTakeoff />}
-                  variant="contained"
-                  component={Link}
-                  href="/app/flights"
-                >
-                  {t("view_flights")}
-                </Button>
-              </Stack>{" "}
-            </Stack>
-          </Stack>
-        </Paper>
+                <ButtonGroup variant="contained" fullWidth>
+                  <Button
+                    startIcon={<RedeemIcon />}
+                    component={Link}
+                    href="/app/addParcel"
+                  >
+                    {t("add_your_parcel")}
+                  </Button>
+                  <Button
+                    startIcon={<FlightTakeoff />}
+                    component={Link}
+                    href="/app/flights"
+                  >
+                    {t("view_flights")}
+                  </Button>
+                </ButtonGroup>
+              </CardContent>
+            </Card>
+          </Box>
+        </Stack>
 
-        <Stack mt={4} gap={2}>
+        <Stack mt={4} gap={4} sx={{ px: 2 }}>
           <Stack direction="row" alignItems="center" gap={2}>
-            <Typography variant="h5">{t("recent_flights")}</Typography>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", color: "primary.main" }}
+            >
+              {t("recent_flights")}
+            </Typography>
             <IconButton
-              color="secondary"
+              color="primary"
               component={Link}
               href="/app/addFlight"
+              sx={{
+                bgcolor: "secondary.light",
+                "&:hover": {
+                  bgcolor: "secondary.main",
+                  transform: "scale(1.1)",
+                  transition: "transform 0.2s ease-in-out",
+                },
+              }}
             >
               <Add />
             </IconButton>
           </Stack>
           {flights.length === 0 ? (
-            <Typography>{t("add_your_first_flight")}</Typography>
+            <Typography sx={{ color: "text.secondary", fontStyle: "italic" }}>
+              {t("add_your_first_flight")}
+            </Typography>
           ) : (
-            <>
-              <FlightList flights={flights.slice(0, 10)} isLoading={false} />
-              {flights.length > 5 && (
-                <Box mt={2}>
-                  <Button variant="text" component={Link} href="/app/flights">
-                    {t("view_all_flights")}
-                  </Button>
-                </Box>
-              )}
-            </>
+            <Fade in={true} timeout={500}>
+              <div>
+                <FlightList flights={flights.slice(0, 10)} isLoading={false} />
+                {flights.length > 5 && (
+                  <Box mt={2}>
+                    <Button
+                      variant="outlined"
+                      component={Link}
+                      href="/app/flights"
+                      sx={{
+                        color: "primary.main",
+                        borderColor: "primary.main",
+                        "&:hover": {
+                          bgcolor: "primary.light",
+                        },
+                      }}
+                    >
+                      {t("view_all_flights")}
+                    </Button>
+                  </Box>
+                )}
+              </div>
+            </Fade>
           )}
         </Stack>
 
-        <Stack mt={4} gap={2}>
+        <Stack mt={4} gap={4} sx={{ px: 2 }}>
           <Stack direction="row" alignItems="center" gap={2}>
-            <Typography variant="h5">{t("recent_parcels")}</Typography>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", color: "primary.main" }}
+            >
+              {t("recent_parcels")}
+            </Typography>
             <IconButton
-              color="secondary"
+              color="primary"
               component={Link}
               href="/app/addParcel"
+              sx={{
+                bgcolor: "secondary.light",
+                "&:hover": {
+                  bgcolor: "secondary.main",
+                  transform: "scale(1.1)",
+                  transition: "transform 0.2s ease-in-out",
+                },
+              }}
             >
               <Add />
             </IconButton>
           </Stack>
           {userParcels.length === 0 ? (
-            <Typography>{t("add_your_first_parcel")}</Typography>
+            <Typography sx={{ color: "text.secondary", fontStyle: "italic" }}>
+              {t("add_your_first_parcel")}
+            </Typography>
           ) : (
-            <>
-              <ParcelList parcels={userParcels.slice(0, 5)} isLoading={false} />
-              {userParcels.length > 5 && (
-                <Box mt={2}>
-                  <Button variant="text" component={Link} href="/app/parcels">
-                    {t("view_all_parcels")}
-                  </Button>
-                </Box>
-              )}
-            </>
+            <Fade in={true} timeout={500}>
+              <div>
+                <ParcelList
+                  parcels={userParcels.slice(0, 5)}
+                  isLoading={false}
+                />
+                {userParcels.length > 5 && (
+                  <Box mt={2}>
+                    <Button
+                      variant="outlined"
+                      component={Link}
+                      href="/app/parcels"
+                      sx={{
+                        color: "primary.main",
+                        borderColor: "primary.main",
+                        "&:hover": {
+                          bgcolor: "primary.light",
+                        },
+                      }}
+                    >
+                      {t("view_all_parcels")}
+                    </Button>
+                  </Box>
+                )}
+              </div>
+            </Fade>
           )}
         </Stack>
       </Stack>

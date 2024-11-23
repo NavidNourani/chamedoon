@@ -235,6 +235,7 @@ export default {
     your_flight: "Your Flight",
     acceptable_parcel_description: "Acceptable Parcel",
     phone: "Phone Number",
+    destination_city: "Destination City",
   },
   editProfileForm: {
     editProfileTitle: "Update Your Profile",
