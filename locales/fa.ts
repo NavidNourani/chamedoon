@@ -82,8 +82,8 @@ export default {
     view_other_users_parcels: "مشاهده بسته‌های کاربران دیگر",
     do_you_have_a_flight: "آیا پروازی دارید؟",
     do_you_want_to_send_something: "آیا می‌خواهید چیزی ارسال کنید؟",
-    add_your_flight: "پرواز خود را اضافه کنید",
-    add_your_parcel: "بسته خود را اضافه کنید",
+    add_your_flight: "اضافه کردن پرواز",
+    add_your_parcel: "اضافه کردن بسته",
     or: "یا",
   },
   select_language: {
@@ -269,6 +269,7 @@ export default {
     your_flight: "پرواز شما",
     acceptable_parcel_description: "بست قابل قبول",
     phone: "شماره تلفن",
+    destination_city: "شهر مقصد",
   },
   currency: {
     IRT: "ریال ایران",

@@ -2,8 +2,9 @@
 import Link from "@/components/atoms/Link";
 import ThemeToggleButton from "@/components/atoms/ThemeToggleButton";
 import { useScopedI18n } from "@/locales/client";
-import { FlightTakeoff, Help, Home, LocalShipping } from "@mui/icons-material";
+import { FlightTakeoff, Help, Home } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
+import RedeemIcon from "@mui/icons-material/Redeem";
 import {
   Box,
   Divider,
@@ -28,7 +29,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { text: t("dashboard"), icon: <Home />, href: "/app" },
-    { text: t("all_parcels"), icon: <LocalShipping />, href: "/app/parcels" },
+    { text: t("all_parcels"), icon: <RedeemIcon />, href: "/app/parcels" },
     { text: t("all_flights"), icon: <FlightTakeoff />, href: "/app/flights" },
     { text: t("support"), icon: <Help />, href: "/support" },
   ];

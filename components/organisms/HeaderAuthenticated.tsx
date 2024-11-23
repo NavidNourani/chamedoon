@@ -22,6 +22,7 @@ const HeaderAuthenticated = async () => {
             width={150}
             height={30}
             priority
+            style={{ filter: "drop-shadow(1px 1px 1px white)" }}
           />
         </Link>
         <Box sx={{ display: { xs: "none", sm: "flex" } }}>
